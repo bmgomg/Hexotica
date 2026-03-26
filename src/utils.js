@@ -64,3 +64,60 @@ export const scrollClass = () => `root-scroll ${isTouchable() ? 'root-scroll-mob
 export const post = (fn, ms) => setTimeout(fn, ms);
 
 export const _range = (start, end) => Array.from({ length: end + 1 - start }, (_, i) => start + i);
+
+const inView = ob => {
+    if (!ob) {
+        return;
+    }
+
+    const e = document.getElementById(ob.id);
+
+    if (!e) {
+        return;
+    }
+
+    const r1 = { x1: e.offsetLeft, y1: e.offsetTop };
+    r1.x2 = r1.x1 + e.offsetWidth;
+    r1.y2 = r1.y1 + e.offsetHeight;
+
+    const s = document.getElementById('mesh');
+    const r2 = { x1: s.offsetLeft + s.scrollLeft, y1: s.offsetTop + s.scrollTop };
+    r2.x2 = r2.x1 + s.offsetWidth;
+    r2.y2 = r2.y1 + s.offsetHeight;
+
+    return r1.x1 >= r2.x1 && r1.x2 <= r2.x2 && r1.y1 >= r2.y1 && r1.y2 <= r2.y2;
+};
+
+export const scrollTo = ob => {
+    if (!ob) {
+        return;
+    }
+
+    if (inView(ob)) {
+        return false;
+    }
+
+    const e = document.getElementById(ob.id);
+
+    if (!e) {
+        return false;
+    }
+
+    e.scrollIntoView({ behavior: 'smooth' });
+
+    return true;
+};
+
+export const xy = obid => {
+    const r = clientRect(obid);
+
+    return { x: r?.left, y: r?.top };
+};
+
+export const isScrollable = obid => {
+    const ob = document.getElementById(obid);
+    const horz = ob.scrollWidth > ob.clientWidth;
+    const vert = ob.scrollHeight > ob.clientHeight;
+
+    return { horz, vert };
+};

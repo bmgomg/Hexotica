@@ -1,4 +1,5 @@
 <script>
+	import GamePage from '../Game Page.svelte';
 	import { _sound } from '../sound.svelte';
 	import Splash from '../Splash.svelte';
 	import { post } from '../utils';
@@ -46,10 +47,7 @@
 	{#if splash}
 		<Splash />
 	{:else}
-		<div class="content bg">
-			<!-- <GamePage />
-			<Home /> -->
-		</div>
+		<GamePage />
 	{/if}
 </div>
 
@@ -57,16 +55,6 @@
 	.app {
 		height: 100dvh;
 		display: grid;
-		place-content: center;
 		box-sizing: border-box;
-	}
-
-	.content {
-		grid-area: 1/1;
-		place-self: center;
-		display: grid;
-		touch-action: none;
-		box-sizing: border-box;
-		border: 1px dotted var(--text);
 	}
 </style>

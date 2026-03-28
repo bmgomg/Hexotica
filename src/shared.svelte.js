@@ -1,8 +1,12 @@
 import { DECK, HEX_WIDTH } from './const';
 import { clientRect } from './utils';
 
+export const _log = (value) => console.log($state.snapshot(value));
+
 export const ss = $state({
     zoom: 1,
+    dims: { rows: 1, cols: 1 },
+    boardParams: {},
     tiles: [],
 });
 
@@ -44,21 +48,33 @@ export const calcSpans = (tiles) => {
     let max_row = 0;
     let max_col = 0;
 
-    tiles.forEach(tile => {
-        const { row, col } = tile.place;
+    if (tiles.length) {
+        tiles.forEach(tile => {
+            const { row, col } = tile.place;
 
-        min_row = Math.min(min_row, row);
-        min_col = Math.min(min_col, col);
-        max_row = Math.max(max_row, row);
-        max_col = Math.max(max_col, col);
-    });
+            min_row = Math.min(min_row, row);
+            min_col = Math.min(min_col, col);
+            max_row = Math.max(max_row, row);
+            max_col = Math.max(max_col, col);
+        });
+    }
+    else {
+        min_row = min_col = 0;
+    }
+
+    min_row = Math.max(0, min_row);
+    min_col = Math.max(0, min_col);
 
     return { min_row, max_row, min_col, max_col };
 };
 
 export const calcDims = (boardParams) => {
     const { rowHeight, colWidth, gap, padding: pad } = boardParams;
-    const r = clientRect('board');
+    const r = clientRect('#board');
+
+    if (!r) {
+        return { rows: 1, cols: 1 };
+    }
 
     let rows = Math.floor((r.height - pad.bottom + gap.y) / (rowHeight + gap.y));
     let cols = Math.floor((r.width - pad.right + gap.x) / (colWidth + gap.x));
@@ -112,7 +128,7 @@ export const remesh = () => {
     const rows = Math.max(span_rows + 4, dim_rows);
     const cols = Math.max(span_cols + 2, dim_cols);
 
-    ptiles.forEach(ptiles, t => {
+    ptiles.forEach(t => {
         t.place.row = Math.floor((rows - span_rows) / 2) + t.place.row - min_row + 1;
         t.place.col = Math.floor((cols - span_cols) / 2) + t.place.col - min_col + 1;
     });

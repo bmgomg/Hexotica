@@ -100,6 +100,7 @@ export const boardParams = () => {
     return { rowHeight, colWidth, gap, padding: pad };
 };
 
+// eslint-disable-next-line no-unused-vars
 const initDecks = () => {
     const tiles = [];
 

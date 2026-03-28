@@ -1,5 +1,6 @@
 <script>
-	import { _log, boardParams, remesh, ss } from './shared.svelte';
+	import { boardParams, remesh, ss } from './shared.svelte';
+	import Spot from './Spot.svelte';
 	import { post, scrollClass } from './utils';
 
 	let _this = $state();
@@ -26,7 +27,10 @@
 </script>
 
 <div id="board" bind={_this} class="board {scrollClass()}">
-	<div id="mesh" class="mesh" style={meshStyle}></div>
+	<div id="mesh" class="mesh" style={meshStyle}>
+		<Spot row={9} col={9} />
+		<Spot row={10} col={10} />
+	</div>
 </div>
 
 <style>

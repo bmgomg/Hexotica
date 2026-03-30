@@ -1,3 +1,4 @@
+import { shuffle } from 'lodash-es';
 import { DECK, HEX_WIDTH } from './const';
 import { clientRect } from './utils';
 
@@ -14,10 +15,12 @@ export const _stats = $state({
     plays: 0,
 });
 
-export const placedTiles = (tiles) => tiles.filter(tile => tile.place?.row);
+export const placedTiles = (tiles = ss.tiles) => tiles.filter(tile => tile.place?.row);
 
-export const neighbors = (tiles, row, col) => {
-    const adjs = [
+export const trayTile = () => ss.tiles.find(tile => tile.place === 'tray');
+
+export const neighbors = (row, col, tiles = ss.tiles) => {
+    const nbs = [
         { row: row - 2, col },
         { row: row - 1, col: col + 1 },
         { row: row + 1, col: col + 1 },
@@ -29,7 +32,7 @@ export const neighbors = (tiles, row, col) => {
     const tobs = placedTiles(tiles);
     const obs = [];
 
-    adjs.forEach(a => {
+    nbs.forEach(a => {
         const tile = tobs.find(tile => tile.place.row === a.row && tile.place.col === a.col);
         obs.push(tile);
     });
@@ -100,23 +103,6 @@ export const boardParams = () => {
     return { rowHeight, colWidth, gap, padding: pad };
 };
 
-// eslint-disable-next-line no-unused-vars
-const initDecks = () => {
-    const tiles = [];
-
-    for (let i = 0; i < 2; i++) {
-        const player = i + 1;
-        const deck = [...DECK];
-
-        deck.forEach(deck, bits => {
-            const id = `tile ${player} ${bits}`.replaceAll(',', '');
-            tiles.push({ id, player, bits });
-        });
-    }
-
-    return tiles;
-};
-
 export const remesh = () => {
     const ptiles = placedTiles(ss.tiles);
     const { min_row, max_row, min_col, max_col } = calcSpans(ptiles);
@@ -135,4 +121,23 @@ export const remesh = () => {
     });
 
     ss.dims = { rows, cols };
+};
+
+const initDecks = () => {
+    const tiles = [];
+    const deck = shuffle(DECK);
+
+    deck.forEach(bits => {
+        for (const player of [1, 2]) {
+            const id = `tile ${player} ${bits}`.replaceAll(',', '');
+            tiles.push({ id, player, bits });
+        }
+    });
+
+    return tiles;
+};
+
+// eslint-disable-next-line no-unused-vars
+const makeGame = () => {
+    ss.tiles = initDecks();
 };

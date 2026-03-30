@@ -1,7 +1,7 @@
 <script>
-	import { boardParams, remesh, ss } from './shared.svelte';
+	import { boardParams, neighbors, placedTiles, remesh, ss, trayTile } from './shared.svelte';
 	import Spot from './Spot.svelte';
-	import { post, scrollClass } from './utils';
+	import { _range, post, scrollClass } from './utils';
 
 	let _this = $state();
 	const { rows, cols } = $derived(ss.dims);
@@ -10,6 +10,7 @@
 	const gap = $derived(`${g?.y}px ${g?.x}px`);
 	const padding = $derived(`${pad?.top}px ${pad?.right}px ${pad?.bottom}px ${pad?.left}px`);
 	const meshStyle = $derived(`grid: ${grid}; gap: ${gap}; padding: ${padding};`);
+	const ptiles = $derived(placedTiles());
 
 	$effect(() => {
 		const onResize = () => {
@@ -28,8 +29,24 @@
 
 <div id="board" bind={_this} class="board {scrollClass()}">
 	<div id="mesh" class="mesh" style={meshStyle}>
-		<Spot row={9} col={9} />
-		<Spot row={10} col={10} />
+		{#each _range(1, rows) as row (row)}
+			{#each _range(1, cols) as col (col)}
+				{@const tile = ptiles.find((tile) => tile.place.row === row && tile.place.col === col)}
+				{#if tile}
+					<div>tile</div>
+				{:else if ss.tiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
+					<Spot {row} {col} />
+				{:else}
+					{@const nbs = neighbors(row, col)}
+					{#if nbs.some((a) => !!a)}
+						<Spot {row} {col} />
+					{:else}
+						{@const style = `width: ${colWidth}; height: ${rowHeight}`}
+						<div class="cell" {style}>{row + ':' + col}</div>
+					{/if}
+				{/if}
+			{/each}
+		{/each}
 	</div>
 </div>
 
@@ -43,6 +60,14 @@
 	.mesh {
 		display: grid;
 		place-self: center;
-		border: 1px dotted var(--text);
+		/* border: 1px dotted var(--text); */
+	}
+
+	.cell {
+		display: none;
+		font-family: Crimson;
+		opacity: 0.25;
+		border: 1px dotted #ffffff;
+		place-content: center;
 	}
 </style>

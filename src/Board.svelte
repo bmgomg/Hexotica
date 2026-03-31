@@ -34,7 +34,7 @@
 				{@const tile = ptiles.find((tile) => tile.place.row === row && tile.place.col === col)}
 				{#if tile}
 					<div>tile</div>
-				{:else if ss.tiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
+				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
 					<Spot {row} {col} />
 				{:else}
 					{@const nbs = neighbors(row, col)}

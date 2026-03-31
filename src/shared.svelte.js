@@ -1,10 +1,11 @@
-import { shuffle } from 'lodash-es';
+import { sample, shuffle } from 'lodash-es';
 import { DECK, HEX_WIDTH } from './const';
 import { clientRect } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
 export const ss = $state({
+    menu: true,
     zoom: 1,
     dims: { rows: 1, cols: 1 },
     boardParams: {},
@@ -137,7 +138,22 @@ const initDecks = () => {
     return tiles;
 };
 
-// eslint-disable-next-line no-unused-vars
-const makeGame = () => {
+const playerTiles = (player, filter) => {
+    let tiles = ss.tiles.filter(tile => tile.player === player);
+
+    if (filter === 'placed') {
+        tiles = tiles.filter(tile => tile.place?.row);
+    } else if (filter === 'deck') {
+        tiles = tiles.filter(tile => !tile.place);
+    }
+
+    return tiles;
+};
+
+export const makeGame = () => {
     ss.tiles = initDecks();
+
+    const tiles = playerTiles(1, 'deck');
+    const tile = sample(tiles);
+    tile.place = 'tray';
 };

@@ -19,6 +19,7 @@
 			width: 100%;
 			--bg: #0e1218;
 			--dark-slate: #1c2030;
+			--menu-bg: #1d2126;
 			--slate-deep: #1e4868;
 			--slate-fill: #2a5878;
 			--slate-circle: #3a7898;

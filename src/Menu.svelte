@@ -1,11 +1,12 @@
 <script>
 	import OppRobot from '$lib/images/Human vs Robot.webp';
 	import OpHuman from '$lib/images/Human vs Human.webp';
-	import { VS_HUMAN, VS_ROBOT } from './const';
-	import { ss } from './shared.svelte';
+	import { OPP_HUMAN, OPP_ROBOT } from './const';
+	import { makeGame, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import ToolButton from './Tool Button.svelte';
 	import TextButton from './Text Button.svelte';
+	import { fade } from 'svelte/transition';
 
 	const onOppSelect = (opp) => {
 		ss.opp = opp;
@@ -13,25 +14,35 @@
 		if (!_sound.musicPlayed) {
 			_sound.playMusic();
 		}
+
+        delete ss.menu;
+
+		makeGame();
 	};
 
-	const onRules = () => {};
+	const onRules = () => {
+        delete ss.menu;
+    };
 
-	const onTutorial = () => {};
+	const onTutorial = () => {
+        delete ss.menu;
+    };
 </script>
 
-<div class="menu">
-	<div class="title grad-text grad-gold-blue">Hexotica</div>
-	<div class="goal">Be the first to place 5 of your tiles in a straight line in any direction.</div>
-	<div class="ops">
-		<ToolButton id="tb-opp-robot" src={OppRobot} width={100} onClick={() => onOppSelect(VS_ROBOT)} />
-		<ToolButton id="tb-opp-human" src={OpHuman} width={100} onClick={() => onOppSelect(VS_HUMAN)} />
+{#if ss.menu}
+	<div class="menu" transition:fade>
+		<div class="title grad-text grad-gold-blue">Hexotica</div>
+		<div class="goal">Be the first to place 5 of your tiles in a straight line in any direction.</div>
+		<div class="ops">
+			<ToolButton id="tb-opp-robot" src={OppRobot} width={100} onClick={() => onOppSelect(OPP_ROBOT)} />
+			<ToolButton id="tb-opp-human" src={OpHuman} width={100} onClick={() => onOppSelect(OPP_HUMAN)} />
+		</div>
+		<div class="ops help">
+			<TextButton id="tb-rules" text={['Rules']} framed onClick={onRules} />
+			<TextButton id="tb-tutorial" text={['Tutorial']} framed onClick={onTutorial} />
+		</div>
 	</div>
-	<div class="ops help">
-		<TextButton id='tb-rules' text={['Rules']} framed onClick={onRules} />
-		<TextButton id='tb-tutorial' text={['Tutorial']} framed onClick={onTutorial} />
-	</div>
-</div>
+{/if}
 
 <style>
 	.menu {
@@ -41,7 +52,7 @@
 		box-sizing: border-box;
 		/* border: 1px solid var(--text); */
 		padding: 40px 30px;
-		background: #ffffff10;
+		background: var(--menu-bg);
 	}
 
 	.title {

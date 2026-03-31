@@ -35,11 +35,11 @@
 				{#if tile}
 					<div>tile</div>
 				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
-					<Spot {row} {col} />
+					<Spot {row} {col} player={0} />
 				{:else}
 					{@const nbs = neighbors(row, col)}
 					{#if nbs.some((a) => !!a)}
-						<Spot {row} {col} />
+						<Spot {row} {col}/>
 					{:else}
 						{@const style = `width: ${colWidth}; height: ${rowHeight}`}
 						<div class="cell" {style}>{row + ':' + col}</div>

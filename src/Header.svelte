@@ -10,6 +10,7 @@
 {#if !ss.menu}
 	<div class="header" transition:fade>
 		<img class="p1" src={HumanY} alt="" width={60} />
+        
 		<img class="p2" src={ss.opp === OPP_ROBOT ? Robot : HumanB} alt="" width={60} />
 	</div>
 {/if}

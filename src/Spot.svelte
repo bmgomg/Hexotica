@@ -2,7 +2,7 @@
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { ss } from './shared.svelte';
 
-	const { row, col } = $props();
+	const { row, col, player } = $props();
 	const id = $derived(`spot ${row}/${col}`);
 	const ga = $derived(`${row || 1}/${col || 2}`);
 	const width = $derived(HEX_WIDTH * ss.zoom);
@@ -10,8 +10,8 @@
 
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
-	// const stroke = 'var(--text)';
-	const stroke = '#c8bfa8a0';
+	const spoke = '#c8bfa8a0';
+	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const strokeWidth = 8;
 
 	const onClick = (sector) => {};
@@ -28,7 +28,7 @@
 		/>
 	{/snippet}
 	<svg {width} {height} {viewBox} {xmlns}>
-		<g {stroke} {strokeWidth} strokeLinejoin="round" fill="none">
+		<g stroke={player ? 'var(--bg)' : spoke} {strokeWidth} strokeLinejoin="round" fill="none">
 			{#each [0, 1, 2, 3, 4, 5] as i (i)}
 				{@render sector(i)}
 			{/each}

@@ -1,10 +1,12 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import Board from './Board.svelte';
+	import Menu from './Menu.svelte';
 </script>
 
 <div class="game-page" in:fade>
-    <Board/>
+	<Board />
+	<Menu />
 </div>
 
 <style>

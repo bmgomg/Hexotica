@@ -54,7 +54,7 @@
 	.board {
 		grid-area: 2/1;
 		box-sizing: border-box;
-		border: 1px dotted var(--text);
+		/* border: 1px dotted var(--text); */
 	}
 
 	.mesh {

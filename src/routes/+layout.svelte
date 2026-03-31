@@ -94,6 +94,19 @@
 			border-radius: 1px;
 		}
 
+		.grad-gold-blue {
+			background: -webkit-linear-gradient(-90deg, #f0d080 0%, #9ad0e8 100%);
+		}
+
+		.grad-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
+            background-size: cover;
+            background-position: center;
+		}
+
 		@font-face {
 			font-family: Cinzel;
 			src: url('$lib/fonts/Cinzel.ttf');

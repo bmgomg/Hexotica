@@ -2,17 +2,17 @@
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { ss } from './shared.svelte';
 
-	const { row, col, player } = $props();
+	const { row, col, player, spokes = true, scale = ss.zoom } = $props();
 	const id = $derived(`spot ${row}/${col}`);
 	const ga = $derived(`${row || 1}/${col || 2}`);
-	const width = $derived(HEX_WIDTH * ss.zoom);
+	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
 
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
-	const spoke = '#c8bfa8a0';
+	const spoke = '#c8bfa828';
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
-	const strokeWidth = 8;
+	const sw = 10;
 
 	const onClick = () => {};
 </script>
@@ -28,18 +28,21 @@
 		/>
 	{/snippet}
 	<svg {width} {height} {viewBox} {xmlns}>
-		<g stroke={player ? 'var(--bg)' : spoke} {strokeWidth} strokeLinejoin="round" fill="none">
-			{#each [0, 1, 2, 3, 4, 5] as i (i)}
-				{@render sector(i)}
-			{/each}
-		</g>
-		<path d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" fill="none" {stroke} strokeLinejoin="round" {strokeWidth} />
+		{#if spokes}
+			<g stroke={player ? 'var(--bg)' : spoke} stroke-width={sw} stroke-line-join="round" fill="none">
+				{#each [0, 1, 2, 3, 4, 5] as i (i)}
+					{@render sector(i)}
+				{/each}
+			</g>
+		{/if}
+		<path d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
 	</svg>
 </div>
 
 <style>
 	.spot {
-		grid-area: 1/1;
+		display: grid;
+		place-content: center;
 	}
 
 	.sector {

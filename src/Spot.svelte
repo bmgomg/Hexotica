@@ -14,7 +14,7 @@
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const strokeWidth = 8;
 
-	const onClick = (sector) => {};
+	const onClick = () => {};
 </script>
 
 <div {id} class="spot" style="grid-area: {ga}">

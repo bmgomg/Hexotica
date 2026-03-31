@@ -5,12 +5,13 @@
 	import { ss } from './shared.svelte';
 	import { OPP_ROBOT } from './const';
 	import { fade } from 'svelte/transition';
+	import Tray from './Tray.svelte';
 </script>
 
 {#if !ss.menu}
 	<div class="header" transition:fade>
 		<img class="p1" src={HumanY} alt="" width={60} />
-        
+        <Tray />
 		<img class="p2" src={ss.opp === OPP_ROBOT ? Robot : HumanB} alt="" width={60} />
 	</div>
 {/if}
@@ -19,7 +20,7 @@
 	.header {
 		grid-area: 1/1;
 		place-self: center;
-		align-content: center;
+		align-items: center;
 		display: grid;
 		grid-auto-flow: column;
 		grid: auto / auto 1fr 80px 1fr auto;

@@ -28,7 +28,7 @@
 
 <div class="tile {tt ? 'swirl' : ''}">
 	<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
-	<Spot row={1} col={1} player={tile.player} {scale} spokes={false}/>
+	<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={1}/>
 	<img src={tile.player === 1 ? KnobY : tile.player === 2 ? KnobB : ''} alt="" width={HEX_WIDTH * scale * 0.3} />
 </div>
 

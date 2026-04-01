@@ -32,7 +32,7 @@
 <div {id} class="spot" style="grid-area: {ga};">
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
-		<g transform="rotate({deg}, 363, 314)">
+		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join='round' fill='transparent'>
 			<path class="sector" d="M363,314 183,620 543,620 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
@@ -45,16 +45,14 @@
 		</g>
 	{/snippet}
 	<svg {width} {height} {viewBox} {xmlns}>
-		<g stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			{#each [1, 2, 3, 4, 5, 6] as i (i)}
-				{@render sector(i)}
-			{/each}
-		</g>
+		{#each [1, 2, 3, 4, 5, 6] as i (i)}
+			{@render sector(i)}
+		{/each}
 		<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
 		{#if tile}
 			{@const r = width * 1.3}
 			<g stroke="none">
-				<circle cx="363" cy="314" {r} fill="var(--bg)" stroke='var(--{player === 1 ? 'amber-shine' : 'slate-shine'})' stroke-width={12} />
+				<circle cx="363" cy="314" {r} fill="var(--bg)" stroke="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" stroke-width={12} />
 				<circle cx="363" cy="314" r={r * 0.65} fill="var(--{player === 1 ? 'amber-fill' : 'slate-stroke'})" />
 				<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.22} fill="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" />
 			</g>

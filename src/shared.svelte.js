@@ -10,6 +10,7 @@ export const ss = $state({
     dims: { rows: 1, cols: 1 },
     boardParams: {},
     tiles: [],
+    spin: 0,
 });
 
 export const _stats = $state({

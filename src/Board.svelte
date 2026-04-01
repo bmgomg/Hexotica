@@ -1,5 +1,4 @@
 <script>
-	import Knob from './Knob.svelte';
 	import { boardParams, neighbors, placedTiles, remesh, ss, trayTile } from './shared.svelte';
 	import Spot from './Spot.svelte';
 	import { _range, post, scrollClass } from './utils';

@@ -23,18 +23,31 @@
 	const { tile } = $props();
 	const tt = $derived(tile.place === 'tray');
 	const scale = $derived(tt ? 0.9 : ss.zoom);
+
+	const onClick = () => {
+		ss.spin = ss.spin - 120;
+	};
 </script>
 
-<div class="tile {tt ? 'swirl' : ''}">
-	<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
-	<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={1} />
-	<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16} />
+<div class="tile {tt ? 'swirl' : ''}" onpointerdown={() => onClick()}>
+	<div class="tile-inner" style="rotate: {ss.spin}deg;">
+		<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
+		<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={1} />
+		<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16} />
+	</div>
 </div>
 
 <style>
 	.tile {
 		display: grid;
+		/* place-items: center; */
+		transition: rotate 1s linear;
+	}
+
+	.tile-inner {
+		display: grid;
 		place-items: center;
+		transition: rotate 1s linear;
 	}
 
 	.swirl {

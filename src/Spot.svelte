@@ -14,17 +14,19 @@
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const sw = 10;
 
-	const onClick = () => {};
+	const onClick = () => {
+		//
+	};
 </script>
 
-<div {id} class="spot" style="grid-area: {ga}">
+<div {id} class="spot" style="grid-area: {ga};">
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		<g transform="rotate({deg}, 363, 314)">
-			<path class="sector" d="M363,314 183,620 543,620 Z" onClick={() => onClick(i)} />
+			<path class="sector" d="M363,314 183,620 543,620 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
-				<g transform="rotate({-deg}, 363, 95) translate(0, -220)" stroke="none">
+				<g class="selected" transform="rotate({-(deg + ss.spin)}, 363, 95) translate(0, -220)" stroke="none">
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill="var(--green)" />
 					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill="var(--green-shine)" />
@@ -34,7 +36,7 @@
 	{/snippet}
 	<svg {width} {height} {viewBox} {xmlns}>
 		<g stroke={!spokes ? 'none' : player ? 'var(--bg)' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			{#each [1,2,3,4,5,6] as i (i)}
+			{#each [1, 2, 3, 4, 5, 6] as i (i)}
 				{@render sector(i)}
 			{/each}
 		</g>
@@ -52,6 +54,10 @@
 	.sector {
 		grid-area: 1/1;
 		cursor: pointer;
+	}
+
+	.selected {
+		transition: transform 1s linear;
 	}
 
 	.nope {

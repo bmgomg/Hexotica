@@ -13,9 +13,8 @@
 	import Hex7 from '$lib/images/Hex 7.webp';
 	import Hex8 from '$lib/images/Hex 8.webp';
 	import Hex9 from '$lib/images/Hex 9.webp';
-	import KnobB from '$lib/images/Knob Blue.webp';
-	import KnobY from '$lib/images/Knob Yellow.webp';
 	import { HEX_WIDTH } from './const';
+	import Knob from './Knob.svelte';
 	import { ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
@@ -28,8 +27,8 @@
 
 <div class="tile {tt ? 'swirl' : ''}">
 	<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
-	<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={1}/>
-	<img src={tile.player === 1 ? KnobY : tile.player === 2 ? KnobB : ''} alt="" width={HEX_WIDTH * scale * 0.3} />
+	<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={6} />
+	<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16}/>
 </div>
 
 <style>

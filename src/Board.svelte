@@ -35,7 +35,7 @@
 				{#if tile}
 					<div>tile</div>
 				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
-					<Spot {row} {col} player={0} />
+					<Spot {row} {col} player={0} selected={2}/>
 				{:else}
 					{@const nbs = neighbors(row, col)}
 					{#if nbs.some((a) => !!a)}

@@ -125,6 +125,24 @@ export const remesh = () => {
     ss.dims = { rows, cols };
 };
 
+export const isMoving = () => ss.from && ss.to;
+
+export const currentTurns = () => {
+    if (!isMoving()) {
+        return 0;
+    }
+
+    let d = ss.to.sector - ss.from.sector;
+
+    if (d > 3) {
+        d -= 6;
+    } else if (d < -3) {
+        d += 6;
+    }
+
+    return d;
+};
+
 const initDecks = () => {
     const tiles = [];
     const deck = shuffle(DECK);

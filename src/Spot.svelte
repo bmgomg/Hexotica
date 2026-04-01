@@ -1,6 +1,7 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { ss } from './shared.svelte';
+	import { currentTurns, ss } from './shared.svelte';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -17,6 +18,7 @@
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const sw = 10;
 	const selected = $derived(ss.from && ss.from.row === _row && ss.from.col === _col ? ss.from.sector : 0);
+	const nowTurns = $derived(currentTurns());
 
 	const onClick = (i) => {
 		if (ss.from) {
@@ -38,7 +40,8 @@
 			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
-				<g class="selected nope" transform="rotate({-(deg + (ss.spin || 0))}, 363, 95) translate(0, -220)" stroke="none">
+				{@const transform = `rotate(${-(deg + ((tile?.turns || 0) + nowTurns) * 60)}, 363, 95) translate(0, -220)`}
+				<g class="selected nope" {transform} stroke="none" out:fade={{ duration: 100 }}>
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill="var(--green)" />
 					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill="var(--green-shine)" />
@@ -51,14 +54,6 @@
 			{@render sector(i)}
 		{/each}
 		<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
-		{#if tile}
-			{@const r = width * 1.3}
-			<g stroke="none">
-				<circle cx="363" cy="314" {r} fill="var(--bg)" stroke="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" stroke-width={12} />
-				<circle cx="363" cy="314" r={r * 0.65} fill="var(--{player === 1 ? 'amber-fill' : 'slate-stroke'})" />
-				<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.22} fill="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" />
-			</g>
-		{/if}
 	</svg>
 </div>
 

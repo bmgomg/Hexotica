@@ -154,7 +154,7 @@ const playerTiles = (player, filter) => {
 export const makeGame = () => {
     ss.tiles = initDecks();
 
-    const tiles = playerTiles(1, 'deck');
+    const tiles = playerTiles(2, 'deck');
     const tile = sample(tiles);
     tile.place = 'tray';
 };

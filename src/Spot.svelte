@@ -1,10 +1,11 @@
 <script>
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import Knob from './Knob.svelte';
 	import { ss } from './shared.svelte';
 
-	const { row, col, player, spokes = true, scale = ss.zoom, selected } = $props();
-	const id = $derived(`spot ${row}/${col}`);
+	const { row, col, tile, scale = ss.zoom } = $props();
+	const tt = $derived(tile?.place === 'tray');
+	const player = $derived(tile?.player);
+	const id = $derived('spot ' + (tt ? 'tray' : (row + ':' + col)));
 	const ga = $derived(`${row || 1}/${col || 2}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -13,9 +14,18 @@
 	const spoke = '#c8bfa828';
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const sw = 10;
+	const selected = $derived(ss.from && ss.from.row === row && ss.from.col === col ? ss.from.sector : 0);
 
-	const onClick = () => {
-		//
+	const onClick = (i) => {
+		if (ss.from) {
+			if (ss.from.row === row && ss.from.col === col && ss.from.sector === i) {
+				delete ss.from;
+			} else {
+				ss.to = { row, col, sector: i };
+			}
+		} else {
+			ss.from = { row, col, sector: i };
+		}
 	};
 </script>
 
@@ -35,7 +45,7 @@
 		</g>
 	{/snippet}
 	<svg {width} {height} {viewBox} {xmlns}>
-		<g stroke={!spokes ? 'none' : player ? 'var(--bg)' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
+		<g stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			{#each [1, 2, 3, 4, 5, 6] as i (i)}
 				{@render sector(i)}
 			{/each}

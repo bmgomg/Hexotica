@@ -143,6 +143,11 @@ export const currentTurns = () => {
     return d;
 };
 
+export const turnDuration = () => {
+    const turns = currentTurns();
+    return Math.abs(turns) * 0.25;
+};
+
 const initDecks = () => {
     const tiles = [];
     const deck = shuffle(DECK);

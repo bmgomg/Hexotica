@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, ss } from './shared.svelte';
+	import { isMoving, ss } from './shared.svelte';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -18,7 +18,8 @@
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const sw = 10;
 	const selected = $derived(ss.from && ss.from.row === _row && ss.from.col === _col ? ss.from.sector : 0);
-	const nowTurns = $derived(currentTurns());
+	const tileTurns = $derived(tile?.turns || 0);
+	const moving = $derived(isMoving());
 
 	const onClick = (i) => {
 		if (ss.from) {
@@ -40,11 +41,13 @@
 			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
-				{@const transform = `rotate(${-(deg + ((tile?.turns || 0) + nowTurns) * 60)}, 363, 95) translate(0, -220)`}
-				<g class="selected nope" {transform} stroke="none" out:fade={{ duration: 100 }}>
+				{@const transform = `rotate(${-(deg + tileTurns * 60)}, 363, 95) translate(0, -220)`}
+				<g class="selected {moving ? 'hi' : ''} nope" {transform} stroke="none" out:fade={{ duration: 100 }}>
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill="var(--green)" />
-					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill="var(--green-shine)" />
+					{#if !moving}
+						<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill="var(--green-shine)" />
+					{/if}
 				</g>
 			{/if}
 		</g>
@@ -70,7 +73,11 @@
 	}
 
 	.selected {
-		transition: transform 1s linear;
+		transition: filter 0.25s;
+	}
+
+	.hi {
+		filter: brightness(1.5);
 	}
 
 	.nope {
@@ -79,11 +86,5 @@
 
 	svg {
 		grid-area: 1/1;
-	}
-
-	.selected {
-		grid-area: 1/1;
-		display: grid;
-		place-self: center;
 	}
 </style>

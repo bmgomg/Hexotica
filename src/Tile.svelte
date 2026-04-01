@@ -15,7 +15,7 @@
 	import Hex9 from '$lib/images/Hex 9.webp';
 	import { DECK, HEX_WIDTH } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, isMoving, ss } from './shared.svelte';
+	import { currentTurns, ss, turnDuration } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -25,9 +25,8 @@
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tt ? 0.9 : ss.zoom);
 	let inner = $state();
-	const moving = $derived(isMoving());
 	const turns = $derived(currentTurns());
-	const transition = $derived(moving ? `rotate ${Math.abs(turns) * 1.25}s linear` : 'none');
+	const transition = $derived(turns ? `rotate ${turnDuration()}s linear` : 'none');
 
 	$effect(() => {
 		const onTransitionEnd = (e) => {

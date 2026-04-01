@@ -132,7 +132,7 @@ const initDecks = () => {
     deck.forEach(bits => {
         for (const player of [1, 2]) {
             const id = `tile ${player} ${bits}`.replaceAll(',', '');
-            tiles.push({ id, player, bits });
+            tiles.push({ id, player, bits, deg: 0 });
         }
     });
 
@@ -152,6 +152,9 @@ const playerTiles = (player, filter) => {
 };
 
 export const makeGame = () => {
+    delete ss.from;
+    delete ss.to;
+
     ss.tiles = initDecks();
 
     const tiles = playerTiles(1, 'deck');

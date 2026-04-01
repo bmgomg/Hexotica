@@ -14,7 +14,7 @@
 	import Hex8 from '$lib/images/Hex 8.webp';
 	import Hex9 from '$lib/images/Hex 9.webp';
 	import { DECK, HEX_WIDTH } from './const';
-	import { ss } from './shared.svelte';
+	import { _log, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -23,10 +23,51 @@
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tt ? 0.9 : ss.zoom);
+	let inner = $state();
+	const spinning = $derived(ss.from && ss.to);
+	const transition = $derived(spinning ? `rotate ${(Math.abs(deg) / 60) * 0.25}s linear` : 'none');
+
+	const deg = $derived.by(() => {
+		if (!spinning) {
+			return 0;
+		}
+
+		let d = ss.to.sector - ss.from.sector;
+
+		if (d > 3) {
+			d -= 6;
+		} else if (d < -3) {
+			d += 6;
+		}
+
+		return d * 60;
+	});
+
+	$effect(() => {
+		const onTransitionEnd = (e) => {
+			if (e.target !== inner) {
+				return;
+			}
+
+			if (e.propertyName !== 'rotate') {
+				return;
+			}
+
+			if (spinning) {
+				tile.deg += deg;
+
+				delete ss.from;
+				delete ss.to;
+			}
+		};
+
+		inner.addEventListener('transitionend', onTransitionEnd);
+		return () => inner.removeEventListener('transitionend', onTransitionEnd);
+	});
 </script>
 
-<div class="tile {tt ? 'swirl' : ''}" style="grid-area: {ga};">
-	<div class="tile-inner" style="rotate: {ss.spin || 0}deg;">
+<div class="tile {tt ? 'swirl' : ''}" style="grid-area: {ga}; rotate: {tile.deg}deg;">
+	<div bind:this={inner} class="tile-inner" style="rotate: {tile.deg + deg}deg; transition: {transition};">
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
 		<Spot row={1} col={1} {tile} {scale} />
 	</div>
@@ -35,14 +76,11 @@
 <style>
 	.tile {
 		display: grid;
-		/* place-items: center; */
-		transition: rotate 1s linear;
 	}
 
 	.tile-inner {
 		display: grid;
 		place-items: center;
-		transition: rotate 1s linear;
 	}
 
 	.swirl {

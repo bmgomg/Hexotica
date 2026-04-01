@@ -32,9 +32,9 @@
 	<div id="mesh" class="mesh" style={meshStyle}>
 		{#each _range(1, rows) as row (row)}
 			{#each _range(1, cols) as col (col)}
-				{@const tile = ptiles.find((tile) => tile.place.row === row && tile.place.col === col)}
-				{#if tile}
-					<Tile {tile} {row} {col} />
+				{@const i = ptiles.findIndex((tile) => tile.place.row === row && tile.place.col === col)}
+				{#if i >= 0}
+					<Tile bind:tile={ptiles[i]} {row} {col} />
 				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
 					<Spot {row} {col} />
 				{:else}

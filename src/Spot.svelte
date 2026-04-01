@@ -4,8 +4,10 @@
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
+	const _row = $derived(tt ? 0 : row);
+	const _col = $derived(tt ? 0 : col);
 	const player = $derived(tile?.player);
-	const id = $derived('spot ' + (tt ? 'tray' : row + ':' + col));
+	const id = $derived('spot ' + _row + ':' + _col);
 	const ga = $derived(`${row || 1}/${col || 2}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -14,17 +16,17 @@
 	const spoke = '#c8bfa828';
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : spoke);
 	const sw = 10;
-	const selected = $derived(ss.from && ss.from.row === row && ss.from.col === col ? ss.from.sector : 0);
+	const selected = $derived(ss.from && ss.from.row === _row && ss.from.col === _col ? ss.from.sector : 0);
 
 	const onClick = (i) => {
 		if (ss.from) {
-			if (ss.from.row === row && ss.from.col === col && ss.from.sector === i) {
+			if (ss.from.row === _row && ss.from.col === _col && ss.from.sector === i) {
 				delete ss.from;
 			} else {
-				ss.to = { row, col, sector: i };
+				ss.to = { row: _row, col: _col, sector: i };
 			}
 		} else {
-			ss.from = { row, col, sector: i };
+			ss.from = { row: _row, col: _col, sector: i };
 		}
 	};
 </script>

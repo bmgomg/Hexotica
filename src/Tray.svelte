@@ -1,10 +1,12 @@
 <script>
 	import { trayTile } from './shared.svelte';
 	import Tile from './Tile.svelte';
+
+	let tile = $derived(trayTile());
 </script>
 
 <div class="tray no-highlight">
-	<Tile tile={trayTile()} />
+	<Tile bind:tile={tile} />
 </div>
 
 <style>

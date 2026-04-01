@@ -32,8 +32,8 @@
 <div {id} class="spot" style="grid-area: {ga};">
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
-		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join='round' fill='transparent'>
-			<path class="sector" d="M363,314 183,620 543,620 Z" onpointerdown={() => onClick(i)} />
+		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
+			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
 				<g class="selected" transform="rotate({-(deg + (ss.spin || 0))}, 363, 95) translate(0, -220)" stroke="none">

@@ -36,7 +36,7 @@
 			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
-				<g class="selected" transform="rotate({-(deg + (ss.spin || 0))}, 363, 95) translate(0, -220)" stroke="none">
+				<g class="selected nope" transform="rotate({-(deg + (ss.spin || 0))}, 363, 95) translate(0, -220)" stroke="none">
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill="var(--green)" />
 					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill="var(--green-shine)" />

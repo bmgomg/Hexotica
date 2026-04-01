@@ -20,13 +20,14 @@
 
 	const hexes = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14];
 
-	const { tile } = $props();
+	const { tile, row, col } = $props();
 	const tt = $derived(tile.place === 'tray');
+    const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tt ? 0.9 : ss.zoom);
 </script>
 
-<div class="tile {tt ? 'swirl' : ''}">
-	<div class="tile-inner" style="rotate: {ss.spin}deg;">
+<div class="tile {tt ? 'swirl' : ''}" style='grid-area: {ga};'>
+	<div class="tile-inner" style="rotate: {ss.spin || 0}deg;">
 		<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
 		<Spot row={1} col={1} {tile} {scale} />
 		<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16} />

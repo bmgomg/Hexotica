@@ -5,7 +5,7 @@
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
-	const id = $derived('spot ' + (tt ? 'tray' : (row + ':' + col)));
+	const id = $derived('spot ' + (tt ? 'tray' : row + ':' + col));
 	const ga = $derived(`${row || 1}/${col || 2}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -36,7 +36,7 @@
 			<path class="sector" d="M363,314 183,620 543,620 Z" onpointerdown={() => onClick(i)} />
 			{#if selected === i}
 				{@const r = width * 0.6}
-				<g class="selected" transform="rotate({-(deg + ss.spin)}, 363, 95) translate(0, -220)" stroke="none">
+				<g class="selected" transform="rotate({-(deg + (ss.spin || 0))}, 363, 95) translate(0, -220)" stroke="none">
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill="var(--green)" />
 					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill="var(--green-shine)" />

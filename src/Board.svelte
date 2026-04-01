@@ -1,6 +1,7 @@
 <script>
 	import { boardParams, neighbors, placedTiles, remesh, ss, trayTile } from './shared.svelte';
 	import Spot from './Spot.svelte';
+	import Tile from './Tile.svelte';
 	import { _range, post, scrollClass } from './utils';
 
 	let _this = $state();
@@ -33,7 +34,7 @@
 			{#each _range(1, cols) as col (col)}
 				{@const tile = ptiles.find((tile) => tile.place.row === row && tile.place.col === col)}
 				{#if tile}
-					<div>tile</div>
+					<Tile {tile} {row} {col} />
 				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
 					<Spot {row} {col} />
 				{:else}

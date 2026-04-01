@@ -1,4 +1,5 @@
 <script>
+	import Knob from './Knob.svelte';
 	import { boardParams, neighbors, placedTiles, remesh, ss, trayTile } from './shared.svelte';
 	import Spot from './Spot.svelte';
 	import { _range, post, scrollClass } from './utils';
@@ -35,11 +36,11 @@
 				{#if tile}
 					<div>tile</div>
 				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
-					<Spot {row} {col} player={0} selected={2}/>
+					<Spot {row} {col} player={0} selected={3} />
 				{:else}
 					{@const nbs = neighbors(row, col)}
 					{#if nbs.some((a) => !!a)}
-						<Spot {row} {col}/>
+						<Spot {row} {col} />
 					{:else}
 						{@const style = `width: ${colWidth}; height: ${rowHeight}`}
 						<div class="cell" {style}>{row + ':' + col}</div>

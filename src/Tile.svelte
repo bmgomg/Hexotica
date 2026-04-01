@@ -27,8 +27,8 @@
 
 <div class="tile {tt ? 'swirl' : ''}">
 	<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
-	<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={6} />
-	<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16}/>
+	<Spot row={1} col={1} player={tile.player} {scale} spokes={false} selected={1} />
+	<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16} />
 </div>
 
 <style>

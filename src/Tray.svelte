@@ -3,7 +3,7 @@
 	import Tile from './Tile.svelte';
 </script>
 
-<div class="tray">
+<div class="tray no-highlight">
 	<Tile tile={trayTile()} />
 </div>
 

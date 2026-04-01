@@ -14,7 +14,7 @@
 	import Hex8 from '$lib/images/Hex 8.webp';
 	import Hex9 from '$lib/images/Hex 9.webp';
 	import { DECK, HEX_WIDTH } from './const';
-	import { _log, ss } from './shared.svelte';
+	import { ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -25,9 +25,9 @@
 	const scale = $derived(tt ? 0.9 : ss.zoom);
 	let inner = $state();
 	const spinning = $derived(ss.from && ss.to);
-	const transition = $derived(spinning ? `rotate ${(Math.abs(deg) / 60) * 0.25}s linear` : 'none');
+	const transition = $derived(spinning ? `rotate ${(Math.abs(turns)) * 0.25}s linear` : 'none');
 
-	const deg = $derived.by(() => {
+	const turns = $derived.by(() => {
 		if (!spinning) {
 			return 0;
 		}
@@ -40,7 +40,7 @@
 			d += 6;
 		}
 
-		return d * 60;
+		return d;
 	});
 
 	$effect(() => {
@@ -54,7 +54,7 @@
 			}
 
 			if (spinning) {
-				tile.deg += deg;
+				tile.turns += turns;
 
 				delete ss.from;
 				delete ss.to;
@@ -67,7 +67,7 @@
 </script>
 
 <div class="tile {tt ? 'swirl' : ''}" style="grid-area: {ga}; rotate: {tile.deg}deg;">
-	<div bind:this={inner} class="tile-inner" style="rotate: {tile.deg + deg}deg; transition: {transition};">
+	<div bind:this={inner} class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition: {transition};">
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
 		<Spot row={1} col={1} {tile} {scale} />
 	</div>

@@ -30,7 +30,7 @@
 			--green-shine: #4ca788;
 			--amber-fill: #c4902a;
 			--amber-shine: #f0d080;
-			--light-tan: #d4bc8a;
+			--amber-circle: #d4bc8a;
 			--text: #c8bfa8;
 			background: var(--bg);
 			color: var(--text);

@@ -30,7 +30,7 @@
 	<div class="tile-inner" style="rotate: {ss.spin || 0}deg;">
 		<img src={hexes[9]} alt="" width={HEX_WIDTH * scale} />
 		<Spot row={1} col={1} {tile} {scale} />
-		<Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16} />
+		<!-- <Knob color={tile.player === 1 ? 'yellow' : 'blue'} scale={0.16} /> -->
 	</div>
 </div>
 

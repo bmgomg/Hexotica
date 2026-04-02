@@ -5,7 +5,6 @@ export const HEX_WIDTH = 90;
 export const N_TO_WIN = 5;
 export const OPP_HUMAN = 1;
 export const OPP_ROBOT = 2;
-export const TURN_MS = 750;
 
 export const DECK = [
     [1, 1, 1, 1, 1, 1],

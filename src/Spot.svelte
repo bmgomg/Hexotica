@@ -1,6 +1,6 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
+	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH, TURN_MS } from './const';
 	import { currentTurns, findTile, isMoving, ss } from './shared.svelte';
 	import { post } from './utils';
 
@@ -39,7 +39,7 @@
 
 					delete ss.from;
 					delete ss.to;
-				}, 750);
+				}, TURN_MS);
 			}
 		} else {
 			ss.from = { row: _row, col: _col, sector: i };

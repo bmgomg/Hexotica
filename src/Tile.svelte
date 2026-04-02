@@ -13,7 +13,7 @@
 	import Hex7 from '$lib/images/Hex 7.webp';
 	import Hex8 from '$lib/images/Hex 8.webp';
 	import Hex9 from '$lib/images/Hex 9.webp';
-	import { DECK, HEX_WIDTH } from './const';
+	import { DECK, HEX_WIDTH, TURN_MS } from './const';
 	import Knob from './Knob.svelte';
 	import { currentTurns, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
@@ -28,7 +28,7 @@
 </script>
 
 <div class="tile {tt ? 'swirl' : ''}" style="grid-area: {ga};">
-	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg;">
+	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition-duration: {TURN_MS}ms;">
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
 		<Spot row={1} col={1} {tile} {scale} />
 	</div>
@@ -44,7 +44,7 @@
 		grid-area: 1/1;
 		display: grid;
 		place-items: center;
-		transition: rotate 0.75s ease-in-out;
+		transition: rotate ease-in-out;
 	}
 
 	.swirl {

@@ -39,6 +39,7 @@
 		{@const deg = ((i - 1) * 60) % 360}
 		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
+			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#if selected === i}
 				{@const r = width * 0.6}
 				{@const transform = `rotate(${-(deg + tileTurns * 60)}, 363, 95) translate(0, -220)`}
@@ -63,6 +64,13 @@
 		display: grid;
 		place-content: center;
 		place-items: center;
+	}
+
+	.text {
+		font-family: RC;
+		font-size: 120px;
+		translate: 0 -170px;
+		color: var(--slate-stroke);
 	}
 
 	.sector {

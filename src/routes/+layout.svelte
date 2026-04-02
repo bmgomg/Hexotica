@@ -129,5 +129,10 @@
 			font-family: Florentina;
 			src: url('$lib/fonts/Florentina.ttf');
 		}
+
+		@font-face {
+			font-family: RC;
+			src: url('$lib/fonts/Roboto Condensed.ttf');
+		}
 	}
 </style>

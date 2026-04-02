@@ -55,12 +55,11 @@
 		{@const deg = ((i - 1) * 60) % 360}
 		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
-			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
+			<!-- <text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text> -->
 			{#if selected === i}
 				{@const r = width * 0.6}
 				{@const transform = `rotate(${-(deg + tileTurns * 60)}, 363, 95) translate(0, -220)`}
-				{@const blue = tile.bits[i - 1] === 1}
-				{@const shades = blue ? ['var(--amber-fill)', 'var(--amber-shine)'] : ['var(--slate-stroke)', 'var(--slate-shine)']}
+				{@const shades = tile.player === 1 ? ['var(--amber-fill)', 'var(--amber-shine)'] : ['var(--slate-stroke)', 'var(--slate-shine)']}
 				<g class="nope" {transform} stroke="none" out:fade={{ duration: 100 }}>
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill={moving ? shades[1] : shades[0]} />

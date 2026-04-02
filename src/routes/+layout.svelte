@@ -24,8 +24,7 @@
 			--slate-fill: #2a5878;
 			--slate-circle: #3a7898;
 			--slate-stroke: #4a8aaa;
-			--slate-avatar: #7ab8d8;
-			--slate-shine: #9ad0e8;
+			--slate-shine: #7ab8d8;
 			--green: #208060;
 			--green-shine: #4ca788;
 			--amber-fill: #c4902a;

@@ -15,7 +15,7 @@
 	import Hex9 from '$lib/images/Hex 9.webp';
 	import { DECK, HEX_WIDTH } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, ss, turnDuration } from './shared.svelte';
+	import { currentTurns, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -24,35 +24,11 @@
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tt ? 0.9 : ss.zoom);
-	let inner = $state();
 	const turns = $derived(currentTurns());
-	const transition = $derived(turns ? `rotate ${turnDuration()}s linear` : 'none');
-
-	$effect(() => {
-		const onTransitionEnd = (e) => {
-			if (e.target !== inner) {
-				return;
-			}
-
-			if (e.propertyName !== 'rotate') {
-				return;
-			}
-
-			if (turns) {
-				tile.turns += turns;
-
-				delete ss.from;
-				delete ss.to;
-			}
-		};
-
-		inner.addEventListener('transitionend', onTransitionEnd);
-		return () => inner.removeEventListener('transitionend', onTransitionEnd);
-	});
 </script>
 
 <div class="tile {tt ? 'swirl' : ''}" style="grid-area: {ga};">
-	<div bind:this={inner} class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition: {transition};">
+	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg;">
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
 		<Spot row={1} col={1} {tile} {scale} />
 	</div>
@@ -68,6 +44,7 @@
 		grid-area: 1/1;
 		display: grid;
 		place-items: center;
+		transition: rotate 0.75s ease-in-out;
 	}
 
 	.swirl {

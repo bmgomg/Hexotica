@@ -1,7 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { isMoving, ss } from './shared.svelte';
+	import { currentTurns, findTile, isMoving, ss } from './shared.svelte';
+	import { post } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -27,6 +28,18 @@
 				delete ss.from;
 			} else {
 				ss.to = { row: _row, col: _col, sector: i };
+				const fromTile = findTile(ss.from.row, ss.from.col);
+
+				if (!tile) {
+					ss.to.sector -= fromTile.turns;
+				}
+
+				post(() => {
+					fromTile.turns += currentTurns();
+
+					delete ss.from;
+					delete ss.to;
+				}, 750);
 			}
 		} else {
 			ss.from = { row: _row, col: _col, sector: i };

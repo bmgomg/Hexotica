@@ -21,6 +21,14 @@ export const placedTiles = (tiles = ss.tiles) => tiles.filter(tile => tile.place
 
 export const trayTile = () => ss.tiles.find(tile => tile.place === 'tray');
 
+export const findTile = (row, col) => {
+    if (row === 0) {
+        return trayTile();
+    }
+
+    return ss.tiles.find(tile => tile.place?.row === row && tile.place?.col === col);
+};
+
 export const neighbors = (row, col, tiles = ss.tiles) => {
     const nbs = [
         { row: row - 2, col },
@@ -141,11 +149,6 @@ export const currentTurns = () => {
     }
 
     return d;
-};
-
-export const turnDuration = () => {
-    const turns = currentTurns();
-    return Math.abs(turns) * 0.25;
 };
 
 const initDecks = () => {

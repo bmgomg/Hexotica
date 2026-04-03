@@ -1,4 +1,5 @@
 <script>
+	import HexBg from '$lib/images/Hex Background.webp';
 	import Hex1 from '$lib/images/Hex 1.webp';
 	import Hex10 from '$lib/images/Hex 10.webp';
 	import Hex11 from '$lib/images/Hex 11.webp';
@@ -31,6 +32,7 @@
 
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition-duration: {ss.ms}ms;">
+		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
 		<Spot {row} {col} {tile} {scale} />
 	</div>

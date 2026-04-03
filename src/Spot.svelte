@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { currentTurns, findTile, isMoving, ss } from './shared.svelte';
-	import { post, rectCenter } from './utils';
+	import { post, rectCenter, xy } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -46,6 +46,11 @@
 				post(() => {
 					fromTile.turns += currentTurns();
 
+					if (fromTile.off) {
+						delete fromTile.off;
+						fromTile.place = { row, col };
+					}
+
 					delete ss.from;
 					delete ss.to;
 				}, ss.ms);
@@ -60,7 +65,7 @@
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
+			<path class="sector {!tile && !ss.from ? 'nope' : ''}" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#if selected === i}
 				{@const r = width * 0.6}
@@ -87,6 +92,7 @@
 		display: grid;
 		place-content: center;
 		place-items: center;
+		box-sizing: border-box;
 	}
 
 	.text {
@@ -100,10 +106,6 @@
 	.sector {
 		grid-area: 1/1;
 		cursor: pointer;
-	}
-
-	.nope {
-		pointer-events: none;
 	}
 
 	svg {

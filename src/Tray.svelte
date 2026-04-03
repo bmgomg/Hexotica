@@ -6,7 +6,7 @@
 </script>
 
 <div class="tray no-highlight">
-	<Tile bind:tile={tile} />
+	<Tile bind:tile />
 </div>
 
 <style>

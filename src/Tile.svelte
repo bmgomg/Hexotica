@@ -39,7 +39,10 @@
 <style>
 	.tile {
 		display: grid;
-		transition: translate 1s linear, scale 1s linear;
+		box-sizing: border-box;
+		transition:
+			translate 1s linear,
+			scale 1s linear;
 	}
 
 	.tile-inner {

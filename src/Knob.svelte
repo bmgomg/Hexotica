@@ -16,9 +16,9 @@
 	const xmlns = 'http://www.w3.org/2000/svg';
 </script>
 
-<div {id} class="knob" style="grid-area: {ga};">
+<div {id} class="knob nope" style="grid-area: {ga};">
 	<svg {width} {height} {viewBox} {xmlns}>
-		<g class="knob" stroke="none">
+		<g class='core' stroke="none">
 			<circle cx="363" cy="314" {r} fill="var(--bg)" stroke="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" stroke-width={12} />
 			<circle cx="363" cy="314" r={r * 0.65} fill="var(--{player === 1 ? 'amber-fill' : 'slate-stroke'})" />
 			<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.22} fill="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" />
@@ -32,11 +32,14 @@
 		display: grid;
 		place-content: center;
 		place-items: center;
-        pointer-events: none;
         z-index: 1;
 	}
 
 	svg {
 		grid-area: 1/1;
+	}
+
+	.core {
+		pointer-events: all;
 	}
 </style>

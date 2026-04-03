@@ -32,6 +32,8 @@
 	<div id="mesh" class="mesh" style={meshStyle}>
 		{#each _range(1, rows) as row (row)}
 			{#each _range(1, cols) as col (col)}
+				{@const style = `grid-area: ${row}/${col}; width: ${colWidth}; height: ${rowHeight}`}
+				<div class="cell nope" {style}>{row + ':' + col}</div>
 				{@const i = ptiles.findIndex((tile) => tile.place.row === row && tile.place.col === col)}
 				{#if i >= 0}
 					<Tile bind:tile={ptiles[i]} {row} {col} />
@@ -41,9 +43,6 @@
 					{@const nbs = neighbors(row, col)}
 					{#if nbs.some((a) => !!a)}
 						<Spot {row} {col} />
-					{:else}
-						{@const style = `width: ${colWidth}; height: ${rowHeight}`}
-						<div class="cell" {style}>{row + ':' + col}</div>
 					{/if}
 				{/if}
 			{/each}
@@ -68,7 +67,9 @@
 		display: grid;
 		font-family: Crimson;
 		opacity: 0.25;
+		box-sizing: border-box;
 		border: 1px dotted #ffffff;
 		place-content: center;
+		z-index: -1;
 	}
 </style>

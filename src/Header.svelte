@@ -2,14 +2,14 @@
 	import HumanY from '$lib/images/Human Yellow.webp';
 	import HumanB from '$lib/images/Human Blue.webp';
 	import Robot from '$lib/images/Robot.webp';
-	import { ss } from './shared.svelte';
+	import { boardParams, ss } from './shared.svelte';
 	import { OPP_ROBOT } from './const';
 	import { fade } from 'svelte/transition';
 	import Tray from './Tray.svelte';
 </script>
 
 {#if !ss.menu}
-	<div class="header" transition:fade>
+	<div class="header" style="translate: -{boardParams().padding.right / 2}px 0;" transition:fade>
 		<img class="p1" src={HumanY} alt="" width={60} />
         <Tray />
 		<img class="p2" src={ss.opp === OPP_ROBOT ? Robot : HumanB} alt="" width={60} />

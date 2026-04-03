@@ -59,6 +59,10 @@
 			user-select: none;
 		}
 
+		.nope {
+			pointer-events: none;
+		}
+
 		.root-scroll {
 			display: grid;
 			overflow: auto;
@@ -101,12 +105,12 @@
 		}
 
 		.grad-text {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: none;
-            background-size: cover;
-            background-position: center;
+			background-clip: text;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			text-shadow: none;
+			background-size: cover;
+			background-position: center;
 		}
 
 		@font-face {

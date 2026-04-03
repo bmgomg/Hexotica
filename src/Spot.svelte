@@ -1,10 +1,11 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, fromTile, isMoving, ss } from './shared.svelte';
+	import { _log, currentTurns, drawTile, fromTile, isMoving, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
+	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
 	const id = $derived('spot-' + row + ':' + col);
 	const ga = $derived(`${tile || !row ? 1 : row}/${tile || !col ? 1 : col}`);
@@ -28,6 +29,7 @@
 			delete ss.from;
 			return;
 		}
+
 		ss.to = { row, col, sector: i };
 		const ftile = fromTile();
 
@@ -65,6 +67,33 @@
 			delete ss.ms;
 		}, ss.ms);
 	};
+
+	const canClickSector = (i) => {
+		if (isMoving()) {
+			return false;
+		}
+
+		if (tile) {
+			if (ss.from) {
+				return ss.from?.row === row && ss.from?.col === col;
+			}
+
+			if (tt) {
+				return true;
+			}
+
+			_log(tile);
+			_log(ss.actor);
+
+			return tile.player === ss.actor;
+		} else {
+			if (!ss.from) {
+				return false;
+			}
+
+			return true;
+		}
+	};
 </script>
 
 <div {id} class="spot nope" style="grid-area: {ga};">
@@ -72,8 +101,9 @@
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
 		{@const sw = tile ? 0 : 10}
+		{@const enabled = canClickSector(i)}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			<path class="sector {!tile && !ss.from ? 'nope' : ''}" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
+			<path class="sector {enabled ? 'ape' : 'nope'}" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#if selected === i && !moving}
 				{@const r = width * 0.6}
@@ -87,12 +117,14 @@
 			{/if}
 		</g>
 	{/snippet}
-	<svg {width} {height} {viewBox} {xmlns}>
-		{#each [1, 2, 3, 4, 5, 6] as i (i)}
-			{@render sector(i)}
-		{/each}
-		<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
-	</svg>
+	{#key tile?.place}
+		<svg {width} {height} {viewBox} {xmlns}>
+			{#each [1, 2, 3, 4, 5, 6] as i (i)}
+				{@render sector(i)}
+			{/each}
+			<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
+		</svg>
+	{/key}
 </div>
 
 <style>
@@ -114,8 +146,11 @@
 
 	.sector {
 		grid-area: 1/1;
-		pointer-events: all;
+	}
+
+	.ape {
 		cursor: pointer;
+		pointer-events: all;
 	}
 
 	svg {

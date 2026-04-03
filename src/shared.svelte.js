@@ -82,15 +82,15 @@ export const calcSpans = (tiles) => {
 };
 
 export const calcDims = (boardParams) => {
-    const { rowHeight, colWidth, gap, padding: pad } = boardParams;
+    const { rowHeight, colWidth, gap, pad } = boardParams;
     const r = clientRect('board');
 
     if (!r) {
         return { rows: 1, cols: 1 };
     }
 
-    let rows = Math.floor((r.height - pad.bottom + gap.y) / (rowHeight + gap.y));
-    let cols = Math.floor((r.width - pad.right + gap.x) / (colWidth + gap.x));
+    let rows = Math.floor((r.height - pad.y + gap.y) / (rowHeight + gap.y));
+    let cols = Math.floor((r.width - pad.x + gap.x) / (colWidth + gap.x));
 
     if (rows % 2 === 0) {
         rows -= 1;
@@ -108,9 +108,9 @@ export const boardParams = () => {
     const rowHeight = 43.25 * m;
     const colWidth = 75 * m;
     const gap = { y: 2 * m, x: 4.75 * m };
-    const pad = { top: 0, right: 25 * m, bottom: rowHeight, left: 0 };
+    const pad = { x: 25 * m, y: rowHeight };
 
-    return { rowHeight, colWidth, gap, padding: pad };
+    return { rowHeight, colWidth, gap, pad };
 };
 
 export const remesh = () => {

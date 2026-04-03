@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, findTile, isMoving, ss } from './shared.svelte';
+	import { currentTurns, drawTile, fromTile, isMoving, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
@@ -28,33 +28,34 @@
 				delete ss.from;
 			} else {
 				ss.to = { row: _row, col: _col, sector: i };
-				const fromTile = findTile(ss.from.row, ss.from.col);
+				const ftile = fromTile();
 
 				if (tile) {
 					ss.ms = 750;
 				} else {
-					ss.to.sector -= fromTile.turns;
+					ss.to.sector -= ftile.turns;
 
-					const { x: x1, y: y1 } = rectCenter(fromTile.id);
+					const { x: x1, y: y1 } = rectCenter(ftile.id);
 					const { x: x2, y: y2 } = rectCenter(id);
 
-					fromTile.off = { x: x2 - x1, y: y2 - y1, scale: fromTile.place === 'tray' ? 1 / 0.9 : 1 };
+					ftile.off = { x: x2 - x1, y: y2 - y1, scale: ftile.place === 'tray' ? 1 / 0.9 : 1 };
 
 					ss.ms = 1000;
 				}
 
 				post(() => {
-					fromTile.turns += currentTurns();
+					ftile.turns += currentTurns();
 
-					if (fromTile.off) {
-						delete fromTile.off;
-						fromTile.place = { row, col };
+					if (ftile.off) {
+						delete ftile.off;
+						ftile.place = { row, col };
 					}
 
 					delete ss.from;
 					delete ss.to;
 
-					drawTile(2);
+					ss.actor = 3 - ss.actor;
+					post(drawTile);
 				}, ss.ms);
 			}
 		} else {
@@ -73,7 +74,7 @@
 				{@const r = width * 0.6}
 				{@const transform = `rotate(${-(deg + tileTurns * 60)}, 363, 95) translate(0, -220)`}
 				{@const shades = tile.player === 1 ? ['var(--amber-fill)', 'var(--amber-shine)'] : ['var(--slate-stroke)', 'var(--slate-shine)']}
-				<g class="nope" {transform} stroke="none" out:fade={{ duration: 100 }}>
+				<g class="nope" {transform} stroke="none" out:fade>
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />
 					<circle cx="363" cy="314" r={r * 0.8} fill={moving ? shades[1] : shades[0]} />
 					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill={shades[1]} />
@@ -95,6 +96,7 @@
 		place-self: center;
 		place-items: center;
 		box-sizing: border-box;
+		z-index: 1;
 	}
 
 	.text {

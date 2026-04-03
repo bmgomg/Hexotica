@@ -11,6 +11,7 @@ export const ss = $state({
     boardParams: {},
     tiles: [],
     spin: 0,
+    actor: 1,
 });
 
 export const _stats = $state({
@@ -28,6 +29,8 @@ export const findTile = (row, col) => {
 
     return ss.tiles.find(tile => tile.place?.row === row && tile.place?.col === col);
 };
+
+export const fromTile = () => ss.from ? findTile(ss.from.row, ss.from.col) : null;
 
 export const neighbors = (row, col, tiles = ss.tiles) => {
     const nbs = [
@@ -182,11 +185,11 @@ export const makeGame = () => {
     delete ss.to;
 
     ss.tiles = initDecks();
-    drawTile(1);
+    drawTile();
 };
 
-export const drawTile = (player) => {
-    const tiles = playerTiles(player, 'deck');
+export const drawTile = () => {
+    const tiles = playerTiles(ss.actor, 'deck');
     const tile = sample(tiles);
     tile.place = 'tray';
 };

@@ -53,6 +53,7 @@
 		/* border: 1px solid var(--text); */
 		padding: 40px 30px;
 		background: var(--menu-bg);
+		z-index: 1;
 	}
 
 	.title {

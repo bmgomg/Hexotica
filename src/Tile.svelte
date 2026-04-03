@@ -15,7 +15,7 @@
 	import Hex9 from '$lib/images/Hex 9.webp';
 	import { DECK, HEX_WIDTH } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, ss } from './shared.svelte';
+	import { currentTurns, fromTile, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -24,7 +24,7 @@
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tt ? 0.9 : ss.zoom);
-	const turns = $derived(currentTurns());
+	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 </script>
 
@@ -54,6 +54,7 @@
 	}
 
 	.swirl {
+		z-index: 1;
 		animation: swirl 1s forwards;
 	}
 

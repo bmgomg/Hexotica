@@ -33,9 +33,9 @@
 			{#each _range(1, cols) as col (col)}
 				{@const style = `grid-area: ${row}/${col}; width: ${colWidth}; height: ${rowHeight}`}
 				<div class="cell nope" {style}>{row + ':' + col}</div>
-				{@const i = ptiles.findIndex((tile) => tile.place.row === row && tile.place.col === col)}
+				{@const i = ss.tiles.findIndex((tile) => tile.place?.row === row && tile.place?.col === col)}
 				{#if i >= 0}
-					<Tile bind:tile={ptiles[i]} {row} {col} />
+					<Tile bind:tile={ss.tiles[i]} {row} {col} />
 				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
 					<Spot {row} {col} />
 				{:else}

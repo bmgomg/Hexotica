@@ -9,15 +9,21 @@ export const windowSize = () => {
     return { w, h };
 };
 
-export const clientRect = selector => {
-    const ob = document.querySelector(selector);
+export const clientRect = obid => {
+    const ob = document.getElementById(obid);
     const r = ob?.getBoundingClientRect();
 
     return r;
 };
 
-export const rectCenter = selector => {
-    const ob = document.querySelector(selector);
+export const xy = obid => {
+    const ob = document.getElementById(obid);
+    const r = ob?.getBoundingClientRect();
+    return { x: r?.left, y: r?.top };
+};
+
+export const rectCenter = obid => {
+    const ob = document.getElementById(obid);
     const r = ob?.getBoundingClientRect();
 
     return r ? {
@@ -28,7 +34,8 @@ export const rectCenter = selector => {
 
 export const underMouse = (event, selectors) => {
     for (const selector of selectors) {
-        const r = clientRect(selector);
+        const ob = document.querySelector(selector);
+        const r = ob?.getBoundingClientRect();
 
         if (!r) {
             continue;
@@ -106,12 +113,6 @@ export const scrollTo = ob => {
     e.scrollIntoView({ behavior: 'smooth' });
 
     return true;
-};
-
-export const xy = obid => {
-    const r = clientRect(obid);
-
-    return { x: r?.left, y: r?.top };
 };
 
 export const isScrollable = obid => {

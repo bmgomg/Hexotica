@@ -83,7 +83,7 @@ export const calcSpans = (tiles) => {
 
 export const calcDims = (boardParams) => {
     const { rowHeight, colWidth, gap, padding: pad } = boardParams;
-    const r = clientRect('#board');
+    const r = clientRect('board');
 
     if (!r) {
         return { rows: 1, cols: 1 };
@@ -157,7 +157,7 @@ const initDecks = () => {
 
     deck.forEach(bits => {
         for (const player of [1, 2]) {
-            const id = `tile ${player} ${bits}`.replaceAll(',', '');
+            const id = `tile-${player}-${bits}`.replaceAll(',', '');
             tiles.push({ id, player, bits, turns: 0 });
         }
     });

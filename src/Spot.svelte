@@ -2,14 +2,14 @@
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { currentTurns, findTile, isMoving, ss } from './shared.svelte';
-	import { post } from './utils';
+	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const _row = $derived(tt ? 0 : row);
 	const _col = $derived(tt ? 0 : col);
 	const player = $derived(tile?.player);
-	const id = $derived('spot ' + _row + ':' + _col);
+	const id = $derived('spot-' + _row + ':' + _col);
 	const ga = $derived(`${row || 1}/${col || 2}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -34,6 +34,12 @@
 					ss.ms = 750;
 				} else {
 					ss.to.sector -= fromTile.turns;
+
+					const { x: x1, y: y1 } = rectCenter(fromTile.id);
+					const { x: x2, y: y2 } = rectCenter(id);
+
+					fromTile.off = { x: x2 - x1, y: y2 - y1, scale: fromTile.place === 'tray' ? 1 / 0.9 : 1 };
+
 					ss.ms = 1000;
 				}
 
@@ -55,7 +61,7 @@
 		{@const deg = ((i - 1) * 60) % 360}
 		<g transform="rotate({deg}, 363, 314)" stroke={tile ? 'none' : spoke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			<path class="sector" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
-			<!-- <text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text> -->
+			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#if selected === i}
 				{@const r = width * 0.6}
 				{@const transform = `rotate(${-(deg + tileTurns * 60)}, 363, 95) translate(0, -220)`}
@@ -84,6 +90,7 @@
 	}
 
 	.text {
+		display: none;
 		font-family: RC;
 		font-size: 120px;
 		translate: 0 -170px;
@@ -101,5 +108,6 @@
 
 	svg {
 		grid-area: 1/1;
+		transition: scale 1s linear;
 	}
 </style>

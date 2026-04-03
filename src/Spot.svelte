@@ -49,20 +49,25 @@
 
 			if (ftile.off) {
 				delete ftile.off;
+
+				if (ftile.place === 'tray') {
+					post(() => {
+						ss.actor = 3 - ss.actor;
+						drawTile();
+					});
+				}
+
 				ftile.place = { row, col };
 			}
 
 			delete ss.from;
 			delete ss.to;
 			delete ss.ms;
-
-			ss.actor = 3 - ss.actor;
-			post(drawTile);
 		}, ss.ms);
 	};
 </script>
 
-<div {id} class="spot" style="grid-area: {ga};">
+<div {id} class="spot nope" style="grid-area: {ga};">
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}

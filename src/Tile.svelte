@@ -26,9 +26,10 @@
 	const scale = $derived(tt ? 0.9 : ss.zoom);
 	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
+	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
 </script>
 
-<div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" style="grid-area: {ga}; translate: {translate}; scale: {tile.off?.scale || 1};">
+<div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
 		<Spot {row} {col} {tile} {scale} />
@@ -44,6 +45,7 @@
 		transition:
 			translate 1s linear,
 			scale 1s linear;
+		z-index: 2;
 	}
 
 	.tile-inner {

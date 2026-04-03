@@ -7,7 +7,7 @@
 
 {#if tile}
 	<div class="tray no-highlight">
-		<Tile bind:tile />
+		<Tile row={0} col={0} bind:tile />
 	</div>
 {/if}
 

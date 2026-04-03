@@ -28,12 +28,12 @@
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 </script>
 
-<div id={tile.id} class="tile {tt ? 'swirl' : ''}" style="grid-area: {ga}; translate: {translate}; scale: {tile.off?.scale || 1};">
+<div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" style="grid-area: {ga}; translate: {translate}; scale: {tile.off?.scale || 1};">
 	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
-		<Spot row={1} col={1} {tile} {scale} />
+		<Spot {row} {col} {tile} {scale} />
 	</div>
-	<Knob row={1} col={1} {tile} {scale} />
+	<Knob {tile} {scale} />
 </div>
 
 <style>

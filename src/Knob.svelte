@@ -2,13 +2,8 @@
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { ss } from './shared.svelte';
 
-	const { row, col, tile, scale = ss.zoom } = $props();
-	const tt = $derived(tile?.place === 'tray');
-	const _row = $derived(tt ? 0 : row);
-	const _col = $derived(tt ? 0 : col);
+	const { tile, scale = ss.zoom } = $props();
 	const player = $derived(tile?.player);
-	const id = $derived('spot ' + _row + ':' + _col);
-	const ga = $derived(`${row || 1}/${col || 2}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
 	const r = $derived(width * 1.3);
@@ -16,7 +11,7 @@
 	const xmlns = 'http://www.w3.org/2000/svg';
 </script>
 
-<div {id} class="knob nope" style="grid-area: {ga};">
+<div class="knob nope">
 	<svg {width} {height} {viewBox} {xmlns}>
 		<g class='core' stroke="none">
 			<circle cx="363" cy="314" {r} fill="var(--bg)" stroke="var(--{player === 1 ? 'amber-shine' : 'slate-shine'})" stroke-width={12} />

@@ -30,6 +30,7 @@
 			--amber-fill: #c4902a;
 			--amber-shine: #f0d080;
 			--amber-circle: #d4bc8a;
+			--spoke: #c8bfa828;
 			--text: #c8bfa8;
 			background: var(--bg);
 			color: var(--text);

@@ -39,7 +39,7 @@
 			const { x: x1, y: y1 } = rectCenter(ftile.id);
 			const { x: x2, y: y2 } = rectCenter(id);
 
-			ftile.off = { x: x2 - x1, y: y2 - y1, scale: ftile.place === 'tray' ? 1 / 0.9 : 1 };
+			ftile.off = { x: x2 - x1, y: y2 - y1 };
 
 			ss.ms = 1000;
 		}

@@ -23,7 +23,7 @@
 	const i = DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.bits));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
-	const scale = $derived(tt ? 0.9 : ss.zoom);
+	const scale = $derived(tile.off || !tt ? ss.zoom : 0.9);
 	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);

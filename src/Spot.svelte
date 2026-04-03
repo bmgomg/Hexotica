@@ -1,8 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, findTile, isMoving, ss } from './shared.svelte';
-	import { post, rectCenter, xy } from './utils';
+	import { currentTurns, drawTile, findTile, isMoving, ss } from './shared.svelte';
+	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -53,6 +53,8 @@
 
 					delete ss.from;
 					delete ss.to;
+
+					drawTile(2);
 				}, ss.ms);
 			}
 		} else {
@@ -90,7 +92,7 @@
 <style>
 	.spot {
 		display: grid;
-		place-content: center;
+		place-self: center;
 		place-items: center;
 		box-sizing: border-box;
 	}

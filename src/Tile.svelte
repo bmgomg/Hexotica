@@ -39,6 +39,7 @@
 <style>
 	.tile {
 		display: grid;
+		place-self: center;
 		box-sizing: border-box;
 		transition:
 			translate 1s linear,

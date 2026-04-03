@@ -182,8 +182,11 @@ export const makeGame = () => {
     delete ss.to;
 
     ss.tiles = initDecks();
+    drawTile(1);
+};
 
-    const tiles = playerTiles(1, 'deck');
+export const drawTile = (player) => {
+    const tiles = playerTiles(player, 'deck');
     const tile = sample(tiles);
     tile.place = 'tray';
 };

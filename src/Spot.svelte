@@ -180,7 +180,6 @@
 
 		if (tile) {
 			if (ss.from) {
-				// return ss.from?.row === row && ss.from?.col === col;
 				return true;
 			}
 

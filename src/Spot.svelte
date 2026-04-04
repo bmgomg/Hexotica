@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, ss } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, neighbors, placedTiles, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
@@ -30,8 +30,103 @@
 			return;
 		}
 
-		ss.to = { row, col, sector: i };
 		const gotile = goTile();
+
+		//////////////////
+
+		let delta = i - (ss.from.sector + (tile ? 0 : gotile.turns));
+
+		if (delta > 3) {
+			delta -= 6;
+		} else if (delta < -3) {
+			delta += 6;
+		}
+
+		let ok = true;
+
+		const norm = (bits, turns) => {
+			bits = [...bits, ...bits, ...bits];
+			bits = bits.slice(6 - turns, 12 - turns);
+			return bits;
+		};
+
+		const bits = norm(gotile.bits, gotile.turns + delta);
+		let nbs = neighbors(row, col);
+		let count = 0;
+
+		for (let i = 0; i < 6; i++) {
+			const nb = nbs[i];
+
+			if (!nb || nb === gotile) {
+				continue;
+			}
+
+			count += 1;
+
+			const abits = norm(nb.bits, nb.turns);
+
+			const j = i < 3 ? i + 3 : i - 3;
+			const b = abits[j];
+
+			if (bits[i] && b !== bits[i]) {
+				ok = false;
+				break;
+			}
+		}
+
+		if (!ok) {
+			alert('Color mismatch!');
+			return;
+		}
+
+		nbs = neighbors(gotile.place.row, gotile.place.col);
+		const _count = nbs.filter((nb) => !!nb).length;
+
+		if (_count > count) {
+			alert('Too few neighbors!');
+			return;
+		}
+
+		if (gotile.place !== 'tray') {
+			const ptiles = placedTiles();
+
+			const countContiguous = () => {
+				let count = 0;
+
+				const visit = (tile) => {
+					if (tile.visited) {
+						return;
+					}
+
+					count += 1;
+					tile.visited = true;
+
+					const nbs = neighbors( tile.place.row, tile.place.col, ptiles).filter((nb) => !!nb);
+
+					for (const nb of nbs) {
+						visit(nb);
+					}
+				};
+
+				visit(gotile);
+				return count;
+			};
+
+			count = countContiguous();
+
+			for (const tile of ptiles) {
+				delete tile.visited;
+			}
+
+			if (count < ptiles.length) {
+				alert('No islands!');
+				return;
+			}
+		}
+
+		///////////////////
+
+		ss.to = { row, col, sector: i };
 
 		if (tile) {
 			ss.ms = 750;
@@ -134,7 +229,7 @@
 	}
 
 	.text {
-		display: none;
+		display: grid;
 		font-family: RC;
 		font-size: 120px;
 		translate: 0 -170px;

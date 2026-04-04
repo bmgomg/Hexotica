@@ -14,8 +14,10 @@ export const ss = $state({
     actor: 1,
 });
 
-export const _stats = $state({
+export const stats = $state({
     plays: 0,
+    wins1: 999,
+    wins2: 0,
 });
 
 export const placedTiles = (tiles = ss.tiles) => tiles.filter(tile => tile.place?.row);

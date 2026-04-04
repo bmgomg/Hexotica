@@ -3,11 +3,12 @@
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { currentTurns, drawTile, goTile, isMoving, neighbors, placedTiles, remesh, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
+	import { checkWin } from './ai';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
-	const id = $derived('spot-' + row + ':' + col);
+	const id = $derived('spot ' + row + ':' + col);
 	const ga = $derived(`${tile || !row ? 1 : row}/${tile || !col ? 1 : col}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -172,6 +173,10 @@
 			delete ss.ms;
 
 			post(remesh);
+
+			if (checkWin(ss.tiles)){
+				alert(`Player ${ss.actor} wins!`);
+			}
 		}, ss.ms);
 	};
 

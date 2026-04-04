@@ -311,3 +311,48 @@ export const getBestMove = (tiles, aiPlayer) => {
 
     return bestMove;
 };
+
+// ─── Game state checks ───────────────────────────────────────────────────────
+
+// checkWin: returns the tile ids of the winning streak if any player has
+// achieved N_TO_WIN in a row, or null if no win exists.
+// Returns { player, tileIds } or null.
+export const checkWin = (tiles, nToWin = N_TO_WIN) => {
+  const placed  = getPlaced(tiles);
+  const map     = buildMap(placed);
+
+  for (const anchor of placed) {
+    const { row, col } = anchor.place;
+    const player = anchor.player;
+
+    for (const { dr, dc } of WIN_DIRS) {
+      // Only start from the beginning of a run
+      const prev = getTile(map, row - dr, col - dc);
+      if (prev?.player === player) continue;
+
+      // Measure run length, collecting tiles
+      const run = [];
+      let r = row, c = col;
+      while (true) {
+        const t = getTile(map, r, c);
+        if (t?.player === player) {
+          run.push(t);
+          r += dr;
+          c += dc;
+        } else break;
+      }
+
+      if (run.length >= nToWin) {
+        return { player, tileIds: run.map(t => t.id) };
+      }
+    }
+  }
+
+  return null;
+};
+
+// checkDraw: returns true if neither player has any tiles remaining in their
+// deck or tray (i.e. all tiles have been placed and no win has occurred).
+export const checkDraw = (tiles) => {
+  return tiles.every(t => t.place?.row);
+};

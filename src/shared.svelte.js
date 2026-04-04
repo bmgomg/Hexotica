@@ -16,7 +16,7 @@ export const ss = $state({
 
 export const stats = $state({
     plays: 0,
-    wins1: 999,
+    wins1: 0,
     wins2: 0,
 });
 
@@ -162,7 +162,7 @@ const initDecks = () => {
 
     deck.forEach(bits => {
         for (const player of [1, 2]) {
-            const id = `tile-${player}-${bits}`.replaceAll(',', '');
+            const id = `tile ${player} ${bits}`.replaceAll(',', '');
             tiles.push({ id, player, bits, turns: 0 });
         }
     });

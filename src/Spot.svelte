@@ -25,8 +25,18 @@
 			return;
 		}
 
-		if (ss.from.row === row && ss.from.col === col && ss.from.sector === i) {
-			delete ss.from;
+		if (ss.from.row === row && ss.from.col === col) {
+			if (ss.from.sector === i) {
+				delete ss.from;
+				return;
+			}
+
+			if (tt) {
+				ss.from.sector = i;
+				return;
+			}
+		} else if (tile) {
+			ss.from = { row, col, sector: i };
 			return;
 		}
 
@@ -101,7 +111,7 @@
 					count += 1;
 					tile.visited = true;
 
-					const nbs = neighbors( tile.place.row, tile.place.col, ptiles).filter((nb) => !!nb);
+					const nbs = neighbors(tile.place.row, tile.place.col, ptiles).filter((nb) => !!nb);
 
 					for (const nb of nbs) {
 						visit(nb);
@@ -170,7 +180,8 @@
 
 		if (tile) {
 			if (ss.from) {
-				return ss.from?.row === row && ss.from?.col === col;
+				// return ss.from?.row === row && ss.from?.col === col;
+				return true;
 			}
 
 			if (tt) {

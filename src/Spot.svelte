@@ -32,7 +32,7 @@
 
 		const gotile = goTile();
 
-		//////////////////
+		///////////////////
 
 		let delta = i - (ss.from.sector + (tile ? 0 : gotile.turns));
 
@@ -63,10 +63,10 @@
 
 			count += 1;
 
-			const abits = norm(nb.bits, nb.turns);
+			const nbits = norm(nb.bits, nb.turns);
 
 			const j = i < 3 ? i + 3 : i - 3;
-			const b = abits[j];
+			const b = nbits[j];
 
 			if (bits[i] && b !== bits[i]) {
 				ok = false;
@@ -129,7 +129,7 @@
 		ss.to = { row, col, sector: i };
 
 		if (tile) {
-			ss.ms = 750;
+			ss.ms = 500;
 		} else {
 			ss.to.sector -= gotile.turns;
 
@@ -138,7 +138,7 @@
 
 			gotile.off = { x: x2 - x1, y: y2 - y1 };
 
-			ss.ms = 1000;
+			ss.ms = 750;
 		}
 
 		post(() => {
@@ -229,7 +229,7 @@
 	}
 
 	.text {
-		display: grid;
+		display: none;
 		font-family: RC;
 		font-size: 120px;
 		translate: 0 -170px;

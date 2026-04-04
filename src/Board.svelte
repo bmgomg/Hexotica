@@ -27,7 +27,7 @@
 	});
 </script>
 
-<div id="board" bind={_this} class="board {scrollClass()}">
+<div id="board" bind={_this} class="board  no-highlight {scrollClass()}">
 	<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
 		{#each _range(1, rows) as row (row)}
 			{#each _range(1, cols) as col (col)}

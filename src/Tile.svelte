@@ -45,8 +45,8 @@
 		place-self: center;
 		box-sizing: border-box;
 		transition:
-			translate 1s linear,
-			scale 1s linear;
+			translate 0.75s linear,
+			scale 0.75s linear;
 		z-index: 2;
 	}
 

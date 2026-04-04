@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { _log, currentTurns, drawTile, fromTile, isMoving, ss } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
@@ -31,35 +31,35 @@
 		}
 
 		ss.to = { row, col, sector: i };
-		const ftile = fromTile();
+		const gotile = goTile();
 
 		if (tile) {
 			ss.ms = 750;
 		} else {
-			ss.to.sector -= ftile.turns;
+			ss.to.sector -= gotile.turns;
 
-			const { x: x1, y: y1 } = rectCenter(ftile.id);
+			const { x: x1, y: y1 } = rectCenter(gotile.id);
 			const { x: x2, y: y2 } = rectCenter(id);
 
-			ftile.off = { x: x2 - x1, y: y2 - y1 };
+			gotile.off = { x: x2 - x1, y: y2 - y1 };
 
 			ss.ms = 1000;
 		}
 
 		post(() => {
-			ftile.turns += currentTurns();
+			gotile.turns += currentTurns();
 
-			if (ftile.off) {
-				delete ftile.off;
+			if (gotile.off) {
+				delete gotile.off;
 
-				if (ftile.place === 'tray') {
+				if (gotile.place === 'tray') {
 					post(() => {
 						ss.actor = 3 - ss.actor;
 						drawTile();
 					});
 				}
 
-				ftile.place = { row, col };
+				gotile.place = { row, col };
 			}
 
 			delete ss.from;
@@ -81,9 +81,6 @@
 			if (tt) {
 				return true;
 			}
-
-			_log(tile);
-			_log(ss.actor);
 
 			return tile.player === ss.actor;
 		} else {

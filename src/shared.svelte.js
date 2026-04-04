@@ -30,7 +30,7 @@ export const findTile = (row, col) => {
     return ss.tiles.find(tile => tile.place?.row === row && tile.place?.col === col);
 };
 
-export const fromTile = () => ss.from ? findTile(ss.from.row, ss.from.col) : null;
+export const goTile = () => ss.from ? findTile(ss.from.row, ss.from.col) : null;
 
 export const neighbors = (row, col, tiles = ss.tiles) => {
     const nbs = [

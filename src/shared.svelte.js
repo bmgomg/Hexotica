@@ -84,7 +84,7 @@ export const calcSpans = (tiles) => {
     return { min_row, max_row, min_col, max_col };
 };
 
-export const calcDims = (boardParams) => {
+const calcDims = (boardParams) => {
     const { rowHeight, colWidth, gap, pad } = boardParams;
     const r = clientRect('board');
 

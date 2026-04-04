@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, neighbors, placedTiles, ss } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, neighbors, placedTiles, remesh, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
@@ -170,32 +170,26 @@
 			delete ss.from;
 			delete ss.to;
 			delete ss.ms;
+
+			post(remesh);
 		}, ss.ms);
 	};
 
-	const canClickSector = (i) => {
-		if (isMoving()) {
+	const canClick = $derived.by(() => {
+		if (moving) {
 			return false;
 		}
 
-		if (tile) {
-			if (ss.from) {
-				return true;
-			}
-
-			if (tt) {
-				return true;
-			}
-
-			return tile.player === ss.actor;
-		} else {
-			if (!ss.from) {
-				return false;
-			}
-
-			return true;
+		if (!tile) {
+			return ss.from;
 		}
-	};
+
+		if (tile.player !== ss.actor){
+			return false;
+		}
+
+		return true;
+	});
 </script>
 
 <div {id} class="spot nope" style="grid-area: {ga};">
@@ -203,9 +197,8 @@
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
 		{@const sw = tile ? 0 : 10}
-		{@const enabled = canClickSector(i)}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			<path class="sector {enabled ? 'ape' : 'nope'}" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
+			<path class="sector {canClick ? 'ape' : 'nope'}" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#if selected === i && !moving}
 				{@const r = width * 0.6}

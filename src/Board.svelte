@@ -1,4 +1,5 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import { boardParams, neighbors, placedTiles, remesh, ss, trayTile } from './shared.svelte';
 	import Spot from './Spot.svelte';
 	import Tile from './Tile.svelte';
@@ -27,27 +28,29 @@
 	});
 </script>
 
-<div id="board" bind={_this} class="board  no-highlight {scrollClass()}">
-	<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
-		{#each _range(1, rows) as row (row)}
-			{#each _range(1, cols) as col (col)}
-				{@const style = `grid-area: ${row}/${col}; width: ${colWidth}; height: ${rowHeight}`}
-				<div class="cell nope" {style}>{row + ':' + col}</div>
-				{@const i = ss.tiles.findIndex((tile) => tile.place?.row === row && tile.place?.col === col)}
-				{#if i >= 0}
-					<Tile bind:tile={ss.tiles[i]} {row} {col} />
-				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
-					<Spot {row} {col} />
-				{:else}
-					{@const nbs = neighbors(row, col)}
-					{#if nbs.some((a) => !!a)}
+{#if !ss.menu}
+	<div id="board" bind={_this} class="board no-highlight {scrollClass()}" transition:fade>
+		<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
+			{#each _range(1, rows) as row (row)}
+				{#each _range(1, cols) as col (col)}
+					{@const style = `grid-area: ${row}/${col}; width: ${colWidth}; height: ${rowHeight}`}
+					<div class="cell nope" {style}>{row + ':' + col}</div>
+					{@const i = ss.tiles.findIndex((tile) => tile.place?.row === row && tile.place?.col === col)}
+					{#if i >= 0}
+						<Tile bind:tile={ss.tiles[i]} {row} {col} />
+					{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
 						<Spot {row} {col} />
+					{:else}
+						{@const nbs = neighbors(row, col)}
+						{#if nbs.some((a) => !!a)}
+							<Spot {row} {col} />
+						{/if}
 					{/if}
-				{/if}
+				{/each}
 			{/each}
-		{/each}
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.board {

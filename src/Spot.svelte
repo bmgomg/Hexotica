@@ -21,6 +21,10 @@
 	const moving = $derived(isMoving());
 
 	const onClick = (i) => {
+		if (ss.over) {
+			return;
+		}
+
 		if (!ss.from) {
 			ss.from = { row, col, sector: i };
 			return;
@@ -180,7 +184,7 @@
 			post(() => {
 				remesh();
 				persist();
-			});
+			}, 200);
 		}, ss.ms);
 	};
 

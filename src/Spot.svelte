@@ -17,7 +17,6 @@
 	const stroke = $derived(player === 1 ? 'var(--amber-fill)' : player === 2 ? 'var(--slate-stroke)' : 'var(--spoke)');
 	const sw = 10;
 	const selected = $derived(ss.from && ss.from.row === row && ss.from.col === col ? ss.from.sector : 0);
-	const tileTurns = $derived(tile?.turns || 0);
 	const moving = $derived(isMoving());
 
 	const onClick = (i) => {
@@ -49,7 +48,7 @@
 
 		///////////////////
 
-		let delta = i - (ss.from.sector + (tile ? 0 : gotile.turns));
+		let delta = i - ss.from.sector;
 
 		if (delta > 3) {
 			delta -= 6;
@@ -65,7 +64,7 @@
 			return bits;
 		};
 
-		const bits = norm(gotile.bits, gotile.turns + delta);
+		const bits = norm(gotile.bits, delta);
 		let nbs = neighbors(row, col);
 		let count = 0;
 
@@ -78,7 +77,7 @@
 
 			count += 1;
 
-			const nbits = norm(nb.bits, nb.turns);
+			const nbits = norm(nb.bits, 0);
 
 			const j = i < 3 ? i + 3 : i - 3;
 			const b = nbits[j];
@@ -146,8 +145,6 @@
 		if (tile) {
 			ss.ms = 500;
 		} else {
-			ss.to.sector -= gotile.turns;
-
 			const { x: x1, y: y1 } = rectCenter(gotile.id);
 			const { x: x2, y: y2 } = rectCenter(id);
 
@@ -170,6 +167,7 @@
 				}
 
 				gotile.place = { row, col };
+				gotile.bits = bits;
 			}
 
 			delete ss.from;
@@ -215,7 +213,7 @@
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#if selected === i && !moving}
 				{@const r = width * 0.6}
-				{@const transform = `rotate(${-(deg + tileTurns * 60)}, 363, 95) translate(0, -220)`}
+				{@const transform = `rotate(${-deg}, 363, 95) translate(0, -220)`}
 				{@const shades = tile.player === 1 ? ['var(--amber-fill)', 'var(--amber-shine)'] : ['var(--slate-stroke)', 'var(--slate-shine)']}
 				<g class="nope" {transform} stroke="none" out:fade={{ duration: ss.ms || 0 }}>
 					<circle cx="363" cy="314" {r} fill="var(--bg)" />

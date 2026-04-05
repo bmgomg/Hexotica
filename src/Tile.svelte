@@ -21,7 +21,7 @@
 
 	const { tile, row, col } = $props();
 	const hexes = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14];
-	const i = DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.bits));
+	const i = DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.originalBits));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tile.off || !tt ? ss.zoom : 0.9);
@@ -31,9 +31,9 @@
 </script>
 
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
-	<div class="tile-inner" style="rotate: {(tile.turns + turns) * 60}deg; transition-duration: {ss.ms}ms;">
+	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
-		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} />
+		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.turns * 60}deg;"/>
 		<Spot {row} {col} {tile} {scale} />
 	</div>
 	<Knob {tile} {scale} />

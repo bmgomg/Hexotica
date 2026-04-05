@@ -43,7 +43,8 @@ const colorMatchOk = (map, tile, row, col, turns) => {
         const { dr, dc } = ADJ[i];
         const adj = getTile(map, row + dr, col + dc);
         if (!adj || adj === tile) continue;
-        const abits = norm(adj.bits, adj.turns || 0);
+        // const abits = norm(adj.bits, adj.turns || 0);
+        const abits = norm(adj.bits, 0);
         const j = i < 3 ? i + 3 : i - 3;
         if (bits[i] && abits[j] !== bits[i]) return false;
     }

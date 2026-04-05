@@ -1,8 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { OPP_ROBOT } from './const';
+	import { MSG_INFO, OPP_ROBOT } from './const';
 	import MusicVolume from './Music Volume.svelte';
-	import { isMoving, persist, ss } from './shared.svelte';
+	import { isMoving, makeGame, persist, showMessage, ss, stats } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
 
@@ -35,13 +35,31 @@
 
 		return !mustWait;
 	});
+
+	const onSurrender = () => {
+		if (ss.opp === OPP_ROBOT) {
+			showMessage('You surrendered!', MSG_INFO);
+
+			stats.plays++;
+			stats.wins2++;
+		} else {
+			showMessage('Game reset!', MSG_INFO);
+		}
+
+		makeGame();
+	};
 </script>
 
 {#if !ss.message}
 	<div class="toolbar" in:fade>
 		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={() => (ss.menu = true)} />
 		<TextButton id="tb-deck" text={['Show Deck']} onClick={() => {}} />
-		<TextButton id="tb-surrender" text={[ss.opp === OPP_ROBOT ? 'Surrender' : 'Start Over']} disabled={!canSurrender} onClick={() => {}} />
+		<TextButton
+			id="tb-surrender"
+			text={[ss.opp === OPP_ROBOT ? 'Surrender' : 'Start Over']}
+			disabled={!canSurrender}
+			onClick={onSurrender}
+		/>
 		<TextButton id="tb-restats" text={['Reset Stats']} onClick={() => {}} />
 		<MusicVolume />
 		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} style="width: 61px; justify-content: start;" onClick={onSfx} />
@@ -51,7 +69,7 @@
 <style>
 	.toolbar {
 		grid-area: 1/1;
-        display: grid;
+		display: grid;
 		grid-auto-flow: column;
 		gap: 20px;
 	}

@@ -1,5 +1,5 @@
 import { sample, shuffle } from 'lodash-es';
-import { APP_STATE, DECK, HEX_WIDTH } from './const';
+import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS } from './const';
 import { clientRect, post } from './utils';
 import { _sound } from './sound.svelte';
 
@@ -239,13 +239,17 @@ export const makeGame = () => {
     delete ss.to;
 
     ss.tiles = initDecks();
-    drawTile();
 
-    persist();
+    post(() => {
+        drawTile();
+        remesh();
+        persist();
+    });
 };
 
-export const showMessage = (msg) => {
-    _sound.play('lost', { rate: 2 });
-    ss.message = msg;
+export const showMessage = (text, type = MSG_ERROR) => {
+    _sound.play(type === MSG_ERROR ? 'lost' : type === MSG_SUCCESS ? 'won' : 'draw');
+
+    ss.message = { text, type };
     post(() => delete ss.message, 2000);
 };

@@ -1,6 +1,6 @@
 import { sample, shuffle } from 'lodash-es';
 import { APP_STATE, DECK, HEX_WIDTH } from './const';
-import { clientRect } from './utils';
+import { clientRect, post } from './utils';
 import { _sound } from './sound.svelte';
 
 export const _log = (value) => console.log($state.snapshot(value));
@@ -242,4 +242,10 @@ export const makeGame = () => {
     drawTile();
 
     persist();
+};
+
+export const showMessage = (msg) => {
+    _sound.play('lost', { rate: 2 });
+    ss.message = msg;
+    post(() => delete ss.message, 2000);
 };

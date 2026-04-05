@@ -3,7 +3,7 @@
 	import OppRobot from '$lib/images/Human vs Robot.webp';
 	import { fade } from 'svelte/transition';
 	import { APP_STATE, OPP_HUMAN, OPP_ROBOT } from './const';
-	import { loadGame, makeGame, ss } from './shared.svelte';
+	import { loadGame, makeGame, remesh, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -19,7 +19,9 @@
 
 		ss.appKey = `${APP_STATE} • ${(ss.appSubKey = opp)}`;
 
-		if (!loadGame()) {
+		if (loadGame()) {
+			remesh();
+		} else {
 			makeGame();
 		}
 

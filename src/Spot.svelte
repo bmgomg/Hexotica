@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, neighbors, persist, placedTiles, remesh, ss } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, neighbors, persist, placedTiles, remesh, showMessage, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 	import { checkWin } from './ai';
 
@@ -90,7 +90,7 @@
 		}
 
 		if (!ok) {
-			alert('Color mismatch!');
+			showMessage('Color mismatch!');
 			return;
 		}
 
@@ -98,7 +98,7 @@
 		const _count = nbs.filter((nb) => !!nb).length;
 
 		if (_count > count) {
-			alert('Too few neighbors!');
+			showMessage('Too few neighbors!');
 			return;
 		}
 
@@ -134,7 +134,7 @@
 			}
 
 			if (count < ptiles.length) {
-				alert('No islands!');
+				showMessage('No islands!');
 				return;
 			}
 		}

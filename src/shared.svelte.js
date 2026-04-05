@@ -251,5 +251,5 @@ export const showMessage = (text, type = MSG_ERROR) => {
     _sound.play(type === MSG_ERROR ? 'lost' : type === MSG_SUCCESS ? 'won' : 'draw');
 
     ss.message = { text, type };
-    post(() => delete ss.message, 2000);
+    post(() => delete ss.message, 2500);
 };

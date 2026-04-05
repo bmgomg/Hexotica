@@ -48,19 +48,24 @@
 
 		makeGame();
 	};
+
+	const onResetStats = () => {
+		showMessage('Stats reset!', MSG_INFO);
+
+		stats.plays = 0;
+		stats.wins1 = 0;
+		stats.wins2 = 0;
+
+		persist();
+	};
 </script>
 
 {#if !ss.message}
 	<div class="toolbar" in:fade>
 		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={() => (ss.menu = true)} />
 		<TextButton id="tb-deck" text={['Show Deck']} onClick={() => {}} />
-		<TextButton
-			id="tb-surrender"
-			text={[ss.opp === OPP_ROBOT ? 'Surrender' : 'Start Over']}
-			disabled={!canSurrender}
-			onClick={onSurrender}
-		/>
-		<TextButton id="tb-restats" text={['Reset Stats']} onClick={() => {}} />
+		<TextButton id="tb-surrender" text={['New Game']} disabled={!canSurrender} onClick={onSurrender} />
+		<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
 		<MusicVolume />
 		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} style="width: 61px; justify-content: start;" onClick={onSfx} />
 	</div>

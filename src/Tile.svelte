@@ -33,7 +33,7 @@
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
-		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.turns * 60}deg;"/>
+		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;"/>
 		<Spot {row} {col} {tile} {scale} />
 	</div>
 	<Knob {tile} {scale} />

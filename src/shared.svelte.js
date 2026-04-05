@@ -208,7 +208,7 @@ const initDecks = () => {
     deck.forEach(bits => {
         for (const player of [1, 2]) {
             const id = `tile ${player} ${bits}`.replaceAll(',', '');
-            tiles.push({ id, player, bits, originalBits: bits, turns: 0 });
+            tiles.push({ id, player, bits, originalBits: bits, imgTurns: 0 });
         }
     });
 

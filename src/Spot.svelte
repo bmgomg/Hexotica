@@ -154,7 +154,8 @@
 		}
 
 		post(() => {
-			gotile.turns += currentTurns();
+			gotile.bits = bits;
+			gotile.imgTurns += currentTurns();
 
 			if (gotile.off) {
 				delete gotile.off;
@@ -167,7 +168,6 @@
 				}
 
 				gotile.place = { row, col };
-				gotile.bits = bits;
 			}
 
 			delete ss.from;

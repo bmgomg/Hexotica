@@ -17,6 +17,8 @@ const WIN_DIRS = [
     { dr: -1, dc: +1 }, // ne
 ];
 
+// Rotate bits by `turns` steps. Used internally for simulation only —
+// tile.bits on the actual board are already in their settled orientation.
 const norm = (bits, turns) => {
     if (!turns) return bits;
     const t = ((turns % 6) + 6) % 6;
@@ -37,16 +39,17 @@ const getTile = (map, row, col) => map[`${row}/${col}`] || null;
 
 // ─── Legal move helpers ──────────────────────────────────────────────────────
 
+// tile.bits on placed neighbors are already settled (no norm needed).
+// The tile being placed/tested is rotated by `turns` for candidate evaluation.
 const colorMatchOk = (map, tile, row, col, turns) => {
     const bits = norm(tile.bits, turns);
     for (let i = 0; i < 6; i++) {
         const { dr, dc } = ADJ[i];
         const adj = getTile(map, row + dr, col + dc);
         if (!adj || adj === tile) continue;
-        // const abits = norm(adj.bits, adj.turns || 0);
-        const abits = norm(adj.bits, 0);
         const j = i < 3 ? i + 3 : i - 3;
-        if (bits[i] && abits[j] !== bits[i]) return false;
+        // adj.bits is already in settled orientation — no norm required
+        if (bits[i] && adj.bits[j] !== bits[i]) return false;
     }
     return true;
 };
@@ -106,11 +109,12 @@ const legalRotations = (tile, map, row, col, excludeTile = null) => {
     const seen = new Set();
     const results = [];
     for (let turns = 0; turns < 6; turns++) {
-        const key = norm(tile.bits, turns).join('');
+        const rotatedBits = norm(tile.bits, turns);
+        const key = rotatedBits.join('');
         if (seen.has(key)) continue;
         seen.add(key);
         if (colorMatchOk(map, excludeTile || tile, row, col, turns)) {
-            results.push(turns);
+            results.push({ turns, bits: rotatedBits });
         }
     }
     return results;
@@ -192,18 +196,26 @@ const tryReposition = (repoTile, placed, currentMap) => {
         if (rRow === oldRow && rCol === oldCol) continue;
 
         const newNeighborCount = neighborCount(mapWithout, repoTile, rRow, rCol);
-
         if (newNeighborCount < oldNeighborCount) continue;
 
         if (!isContiguous(placed, repoTile, rRow, rCol)) continue;
 
-        const validRepoTurns = legalRotations(repoTile, mapWithout, rRow, rCol, repoTile);
+        const validRotations = legalRotations(repoTile, mapWithout, rRow, rCol, repoTile);
 
-        for (const repoTurns of validRepoTurns) {
-            const repoSimTile = { ...repoTile, place: { row: rRow, col: rCol }, turns: repoTurns };
+        for (const { turns: repoTurns, bits: repoBits } of validRotations) {
+            // Simulate with rotated bits already settled — no turns field needed
+            const repoSimTile = { ...repoTile, place: { row: rRow, col: rCol }, bits: repoBits };
             const placedAfter = [...placedWithout, repoSimTile];
             const mapAfter = buildMap(placedAfter);
-            const repoMove = { tileId: repoTile.id, fromRow: repoTile.place.row, fromCol: repoTile.place.col, targetRow: rRow, targetCol: rCol, turns: repoTurns };
+            const repoMove = {
+                tileId: repoTile.id,
+                fromRow: repoTile.place.row,
+                fromCol: repoTile.place.col,
+                targetRow: rRow,
+                targetCol: rCol,
+                turns: repoTurns,  // for animation / imgTurns update
+                bits: repoBits,   // settled orientation
+            };
             results.push({ repoSimTile, placedAfter, mapAfter, repoMove });
         }
     }
@@ -225,7 +237,15 @@ export const getBestMove = (tiles, aiPlayer) => {
     const baseMap = buildMap(placed);
 
     if (placed.length === 0) {
-        return { tileId: trayTile.id, targetRow: 0, targetCol: 0, turns: 0, reposition: null };
+        return {
+            tileId: trayTile.id,
+            targetRow: 0,
+            targetCol: 0,
+            turns: 0,
+            bits: trayTile.bits,
+            reposition: null,
+            reposition2: null,
+        };
     }
 
     const baseScore = evaluateBoard(baseMap, placed, aiPlayer);
@@ -235,20 +255,17 @@ export const getBestMove = (tiles, aiPlayer) => {
 
     const myPlaced = placed.filter(t => t.player === aiPlayer);
 
-    // Helper: try placing tray tile on a given board state, update best if improved.
-    // threshold: if a score >= threshold is found, return true immediately (early exit).
-    // Use Infinity for steps 1 & 2 (always complete the search).
-    // Use 5000 for step 3 (expensive — only short-circuit on very good moves).
     const tryPlacement = (placedState, mapState, reposition, reposition2, threshold = Infinity) => {
         const positions = candidatePositions(mapState, placedState);
 
         for (const { row, col } of positions) {
             if (neighborCount(mapState, null, row, col) === 0) continue;
 
-            const validTurns = legalRotations(trayTile, mapState, row, col);
+            const validRotations = legalRotations(trayTile, mapState, row, col);
 
-            for (const turns of validTurns) {
-                const simTile = { ...trayTile, place: { row, col }, turns };
+            for (const { turns, bits } of validRotations) {
+                // Simulate with settled bits
+                const simTile = { ...trayTile, place: { row, col }, bits };
                 const simPlaced = [...placedState, simTile];
                 const simMap = buildMap(simPlaced);
 
@@ -260,15 +277,11 @@ export const getBestMove = (tiles, aiPlayer) => {
                         tileId: trayTile.id,
                         targetRow: row,
                         targetCol: col,
-                        turns,
+                        turns,       // for animation / imgTurns update
+                        bits,        // settled orientation
                         reposition: reposition || null,
                         reposition2: reposition2 || null,
                     };
-
-                    if (bestMove.reposition?.fromRow === 9 && bestMove.reposition?.fromCol === 5) {
-                        console.log('bestMove set with (9,5) reposition:', JSON.stringify(bestMove));
-                        console.trace();
-                    }
                 }
 
                 if (score >= threshold) return true;
@@ -315,45 +328,42 @@ export const getBestMove = (tiles, aiPlayer) => {
 
 // ─── Game state checks ───────────────────────────────────────────────────────
 
-// checkWin: returns the tile ids of the winning streak if any player has
-// achieved N_TO_WIN in a row, or null if no win exists.
-// Returns { player, tileIds } or null.
+// checkWin: returns { player, tileIds } for the winning streak, or null.
 export const checkWin = (tiles, nToWin = N_TO_WIN) => {
-  const placed  = getPlaced(tiles);
-  const map     = buildMap(placed);
+    const placed = getPlaced(tiles);
+    const map = buildMap(placed);
 
-  for (const anchor of placed) {
-    const { row, col } = anchor.place;
-    const player = anchor.player;
+    for (const anchor of placed) {
+        const { row, col } = anchor.place;
+        const player = anchor.player;
 
-    for (const { dr, dc } of WIN_DIRS) {
-      // Only start from the beginning of a run
-      const prev = getTile(map, row - dr, col - dc);
-      if (prev?.player === player) continue;
+        for (const { dr, dc } of WIN_DIRS) {
+            // Only start from the beginning of a run
+            const prev = getTile(map, row - dr, col - dc);
+            if (prev?.player === player) continue;
 
-      // Measure run length, collecting tiles
-      const run = [];
-      let r = row, c = col;
-      while (true) {
-        const t = getTile(map, r, c);
-        if (t?.player === player) {
-          run.push(t);
-          r += dr;
-          c += dc;
-        } else break;
-      }
+            // Measure run length, collecting tiles
+            const run = [];
+            let r = row, c = col;
+            while (true) {
+                const t = getTile(map, r, c);
+                if (t?.player === player) {
+                    run.push(t);
+                    r += dr;
+                    c += dc;
+                } else break;
+            }
 
-      if (run.length >= nToWin) {
-        return { player, tileIds: run.map(t => t.id) };
-      }
+            if (run.length >= nToWin) {
+                return { player, tileIds: run.map(t => t.id) };
+            }
+        }
     }
-  }
 
-  return null;
+    return null;
 };
 
-// checkDraw: returns true if neither player has any tiles remaining in their
-// deck or tray (i.e. all tiles have been placed and no win has occurred).
+// checkDraw: returns true when all tiles have been placed and no win exists.
 export const checkDraw = (tiles) => {
-  return tiles.every(t => t.place?.row);
+    return tiles.every(t => t.place?.row);
 };

@@ -5,7 +5,7 @@
 
 	const { player, info } = $props();
 	const wins = $derived(player === 1 ? stats.wins1 : stats.wins2);
-	const deck = $derived(ss.tiles.filter((t) => !t.place).length);
+	const deck = $derived(ss.tiles.filter((t) => t.player === player && !t.place).length);
 </script>
 
 <div class="stats {info === INFO_STATS ? (player === 1 ? 'wins1' : 'wins2') : player === 1 ? 'deck1' : 'deck2'}">

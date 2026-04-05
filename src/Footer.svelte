@@ -16,26 +16,30 @@
 		persist(true);
 	};
 
+	const mustWait = $derived.by(() => {
+		if (ss.opp === OPP_ROBOT && ss.actor === 2) {
+			return true;
+		}
+
+		if (isMoving()) {
+			return true;
+		}
+
+		return false;
+	});
+
 	const canSurrender = $derived.by(() => {
 		if (ss.over) {
 			return false;
 		}
 
-		if (ss.opp === OPP_ROBOT && ss.actor === 2) {
-			return false;
-		}
-
-		if (isMoving()) {
-			return false;
-		}
-
-		return true;
+		return !mustWait;
 	});
 </script>
 
 {#if !ss.menu}
 	<div class="footer" transition:fade>
-		<TextButton id="tb-menu" text={['Home']} onClick={() => (ss.menu = true)} />
+		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={() => (ss.menu = true)} />
 		<TextButton id="tb-deck" text={['Show Deck']} onClick={() => {}} />
 		<TextButton id="tb-surrender" text={[ss.opp === OPP_ROBOT ? 'Surrender' : 'Start Over']} disabled={!canSurrender} onClick={() => {}} />
 		<TextButton id="tb-restats" text={['Reset Stats']} onClick={() => {}} />

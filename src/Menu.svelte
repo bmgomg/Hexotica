@@ -7,12 +7,13 @@
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
 	import ToolButton from './Tool Button.svelte';
+	import { post } from './utils';
 
 	const onOppSelect = (opp) => {
 		ss.opp = opp;
 
 		if (!_sound.musicPlayed) {
-			_sound.playMusic();
+			post(_sound.playMusic, 1000);
 		}
 
 		delete ss.menu;

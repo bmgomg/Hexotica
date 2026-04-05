@@ -13,11 +13,11 @@
 
 <style>
 	.p1 {
-		grid-area: 1/1;
+		grid-area: 1/2;
 	}
 
 	.p2 {
-		grid-area: 1/5;
+		grid-area: 1/6;
 	}
 
 	.spin {

@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, neighbors, placedTiles, remesh, ss } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, neighbors, persist, placedTiles, remesh, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 	import { checkWin } from './ai';
 
@@ -172,11 +172,15 @@
 			delete ss.to;
 			delete ss.ms;
 
-			post(remesh);
-
-			if (checkWin(ss.tiles)){
+			if (checkWin(ss.tiles)) {
+				ss.over = true;
 				alert(`Player ${ss.actor} wins!`);
 			}
+
+			post(() => {
+				remesh();
+				persist();
+			});
 		}, ss.ms);
 	};
 
@@ -189,7 +193,7 @@
 			return ss.from;
 		}
 
-		if (tile.player !== ss.actor){
+		if (tile.player !== ss.actor) {
 			return false;
 		}
 

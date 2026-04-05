@@ -1,12 +1,12 @@
 <script>
-	import OppRobot from '$lib/images/Human vs Robot.webp';
 	import OpHuman from '$lib/images/Human vs Human.webp';
-	import { OPP_HUMAN, OPP_ROBOT } from './const';
-	import { makeGame, ss } from './shared.svelte';
-	import { _sound } from './sound.svelte';
-	import ToolButton from './Tool Button.svelte';
-	import TextButton from './Text Button.svelte';
+	import OppRobot from '$lib/images/Human vs Robot.webp';
 	import { fade } from 'svelte/transition';
+	import { APP_STATE, OPP_HUMAN, OPP_ROBOT } from './const';
+	import { loadGame, makeGame, ss } from './shared.svelte';
+	import { _sound } from './sound.svelte';
+	import TextButton from './Text Button.svelte';
+	import ToolButton from './Tool Button.svelte';
 
 	const onOppSelect = (opp) => {
 		ss.opp = opp;
@@ -15,18 +15,24 @@
 			_sound.playMusic();
 		}
 
-        delete ss.menu;
+		delete ss.menu;
 
-		makeGame();
+		ss.appKey = `${APP_STATE} • ${(ss.appSubKey = opp)}`;
+
+		if (!loadGame()) {
+			makeGame();
+		}
+
+		ss.seenPage[ss.appSubKey] = true;
 	};
 
 	const onRules = () => {
-        delete ss.menu;
-    };
+		delete ss.menu;
+	};
 
 	const onTutorial = () => {
-        delete ss.menu;
-    };
+		delete ss.menu;
+	};
 </script>
 
 {#if ss.menu}

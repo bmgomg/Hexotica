@@ -1,16 +1,17 @@
 import { sample, shuffle } from 'lodash-es';
-import { DECK, HEX_WIDTH } from './const';
+import { APP_STATE, DECK, HEX_WIDTH } from './const';
 import { clientRect } from './utils';
+import { _sound } from './sound.svelte';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
 export const ss = $state({
     menu: true,
+    seenPage: {},
     zoom: 1,
     dims: { rows: 1, cols: 1 },
     boardParams: {},
     tiles: [],
-    spin: 0,
     actor: 1,
 });
 
@@ -19,6 +20,50 @@ export const stats = $state({
     wins1: 0,
     wins2: 0,
 });
+
+export const persist = (commonOnly = false) => {
+    let json = JSON.stringify({ sfx: _sound.sfx, music: _sound.music });
+    localStorage.setItem(APP_STATE, json);
+
+    if (commonOnly) {
+        return;
+    }
+
+    json = JSON.stringify({ ...stats, tiles: ss.tiles, actor: ss.actor, over: ss.over });
+    localStorage.setItem(ss.appKey, json);
+};
+
+const loadCommon = () => {
+    const json = localStorage.getItem(APP_STATE);
+    const job = JSON.parse(json);
+
+    if (job) {
+        _sound.sfx = job.sfx;
+        _sound.music = job.music;
+    }
+};
+
+export const loadGame = () => {
+    loadCommon();
+
+    const json = localStorage.getItem(ss.appKey);
+    const job = JSON.parse(json);
+
+    if (job) {
+        stats.plays = job.plays;
+        stats.wins1 = job.wins1;
+        stats.wins2 = job.wins2;
+
+        if (ss.seenPage[ss.appSubKey] || !job.over) {
+            ss.tiles = job.tiles;
+            ss.actor = job.actor;
+
+            return true;
+        }
+    }
+
+    return false;
+};
 
 export const placedTiles = (tiles = ss.tiles) => tiles.filter(tile => tile.place?.row);
 
@@ -182,16 +227,19 @@ const playerTiles = (player, filter) => {
     return tiles;
 };
 
+export const drawTile = () => {
+    const tiles = playerTiles(ss.actor, 'deck');
+    const tile = sample(tiles);
+    tile.place = 'tray';
+};
+
 export const makeGame = () => {
+    delete ss.over;
     delete ss.from;
     delete ss.to;
 
     ss.tiles = initDecks();
     drawTile();
-};
 
-export const drawTile = () => {
-    const tiles = playerTiles(ss.actor, 'deck');
-    const tile = sample(tiles);
-    tile.place = 'tray';
+    persist();
 };

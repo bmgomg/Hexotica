@@ -1,0 +1,47 @@
+<script>
+	import { persist } from './shared.svelte';
+	import { _sound } from './sound.svelte';
+
+	const onClick = (i) => {
+		_sound.music = i;
+		_sound.playMusic();
+
+		persist(true);
+	};
+</script>
+
+<div class="selector">
+	<div class="label">Music</div>
+	<div class="values">
+		{#each [0, 1, 2, 3] as i (i)}
+			<div class="value {i === _sound.music ? 'selected' : ''}" onpointerdown={() => onClick(i)}>{i}</div>
+		{/each}
+	</div>
+</div>
+
+<style>
+	.selector {
+		display: grid;
+		grid-auto-flow: column;
+		gap: 12px;
+		align-items: center;
+	}
+
+	.values {
+		display: grid;
+		grid-auto-flow: column;
+		gap: 12px;
+	}
+
+	.value {
+		font-family: Florentina;
+		margin-bottom: -4px;
+		opacity: 0.5;
+		cursor: pointer;
+	}
+
+	.selected {
+		pointer-events: none;
+		opacity: 1;
+	}
+</style>

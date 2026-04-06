@@ -97,8 +97,10 @@
 			delete ss.to;
 			delete ss.ms;
 
-			if (checkWin(ss.tiles)) {
-				ss.over = true;
+			const { player, tileIds } = checkWin(ss.tiles);
+
+			if (player) {
+				ss.over = tileIds;
 				showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
 			}
 

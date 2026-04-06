@@ -28,9 +28,10 @@
 	const turns = $derived(tile === goTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
+	const winner = $derived(ss.over && ss.over.some(id => id === tile.id));
 </script>
 
-<div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
+<div id={tile.id} class="tile nope {tt ? 'swirl' : ''} {winner ? 'pulse' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
 		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;"/>
@@ -76,5 +77,18 @@
 	img {
 		grid-area: 1/1;
 		transition: scale 1s linear;
+	}
+
+	.pulse {
+		animation: pulse 0.4s alternate infinite ease-in-out;
+	}
+
+	@keyframes pulse {
+		from {
+			transform: scale(1);
+		}
+		to {
+			transform: scale(0.94);
+		}
 	}
 </style>

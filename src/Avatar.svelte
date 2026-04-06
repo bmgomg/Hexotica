@@ -9,7 +9,7 @@
 	const src = $derived(player === 1 ? HumanY : ss.opp === OPP_ROBOT ? Robot : HumanB);
 </script>
 
-<img class="{player === 1 ? 'p1' : 'p2'} {ss.actor === player ? 'spin' : ''}" {src} alt="" width={60} />
+<img class="{player === 1 ? 'p1' : 'p2'} {ss.actor === player && !ss.over ? 'spin' : ''}" {src} alt="" width={60} />
 
 <style>
 	.p1 {

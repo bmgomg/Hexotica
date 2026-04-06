@@ -21,7 +21,7 @@
 
 	const { tile, row, col } = $props();
 	const hexes = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14];
-	const i = DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.originalBits));
+	const i = DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.idBits));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tile.off || !tt ? ss.zoom : 0.9);

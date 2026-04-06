@@ -10,6 +10,10 @@ export const MSG_INFO = 'info';
 export const MSG_SUCCESS = 'success';
 export const INFO_STATS = 'stats';
 export const INFO_DECK = 'deck';
+export const ERR_NONE = 0;
+export const ERR_COLOR = 1;
+export const ERR_NEIGHBORS = 2;
+export const ERR_ISLAND = 3;
 
 export const DECK = [
     [2, 2, 2, 2, 2, 2],

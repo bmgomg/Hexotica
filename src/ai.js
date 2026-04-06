@@ -2,6 +2,8 @@
 // ai.js
 // ---------------------------------------------------------------------------
 
+import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NONE } from './const';
+
 const ADJ = [
     { dr: -2, dc: 0 }, // 0 top
     { dr: -1, dc: +1 }, // 1 top-right
@@ -366,4 +368,65 @@ export const checkWin = (tiles, nToWin = N_TO_WIN) => {
 // checkDraw: returns true when all tiles have been placed and no win exists.
 export const checkDraw = (tiles) => {
     return tiles.every(t => t.place?.row);
+};
+
+// validateMove: checks whether a proposed move is legal.
+//
+// `from`   — { row, col, sector } of the tile being moved (sectors 1-6).
+//            Pass { row: -1, col: -1, sector } for a tray tile placement.
+// `to`     — { row, col, sector } of the target spot.
+// `tiles`  — full tiles array.
+//
+// Returns one of: ERR_NONE, ERR_COLOR, ERR_NEIGHBORS, ERR_ISLAND
+// (constants assumed to be imported from const.js by the caller)
+export const validateMove = (from, to, tiles) => {
+    const placed = getPlaced(tiles);
+    const map = buildMap(placed);
+
+    // from = { row: -1, col: -1, sector } signals a tray tile placement.
+    const isTrayTile = from.row === -1;
+
+    // Find the tile being moved
+    const ftile = isTrayTile
+        ? tiles.find(t => t.place === 'tray')
+        : placed.find(t => t.place.row === from.row && t.place.col === from.col);
+    if (!ftile) return ERR_NONE;
+
+    // Sectors are 1-6; convert to 0-based for delta calculation.
+    const fromSector = from.sector - 1;
+    const toSector = to.sector - 1;
+
+    let delta = toSector - fromSector;
+    if (delta > 3) delta -= 6;
+    if (delta < -3) delta += 6;
+
+    const newBits = norm(ftile.bits, delta);
+
+    // ── Check 1: color matching ───────────────────────────────────────────────
+    let neighborCount_ = 0;
+
+    for (let i = 0; i < 6; i++) {
+        const { dr, dc } = ADJ[i];
+        const adj = getTile(map, to.row + dr, to.col + dc);
+        if (!adj || adj === ftile) continue;
+        neighborCount_++;
+        const j = i < 3 ? i + 3 : i - 3;
+        if (newBits[i] && adj.bits[j] !== newBits[i]) return ERR_COLOR;
+    }
+
+    // ── Check 2: neighbor count ───────────────────────────────────────────────
+    // Tray placements only need at least one neighbor (or zero if first tile).
+    // Repositions must have >= neighbors as the old position.
+    if (!isTrayTile) {
+        const oldNeighborCount = neighborCount(map, ftile, from.row, from.col);
+        if (neighborCount_ < oldNeighborCount) return ERR_NEIGHBORS;
+    }
+
+    // ── Check 3: contiguity (no islands) ─────────────────────────────────────
+    // Only applies to repositions, not tray placements.
+    if (!isTrayTile && (to.row !== from.row || to.col !== from.col)) {
+        if (!isContiguous(placed, ftile, to.row, to.col)) return ERR_ISLAND;
+    }
+
+    return ERR_NONE;
 };

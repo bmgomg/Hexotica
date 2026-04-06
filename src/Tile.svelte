@@ -85,10 +85,10 @@
 
 	@keyframes pulse {
 		from {
-			transform: scale(1);
+			rotate: 0deg;
 		}
 		to {
-			transform: scale(0.94);
+			rotate: 8deg;
 		}
 	}
 </style>

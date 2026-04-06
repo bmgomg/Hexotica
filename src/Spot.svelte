@@ -78,7 +78,7 @@
 
 		post(() => {
 			gotile.bits = bits;
-			gotile.imgTurns += currentTurns();
+			gotile.imgTurns = (gotile.imgTurns + currentTurns()) % 6;
 
 			if (gotile.off) {
 				delete gotile.off;
@@ -97,11 +97,15 @@
 			delete ss.to;
 			delete ss.ms;
 
-			const { player, tileIds } = checkWin(ss.tiles);
+			const win = checkWin(ss.tiles);
 
-			if (player) {
-				ss.over = tileIds;
-				showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
+			if (win) {
+				const { player, tileIds } = win;
+
+				if (player) {
+					ss.over = tileIds;
+					showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
+				}
 			}
 
 			post(() => {

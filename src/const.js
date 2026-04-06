@@ -15,6 +15,8 @@ export const ERR_COLOR = 2;
 export const ERR_NEIGHBORS = 3;
 export const ERR_ISLAND = 4;
 
+/////////////////////////////////////////////////
+
 export const DECK = [
     [2, 2, 2, 2, 2, 2],
     [2, 2, 2, 2, 2, 1],

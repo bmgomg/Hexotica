@@ -37,18 +37,11 @@
 	});
 
 	const onNewGame = () => {
-		if (!ss.over) {
-			if (ss.opp === OPP_ROBOT) {
-				showMessage('You surrendered!', MSG_INFO);
-
-				stats.plays++;
-				stats.wins2++;
-			} else {
-				showMessage('Game reset!', MSG_INFO);
-			}
+		if (ss.over) {
+			makeGame();
+		} else {
+			ss.choice = true;
 		}
-
-		makeGame();
 	};
 
 	const onResetStats = () => {
@@ -61,10 +54,10 @@
 		persist();
 	};
 
-	const newGameStyle = $derived(ss.over ? 'color: var(--green-success); border: 1px solid var(--green-success);' : '');
+	const newGameStyle = $derived(ss.over ? 'color: var(--msg-success); border: 1px solid var(--msg-success);' : '');
 </script>
 
-{#if !ss.message}
+{#if !ss.message && !ss.choice}
 	<div class="toolbar" in:fade>
 		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={() => (ss.menu = true)} />
 		<TextButton id="tb-deck" text={['Show Decks']} onClick={() => {}} />

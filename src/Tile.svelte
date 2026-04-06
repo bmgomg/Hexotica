@@ -1,5 +1,4 @@
 <script>
-	import HexBg from '$lib/images/Hex Background.webp';
 	import Hex1 from '$lib/images/Hex 1.webp';
 	import Hex10 from '$lib/images/Hex 10.webp';
 	import Hex11 from '$lib/images/Hex 11.webp';
@@ -14,6 +13,7 @@
 	import Hex7 from '$lib/images/Hex 7.webp';
 	import Hex8 from '$lib/images/Hex 8.webp';
 	import Hex9 from '$lib/images/Hex 9.webp';
+	import HexBg from '$lib/images/Hex Background.webp';
 	import { DECK, HEX_WIDTH } from './const';
 	import Knob from './Knob.svelte';
 	import { currentTurns, goTile, ss } from './shared.svelte';
@@ -21,20 +21,20 @@
 
 	const { tile, row, col } = $props();
 	const hexes = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14];
-	const i = DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.idBits));
+	const i = $derived(DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.idBits)));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tile.off || !tt ? ss.zoom : 0.9);
 	const turns = $derived(tile === goTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
-	const winner = $derived(ss.over && ss.over.some(id => id === tile.id));
+	const winner = $derived(ss.over && ss.over.some((id) => id === tile.id));
 </script>
 
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ''} {winner ? 'pulse' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
-		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;"/>
+		<img src={hexes[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
 		<Spot {row} {col} {tile} {scale} />
 	</div>
 	<Knob {tile} {scale} />

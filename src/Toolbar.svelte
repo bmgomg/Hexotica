@@ -28,22 +28,24 @@
 		return false;
 	});
 
-	const canSurrender = $derived.by(() => {
+	const canNewGame = $derived.by(() => {
 		if (ss.over) {
-			return false;
+			return true;
 		}
 
 		return !mustWait;
 	});
 
-	const onSurrender = () => {
-		if (ss.opp === OPP_ROBOT) {
-			showMessage('You surrendered!', MSG_INFO);
+	const onNewGame = () => {
+		if (!ss.over) {
+			if (ss.opp === OPP_ROBOT) {
+				showMessage('You surrendered!', MSG_INFO);
 
-			stats.plays++;
-			stats.wins2++;
-		} else {
-			showMessage('Game reset!', MSG_INFO);
+				stats.plays++;
+				stats.wins2++;
+			} else {
+				showMessage('Game reset!', MSG_INFO);
+			}
 		}
 
 		makeGame();
@@ -58,13 +60,15 @@
 
 		persist();
 	};
+
+	const newGameStyle = $derived(ss.over ? 'color: var(--green-success); border: 1px solid var(--green-success);' : '');
 </script>
 
 {#if !ss.message}
 	<div class="toolbar" in:fade>
 		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={() => (ss.menu = true)} />
 		<TextButton id="tb-deck" text={['Show Decks']} onClick={() => {}} />
-		<TextButton id="tb-surrender" text={['New Game']} disabled={!canSurrender} onClick={onSurrender} />
+		<TextButton id="tb-new-game" text={['New Game']} style={newGameStyle} framed={ss.over} disabled={!canNewGame} onClick={onNewGame} />
 		<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
 		<MusicVolume />
 		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} style="width: 61px; justify-content: start;" onClick={onSfx} />

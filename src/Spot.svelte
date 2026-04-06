@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { checkWin, validateMove } from './ai';
-	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
+	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH, MSG_SUCCESS } from './const';
 	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, showMessage, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 
@@ -99,7 +99,7 @@
 
 			if (checkWin(ss.tiles)) {
 				ss.over = true;
-				alert(`Player ${ss.actor} wins!`);
+				showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
 			}
 
 			post(() => {

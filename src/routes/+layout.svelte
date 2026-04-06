@@ -27,6 +27,7 @@
 			--slate-shine: #7ab8d8;
 			--green: #208060;
 			--green-shine: #4ca788;
+			--green-success: #60b888;
 			--amber-fill: #c4902a;
 			--amber-shine: #f0d080;
 			--amber-circle: #d4bc8a;

@@ -27,11 +27,9 @@
 		border: 1px solid #2a4858;
 	}
 
-	/*
 	.message.success {
 		background: #182018;
 		color: #60b888;
 		border: 1px solid #285838;
 	}
-	*/
 </style>

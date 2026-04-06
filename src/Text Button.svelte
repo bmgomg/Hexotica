@@ -72,31 +72,6 @@
 		border-color: var(--text);
 	}
 
-	/* .framed::before,
-	.framed::after {
-		content: '';
-		position: absolute;
-		width: 0.3em;
-		height: 0.3em;
-		border-color: var(--amber-shine);
-		border-style: solid;
-		transition: all 0.2s;
-	}
-
-	.framed::before {
-		left: 0;
-		top: 0;
-		translate: -1px -1px;
-		border-width: 1px 0 0 1px;
-	}
-
-	.framed::after {
-		right: 0;
-		bottom: 0;
-		translate: 1px 1px;
-		border-width: 0 1px 1px 0;
-	} */
-
 	.disabled {
 		cursor: initial;
 		pointer-events: none;

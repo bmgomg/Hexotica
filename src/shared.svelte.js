@@ -57,6 +57,7 @@ export const loadGame = () => {
         if (ss.seenPage[ss.appSubKey] || !job.over) {
             ss.tiles = job.tiles;
             ss.actor = job.actor;
+            ss.over = job.over;
 
             return true;
         }

@@ -1,7 +1,7 @@
-import { sample, shuffle } from 'lodash-es';
+import { sample } from 'lodash-es';
 import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS } from './const';
-import { clientRect, post } from './utils';
 import { _sound } from './sound.svelte';
+import { clientRect, post } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -204,9 +204,8 @@ export const currentTurns = () => {
 
 const initDecks = () => {
     const tiles = [];
-    const deck = shuffle(DECK);
 
-    deck.forEach(bits => {
+    DECK.forEach(bits => {
         for (const player of [1, 2]) {
             const id = 'tile ' + player + ` ${bits}`.replaceAll(',', '');
             tiles.push({ id, player, bits, idBits: bits, imgTurns: 0 });

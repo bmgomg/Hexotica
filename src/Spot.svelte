@@ -20,6 +20,8 @@
 	const moving = $derived(isMoving());
 
 	const onClick = (i) => {
+		delete ss.choice;
+
 		if (ss.over) {
 			return;
 		}

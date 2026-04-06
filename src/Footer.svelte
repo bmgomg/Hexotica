@@ -3,14 +3,14 @@
 	import Message from './Message.svelte';
 	import { ss } from './shared.svelte';
 	import Toolbar from './Toolbar.svelte';
-	import ConfirmRestart from './Confirm Restart.svelte';
+	import Choice from './Choice.svelte';
 </script>
 
 {#if !ss.menu}
 	<div class="footer" transition:fade>
 		<Toolbar />
 		<Message />
-		<ConfirmRestart/>
+		<Choice/>
 	</div>
 {/if}
 

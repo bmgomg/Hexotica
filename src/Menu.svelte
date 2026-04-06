@@ -40,7 +40,7 @@
 
 {#if ss.menu}
 	<div class="menu" transition:fade>
-		<div class="title grad-text grad-gold-blue">Hexotica</div>
+		<div class="title no-highlight grad-text grad-gold-blue">Hexotica</div>
 		<div class="goal">Be the first to place 5 of your tiles in a straight line in any direction.</div>
 		<div class="ops">
 			<ToolButton id="tb-opp-robot" src={OppRobot} width={100} onClick={() => onOppSelect(OPP_ROBOT)} />

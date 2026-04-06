@@ -118,7 +118,7 @@
 	};
 
 	const canClick = $derived.by(() => {
-		if (moving) {
+		if (moving || ss.over) {
 			return false;
 		}
 

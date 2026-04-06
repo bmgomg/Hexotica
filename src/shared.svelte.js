@@ -229,7 +229,11 @@ const playerTiles = (player, filter) => {
 
 export const drawTile = () => {
     const tiles = playerTiles(ss.actor, 'deck');
-    const tile = sample(tiles);
+    const first = tiles.length === DECK.length;
+
+    const solid = (tile) => tile.bits.every(t => t === 1) || tile.bits.every(t => t === 2);
+
+    let tile; do { tile = sample(tiles); } while (first && solid(tile));
     tile.place = 'tray';
 };
 

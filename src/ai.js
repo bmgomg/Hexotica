@@ -2,7 +2,7 @@
 // ai.js
 // ---------------------------------------------------------------------------
 
-import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NONE } from './const';
+import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE } from './const';
 
 const ADJ = [
     { dr: -2, dc: 0 }, // 0 top
@@ -377,7 +377,7 @@ export const checkDraw = (tiles) => {
 // `to`     — { row, col, sector } of the target spot.
 // `tiles`  — full tiles array.
 //
-// Returns one of: ERR_NONE, ERR_COLOR, ERR_NEIGHBORS, ERR_ISLAND
+// Returns one of: ERR_NO_TILE, ERR_COLOR, ERR_NEIGHBORS, ERR_ISLAND, or newBits
 // (constants assumed to be imported from const.js by the caller)
 export const validateMove = (from, to, tiles) => {
     const placed = getPlaced(tiles);
@@ -387,18 +387,24 @@ export const validateMove = (from, to, tiles) => {
     const isTrayTile = from.row === -1;
 
     // Find the tile being moved
-    const ftile = isTrayTile
-        ? tiles.find(t => t.place === 'tray')
-        : placed.find(t => t.place.row === from.row && t.place.col === from.col);
-    if (!ftile) return ERR_NONE;
+    const ftile = isTrayTile ? tiles.find(t => t.place === 'tray') :
+        placed.find(t => t.place.row === from.row && t.place.col === from.col);
+
+    if (!ftile) {
+        return ERR_NO_TILE;
+    }
 
     // Sectors are 1-6; convert to 0-based for delta calculation.
     const fromSector = from.sector - 1;
     const toSector = to.sector - 1;
 
     let delta = toSector - fromSector;
-    if (delta > 3) delta -= 6;
-    if (delta < -3) delta += 6;
+
+    if (delta > 3) {
+        delta -= 6;
+    } else if (delta < -3) {
+        delta += 6;
+    }
 
     const newBits = norm(ftile.bits, delta);
 
@@ -408,10 +414,17 @@ export const validateMove = (from, to, tiles) => {
     for (let i = 0; i < 6; i++) {
         const { dr, dc } = ADJ[i];
         const adj = getTile(map, to.row + dr, to.col + dc);
-        if (!adj || adj === ftile) continue;
+
+        if (!adj || adj === ftile) {
+            continue;
+        }
+
         neighborCount_++;
         const j = i < 3 ? i + 3 : i - 3;
-        if (newBits[i] && adj.bits[j] !== newBits[i]) return ERR_COLOR;
+
+        if (newBits[i] && adj.bits[j] !== newBits[i]) {
+            return ERR_COLOR;
+        }
     }
 
     // ── Check 2: neighbor count ───────────────────────────────────────────────
@@ -419,14 +432,19 @@ export const validateMove = (from, to, tiles) => {
     // Repositions must have >= neighbors as the old position.
     if (!isTrayTile) {
         const oldNeighborCount = neighborCount(map, ftile, from.row, from.col);
-        if (neighborCount_ < oldNeighborCount) return ERR_NEIGHBORS;
+
+        if (neighborCount_ < oldNeighborCount) {
+            return ERR_NEIGHBORS;
+        }
     }
 
     // ── Check 3: contiguity (no islands) ─────────────────────────────────────
     // Only applies to repositions, not tray placements.
     if (!isTrayTile && (to.row !== from.row || to.col !== from.col)) {
-        if (!isContiguous(placed, ftile, to.row, to.col)) return ERR_ISLAND;
+        if (!isContiguous(placed, ftile, to.row, to.col)) {
+            return ERR_ISLAND;
+        }
     }
 
-    return ERR_NONE;
+    return newBits;
 };

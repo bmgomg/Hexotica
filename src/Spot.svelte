@@ -1,15 +1,15 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, neighbors, persist, placedTiles, remesh, showMessage, ss } from './shared.svelte';
+	import { checkWin, validateMove } from './ai';
+	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
+	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, showMessage, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
-	import { checkWin } from './ai';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
-	const id = $derived('spot ' + row + ':' + col);
-	const ga = $derived(`${tile || !row ? 1 : row}/${tile || !col ? 1 : col}`);
+	const id = $derived('spot ' + (row < 0 ? 'tray' : row + ':' + col));
+	const ga = $derived(`${tile || row < 0 ? 1 : row}/${tile || col < 0 ? 1 : col}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
@@ -24,8 +24,10 @@
 			return;
 		}
 
+		const placement = { row, col, sector: i };
+
 		if (!ss.from) {
-			ss.from = { row, col, sector: i };
+			ss.from = placement;
 			return;
 		}
 
@@ -40,107 +42,28 @@
 				return;
 			}
 		} else if (tile) {
-			ss.from = { row, col, sector: i };
+			ss.from = placement;
 			return;
 		}
 
-		const gotile = goTile();
+		const bits = validateMove(ss.from, placement, ss.tiles);
 
-		///////////////////
-
-		let delta = i - ss.from.sector;
-
-		if (delta > 3) {
-			delta -= 6;
-		} else if (delta < -3) {
-			delta += 6;
-		}
-
-		let ok = true;
-
-		const norm = (bits, turns) => {
-			bits = [...bits, ...bits, ...bits];
-			bits = bits.slice(6 - turns, 12 - turns);
-			return bits;
-		};
-
-		const bits = norm(gotile.bits, delta);
-		let nbs = neighbors(row, col);
-		let count = 0;
-
-		for (let i = 0; i < 6; i++) {
-			const nb = nbs[i];
-
-			if (!nb || nb === gotile) {
-				continue;
-			}
-
-			count += 1;
-
-			const nbits = norm(nb.bits, 0);
-
-			const j = i < 3 ? i + 3 : i - 3;
-			const b = nbits[j];
-
-			if (bits[i] && b !== bits[i]) {
-				ok = false;
-				break;
-			}
-		}
-
-		if (!ok) {
-			showMessage('Color mismatch!');
-			return;
-		}
-
-		nbs = neighbors(gotile.place.row, gotile.place.col);
-		const _count = nbs.filter((nb) => !!nb).length;
-
-		if (_count > count) {
-			showMessage('Too few neighbors!');
-			return;
-		}
-
-		if (gotile.place !== 'tray') {
-			const ptiles = placedTiles();
-
-			const countContiguous = () => {
-				let count = 0;
-
-				const visit = (tile) => {
-					if (tile.visited) {
-						return;
-					}
-
-					count += 1;
-					tile.visited = true;
-
-					const nbs = neighbors(tile.place.row, tile.place.col, ptiles).filter((nb) => !!nb);
-
-					for (const nb of nbs) {
-						visit(nb);
-					}
-				};
-
-				visit(gotile);
-				return count;
-			};
-
-			count = countContiguous();
-
-			for (const tile of ptiles) {
-				delete tile.visited;
-			}
-
-			if (count < ptiles.length) {
+		switch (bits) {
+			case ERR_NO_TILE:
+				throw new Error('No tile!');
+			case ERR_COLOR:
+				showMessage('Color mismatch!');
+				return;
+			case ERR_NEIGHBORS:
+				showMessage('Too few neighbors!');
+				return;
+			case ERR_ISLAND:
 				showMessage('No islands!');
 				return;
-			}
 		}
 
-		///////////////////
-
-		ss.to = { row, col, sector: i };
+		ss.to = placement;
+		const gotile = goTile();
 
 		if (tile) {
 			ss.ms = 500;

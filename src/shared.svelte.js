@@ -70,7 +70,7 @@ export const placedTiles = (tiles = ss.tiles) => tiles.filter(tile => tile.place
 export const trayTile = () => ss.tiles.find(tile => tile.place === 'tray');
 
 export const findTile = (row, col) => {
-    if (row === 0) {
+    if (row < 0) {
         return trayTile();
     }
 

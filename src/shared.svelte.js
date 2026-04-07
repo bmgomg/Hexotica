@@ -1,5 +1,5 @@
 import { sample } from 'lodash-es';
-import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS } from './const';
+import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
 import { clientRect, post } from './utils';
 
@@ -275,3 +275,5 @@ export const showMessage = (text, type = MSG_ERROR) => {
     ss.message = { text, type };
     post(() => delete ss.message, 2500);
 };
+
+export const roboTurn = () => ss.opp === OPP_ROBOT && ss.actor === 2;

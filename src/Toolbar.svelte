@@ -1,8 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { MSG_INFO, OPP_ROBOT } from './const';
+	import { MSG_INFO } from './const';
 	import MusicVolume from './Music Volume.svelte';
-	import { isMoving, makeGame, persist, showMessage, ss, stats } from './shared.svelte';
+	import { isMoving, makeGame, persist, roboTurn, showMessage, ss, stats } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
 
@@ -17,7 +17,7 @@
 	};
 
 	const mustWait = $derived.by(() => {
-		if (ss.opp === OPP_ROBOT && ss.actor === 2) {
+		if (roboTurn()) {
 			return true;
 		}
 

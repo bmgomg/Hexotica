@@ -109,20 +109,16 @@
 			const win = checkWin(ss.tiles);
 
 			if (win) {
-				const { player, tileIds } = win;
+				ss.over = win;
+				showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
+				post(() => _sound.play(win.player === 1 ? 'player1wins' : 'player2wins'), 200);
 
-				if (player) {
-					ss.over = tileIds;
-					showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
-					post(() => _sound.play(player === 1 ? 'player1wins' : 'player2wins'), 200);
+				stats.plays++;
 
-					stats.plays++;
-
-					if (player === 1) {
-						stats.wins1++;
-					} else {
-						stats.wins2++;
-					}
+				if (win.player === 1) {
+					stats.wins1++;
+				} else {
+					stats.wins2++;
 				}
 			}
 

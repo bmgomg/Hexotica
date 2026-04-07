@@ -13,7 +13,7 @@
 	const turns = $derived(tile === goTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
-	const winner = $derived(ss.over && ss.over.some((id) => id === tile.id));
+	const winner = $derived(ss.over && ss.over.tileIds.some((id) => id === tile.id));
 </script>
 
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ''} {winner ? 'pulse' : ''}" {style}>

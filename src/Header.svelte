@@ -5,6 +5,7 @@
 	import Tray from './Tray.svelte';
 	import Stats from './Stats.svelte';
 	import { INFO_DECK, INFO_STATS } from './const';
+	import Trophy from './Trophy.svelte';
 </script>
 
 {#if !ss.menu && !ss.decks}
@@ -13,6 +14,7 @@
 		<Avatar player={1} />
 		<Stats player={1} info={INFO_DECK} />
         <Tray />
+        <Trophy />
 		<Stats player={2} info={INFO_DECK} />
 		<Avatar player={2} />
 		<Stats player={2} info={INFO_STATS} />

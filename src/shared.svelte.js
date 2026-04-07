@@ -235,7 +235,7 @@ export const drawTile = () => {
 
     if (tiles.length === 0) {
         stats.plays++;
-        ss.over = [];
+        ss.over = { tilsIds: [] };
 
         showMessage('It\'s a draw!', MSG_SUCCESS);
         return;

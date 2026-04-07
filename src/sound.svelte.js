@@ -31,7 +31,7 @@ const loop = new Howl({ src: [music], loop: true });
 export const _sound = $state({
     sfx: true,
     music: 2,
-    play: (id, options = {}) => {""
+    play: (id, options = {}) => {
         const { rate = 1, volume = 1 } = options;
 
         if (_sound.sfx) {

@@ -63,6 +63,7 @@
 	};
 
 	const newGameStyle = $derived(ss.over ? 'color: var(--msg-success); border: 1px solid var(--msg-success);' : '');
+	const sfxStyle = 'width: 61px; justify-content: start;';
 </script>
 
 {#if !ss.message && !ss.choice}
@@ -72,7 +73,7 @@
 		<TextButton id="tb-new-game" text={['New Game']} style={newGameStyle} framed={ss.over} disabled={!canNewGame} onClick={onNewGame} />
 		<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
 		<MusicVolume />
-		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} style="width: 61px; justify-content: start;" onClick={onSfx} />
+		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} sound={false} style={sfxStyle} onClick={onSfx} />
 	</div>
 {/if}
 

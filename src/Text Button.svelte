@@ -2,7 +2,7 @@
 	import { _sound } from './sound.svelte';
 	import { post } from './utils';
 
-	const { id, text, framed, style, disabled, onClick } = $props();
+	const { id, text, framed, style, disabled, sound = true, onClick } = $props();
 
 	let scale = $state(1);
 	let timer = $state(false);
@@ -36,7 +36,9 @@
 			return;
 		}
 
-		_sound.play('tap');
+		if (sound) {
+			_sound.play('tap');
+		}
 
 		scale = 0.85;
 		timer = post(() => (timer = null), 500);

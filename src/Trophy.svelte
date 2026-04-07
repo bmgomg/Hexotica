@@ -1,12 +1,12 @@
 <script>
-	import Heart from '$lib/images/Heart.webp';
+	import TrophySplit from '$lib/images/Trophy Split.webp';
 	import Trophy1 from '$lib/images/Trophy Yellow.webp';
 	import Trophy2 from '$lib/images/Trophy Blue.webp';
 	import { ss } from './shared.svelte';
 	import { fade } from 'svelte/transition';
 
 	const { player } = $derived(ss.over);
-	const src = $derived(ss.over ? (player === 1 ? Trophy1 : player === 2 ? Trophy2 : Heart) : null);
+	const src = $derived(ss.over ? (player === 1 ? Trophy1 : player === 2 ? Trophy2 : TrophySplit) : null);
 </script>
 
 {#if ss.over}

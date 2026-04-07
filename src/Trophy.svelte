@@ -10,8 +10,8 @@
 </script>
 
 {#if ss.over}
-	<div class="trophy no-highlight" in:fade>
-		<img {src} alt="" width="75%" />
+	<div class="trophy no-highlight" transition:fade>
+		<img {src} alt="" width="70%" />
 	</div>
 {/if}
 

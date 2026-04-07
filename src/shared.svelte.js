@@ -33,7 +33,7 @@ export const persist = (commonOnly = false) => {
     localStorage.setItem(ss.appKey, json);
 };
 
-const loadCommon = () => {
+export const loadCommon = () => {
     const json = localStorage.getItem(APP_STATE);
     const job = JSON.parse(json);
 
@@ -44,8 +44,6 @@ const loadCommon = () => {
 };
 
 export const loadGame = () => {
-    loadCommon();
-
     const json = localStorage.getItem(ss.appKey);
     const job = JSON.parse(json);
 
@@ -215,7 +213,7 @@ const initDecks = () => {
     return tiles;
 };
 
-const playerTiles = (player, filter) => {
+export const playerTiles = (player, filter) => {
     let tiles = ss.tiles.filter(tile => tile.player === player);
 
     if (filter === 'placed') {
@@ -228,7 +226,20 @@ const playerTiles = (player, filter) => {
 };
 
 export const drawTile = () => {
-    const tiles = playerTiles(ss.actor, 'deck');
+    let tiles = playerTiles(ss.actor, 'deck');
+
+    if (tiles.length === 0) {
+        ss.actor = 3 - ss.actor;
+        tiles = playerTiles(ss.actor, 'deck');
+    }
+
+    if (tiles.length === 0) {
+        ss.over = [];
+        showMessage('It\'s a draw!', MSG_SUCCESS);
+
+        return;
+    }
+
     const first = tiles.length === DECK.length;
 
     const solid = (tile) => tile.bits.every(t => t === 1) || tile.bits.every(t => t === 2);

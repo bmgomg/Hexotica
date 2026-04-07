@@ -92,8 +92,10 @@
 
 				if (gotile.place === 'tray') {
 					post(() => {
-						ss.actor = 3 - ss.actor;
-						drawTile();
+						if (!ss.over) {
+							ss.actor = 3 - ss.actor;
+							drawTile();
+						}
 					});
 				}
 
@@ -112,6 +114,7 @@
 				if (player) {
 					ss.over = tileIds;
 					showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
+					post(() => _sound.play(player === 1 ? 'player1wins' : 'player2wins'), 200);
 				}
 			}
 

@@ -1,10 +1,13 @@
 <script>
 	import GamePage from '../Game Page.svelte';
+	import { loadCommon } from '../shared.svelte';
 	import { _sound } from '../sound.svelte';
 	import Splash from '../Splash.svelte';
 	import { post } from '../utils';
 
 	$effect(() => {
+		loadCommon();
+
 		const disable = (e) => {
 			e.preventDefault();
 		};

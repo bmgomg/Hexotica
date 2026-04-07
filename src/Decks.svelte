@@ -13,14 +13,14 @@
 </script>
 
 {#if ss.decks}
-	<div class="decks" in:fade>
+	<div id='decks' class="decks" in:fade>
 		{#each [1, 2] as player (player)}
 			<div class="deck">
 				{#each HEXES as hex, i (i)}
 					{@const row = i < 7 ? 1 : 2}
 					{@const col = (i % 7) + 1}
 					{@const tile = getTile(i, player)}
-					<div class="hex" style="grid-area: {row}/{col}">
+					<div class="hex no-highlight" style="grid-area: {row}/{col}">
 						{#if tile.place}
 							<Spot row={1} col={1} scale={0.8}/>
 						{:else}

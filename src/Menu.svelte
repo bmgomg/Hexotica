@@ -39,9 +39,9 @@
 </script>
 
 {#if ss.menu}
-	<div class="menu" transition:fade>
+	<div id='menu' class="menu" transition:fade>
 		<div class="title no-highlight grad-text grad-gold-blue">Hexotica</div>
-		<div class="goal">Be the first to place 5 of your tiles in a straight line in any direction.</div>
+		<div class="goal no-highlight">Be the first to place 5 of your tiles in a straight line in any direction.</div>
 		<div class="ops">
 			<ToolButton id="tb-opp-robot" src={OppRobot} width={100} onClick={() => onOppSelect(OPP_ROBOT)} />
 			<ToolButton id="tb-opp-human" src={OpHuman} width={100} onClick={() => onOppSelect(OPP_HUMAN)} />

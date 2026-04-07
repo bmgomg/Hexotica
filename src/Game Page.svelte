@@ -5,9 +5,26 @@
 	import Header from './Header.svelte';
 	import Footer from './Footer.svelte';
 	import Decks from './Decks.svelte';
+	import { ss } from './shared.svelte';
+	import { underMouse } from './utils';
+
+	const onClick = (e) => {
+		if (underMouse(e, ['#menu', '#decks'])) {
+			e.stopPropagation();
+			return;
+		}
+
+		if (ss.menu && ss.tiles.some(t => t.place)) {
+			delete ss.menu;
+		}
+
+		if (ss.decks) {
+			delete ss.decks;
+		}
+	};
 </script>
 
-<div class="game-page" in:fade>
+<div class="game-page" onpointerdown={onClick} in:fade>
 	<Header />
 	<Board />
 	<Menu />

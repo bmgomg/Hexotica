@@ -4,6 +4,7 @@
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH, MSG_SUCCESS } from './const';
 	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, showMessage, ss } from './shared.svelte';
 	import { post, rectCenter } from './utils';
+	import { _sound } from './sound.svelte';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -25,6 +26,8 @@
 		if (ss.over) {
 			return;
 		}
+
+		_sound.play('click');
 
 		const placement = { row, col, sector: i };
 
@@ -79,6 +82,8 @@
 		}
 
 		post(() => {
+			_sound.play('cluck');
+
 			gotile.bits = bits;
 			gotile.imgTurns = (gotile.imgTurns + currentTurns()) % 6;
 

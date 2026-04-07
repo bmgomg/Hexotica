@@ -238,6 +238,8 @@ export const drawTile = () => {
 };
 
 export const makeGame = () => {
+    _sound.play('dice');
+
     delete ss.over;
     delete ss.from;
     delete ss.to;

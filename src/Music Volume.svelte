@@ -10,7 +10,7 @@
 	};
 </script>
 
-<div class="selector">
+<div class="selector no-highlight">
 	<div class="label">Music</div>
 	<div class="values">
 		{#each [0, 1, 2, 3] as i (i)}

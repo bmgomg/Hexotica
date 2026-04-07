@@ -1,4 +1,5 @@
 <script>
+	import { _sound } from './sound.svelte';
 	import { post } from './utils';
 
 	const { id, text, framed, style, disabled, onClick } = $props();
@@ -35,8 +36,9 @@
 			return;
 		}
 
-		scale = 0.85;
+		_sound.play('tap');
 
+		scale = 0.85;
 		timer = post(() => (timer = null), 500);
 	};
 </script>

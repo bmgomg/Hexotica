@@ -30,11 +30,11 @@
 	};
 
 	const onRules = () => {
-		delete ss.menu;
+		// delete ss.menu;
 	};
 
 	const onTutorial = () => {
-		delete ss.menu;
+		// delete ss.menu;
 	};
 </script>
 

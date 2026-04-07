@@ -54,13 +54,21 @@
 		persist();
 	};
 
+	const onHome = () => {
+		ss.menu = true;
+	};
+
+	const onShowDecks = () => {
+		ss.decks = true;
+	};
+
 	const newGameStyle = $derived(ss.over ? 'color: var(--msg-success); border: 1px solid var(--msg-success);' : '');
 </script>
 
 {#if !ss.message && !ss.choice}
 	<div class="toolbar" in:fade>
-		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={() => (ss.menu = true)} />
-		<TextButton id="tb-deck" text={['Show Decks']} onClick={() => (ss.decks = !ss.decks)} />
+		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={onHome} />
+		<TextButton id="tb-deck" text={['Show Decks']} onClick={onShowDecks} />
 		<TextButton id="tb-new-game" text={['New Game']} style={newGameStyle} framed={ss.over} disabled={!canNewGame} onClick={onNewGame} />
 		<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
 		<MusicVolume />

@@ -73,7 +73,7 @@
 			rotate: 0deg;
 		}
 		to {
-			rotate: 8deg;
+			rotate: 10deg;
 		}
 	}
 </style>

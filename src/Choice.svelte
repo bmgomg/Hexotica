@@ -3,7 +3,6 @@
 	import { MSG_INFO, OPP_HUMAN, OPP_ROBOT } from './const';
 	import { makeGame, showMessage, ss, stats } from './shared.svelte';
 	import TextButton from './Text Button.svelte';
-	import { _sound } from './sound.svelte';
 
 	const onConfirm = () => {
 		delete ss.choice;

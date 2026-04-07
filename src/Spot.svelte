@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { checkWin, validateMove } from './ai';
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH, MSG_SUCCESS } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, showMessage, ss } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, showMessage, ss, stats } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 	import { _sound } from './sound.svelte';
 
@@ -115,6 +115,14 @@
 					ss.over = tileIds;
 					showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
 					post(() => _sound.play(player === 1 ? 'player1wins' : 'player2wins'), 200);
+
+					stats.plays++;
+
+					if (player === 1) {
+						stats.wins1++;
+					} else {
+						stats.wins2++;
+					}
 				}
 			}
 

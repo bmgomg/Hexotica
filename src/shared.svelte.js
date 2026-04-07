@@ -234,10 +234,15 @@ export const drawTile = () => {
     }
 
     if (tiles.length === 0) {
+        stats.plays++;
         ss.over = [];
-        showMessage('It\'s a draw!', MSG_SUCCESS);
 
+        showMessage('It\'s a draw!', MSG_SUCCESS);
         return;
+    }
+
+    if (ss.tiles.some(t => t.place)) {
+        _sound.play('link1', { rate: 0.5 });
     }
 
     const first = tiles.length === DECK.length;

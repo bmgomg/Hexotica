@@ -5,6 +5,7 @@
 	import { isMoving, makeGame, persist, showMessage, ss, stats } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
+	import { post } from './utils';
 
 	const onSfx = () => {
 		_sound.sfx = !_sound.sfx;

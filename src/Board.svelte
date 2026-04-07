@@ -28,7 +28,7 @@
 	});
 </script>
 
-{#if !ss.menu}
+{#if !ss.menu && !ss.decks}
 	<div id="board" bind={_this} class="board no-highlight {scrollClass()}" transition:fade>
 		<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
 			{#each _range(1, rows) as row (row)}

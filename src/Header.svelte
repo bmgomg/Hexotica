@@ -7,7 +7,7 @@
 	import { INFO_DECK, INFO_STATS } from './const';
 </script>
 
-{#if !ss.menu}
+{#if !ss.menu && !ss.decks}
 	<div class="header" transition:fade>
 		<Stats player={1} info={INFO_STATS}/>
 		<Avatar player={1} />

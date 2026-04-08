@@ -1,8 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { checkWin, validateMove } from './ai';
+	import { checkWin, getBestMove, validateMove } from './ai';
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH, MSG_SUCCESS } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, showMessage, ss, stats } from './shared.svelte';
+	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, roboTurn, showMessage, ss, stats } from './shared.svelte';
 	import { post, rectCenter } from './utils';
 	import { _sound } from './sound.svelte';
 
@@ -51,7 +51,7 @@
 			return;
 		}
 
-		const bits = validateMove(ss.from, placement, ss.tiles);
+		let bits = validateMove(ss.from, placement, ss.tiles);
 
 		switch (bits) {
 			case ERR_NO_TILE:
@@ -125,6 +125,11 @@
 			post(() => {
 				remesh();
 				persist();
+
+				if (roboTurn()) {
+					const bm = getBestMove(ss.tiles, 2);
+					console.log(bm);
+				}
 			}, 200);
 		}, ss.ms);
 	};

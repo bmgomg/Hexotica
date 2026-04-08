@@ -276,4 +276,4 @@ export const showMessage = (text, type = MSG_ERROR) => {
     post(() => delete ss.message, 2500);
 };
 
-export const roboTurn = () => ss.opp === OPP_ROBOT && ss.actor === 2;
+export const roboTurn = () => !ss.over && ss.opp === OPP_ROBOT && ss.actor === 2;

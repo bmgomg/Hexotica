@@ -2,7 +2,7 @@
 	import HexBg from '$lib/images/Hex Background.webp';
 	import { DECK, HEX_WIDTH, HEXES } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, goTile, ss } from './shared.svelte';
+	import { currentTurns, goTile, isWinner, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -13,15 +13,17 @@
 	const turns = $derived(tile === goTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
-	const winner = $derived(ss.over && ss.over.tileIds?.some((id) => id === tile.id));
 </script>
 
-<div id={tile.id} class="tile nope {tt ? 'swirl' : ''} {winner ? 'pulse' : ''}" {style}>
+<div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
 		<img src={HEXES[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
 		<Spot {row} {col} {tile} {scale} />
 	</div>
+	{#if isWinner(tile)}
+		<Knob {tile} bg={false} scale={scale * 1.2} />
+	{/if}
 	<Knob {tile} {scale} />
 </div>
 
@@ -62,18 +64,5 @@
 	img {
 		grid-area: 1/1;
 		transition: scale 1s linear;
-	}
-
-	.pulse {
-		animation: pulse 0.4s alternate infinite ease-in-out;
-	}
-
-	@keyframes pulse {
-		from {
-			rotate: 0deg;
-		}
-		to {
-			rotate: 10deg;
-		}
 	}
 </style>

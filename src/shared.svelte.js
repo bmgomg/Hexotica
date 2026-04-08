@@ -277,3 +277,5 @@ export const showMessage = (text, type = MSG_ERROR) => {
 };
 
 export const roboTurn = () => !ss.over && ss.opp === OPP_ROBOT && ss.actor === 2;
+
+export const isWinner = (tile) => tile && ss.over && ss.over.tileIds?.some((id) => id === tile.id);

@@ -49,3 +49,7 @@ export const DECK = [
     [1, 1, 1, 1, 1, 2],
     [1, 1, 1, 1, 1, 1],
 ];
+
+export const DIR_NW = { dr: -1, dc: -1 };
+export const DIR_N = { dr: -2, dc: 0 };
+export const DIR_NE = { dr: -1, dc: +1 };

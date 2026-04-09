@@ -262,6 +262,7 @@ export const makeGame = () => {
     delete ss.to;
 
     ss.tiles = initDecks();
+    ss.actor = 1;
 
     post(() => {
         drawTile();
@@ -324,7 +325,7 @@ export const doPlacement = (placement, bits) => {
             persist();
 
             if (roboTurn()) {
-                onRoboTurn();
+                post(onRoboTurn, 1000);
             }
         }, 200);
     }, ss.ms);

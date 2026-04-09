@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { validateMove } from './ai';
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { doPlacement, isMoving, showMessage, spotId, ss } from './shared.svelte';
+	import { doPlacement, isMoving, roboTurn, showMessage, spotId, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
@@ -104,7 +104,7 @@
 					<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.3} fill={shades[1]} />
 				</g>
 			{/snippet}
-			{#if selected === i && !moving}
+			{#if selected === i && !moving && !roboTurn()}
 				{@render dot(-deg)}
 			{/if}
 		</g>

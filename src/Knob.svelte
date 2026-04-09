@@ -1,7 +1,7 @@
 <script>
-	import { omit } from 'lodash-es';
+	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { findTile, roboTurn, ss } from './shared.svelte';
+	import { findTile, isWinner, roboTurn, ss } from './shared.svelte';
 
 	const { tile, bg = true, scale = ss.zoom } = $props();
 	const player = $derived(tile?.player);
@@ -11,10 +11,10 @@
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
 	const shine = $derived(`var(--${player === 1 ? 'amber-shine' : 'slate-shine'})`);
-	const pulse = $derived(roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile);
+	const pulse = $derived(!bg && (isWinner(tile) || (roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile)));
 </script>
 
-<div class="knob nope {pulse ? 'pulse' : ''}">
+<div class="knob nope {pulse ? 'pulse' : ''}" in:fade={{ duration: pulse ? 200 : 0 }}>
 	<svg {width} {height} {viewBox} {xmlns}>
 		<g class="core" stroke="none">
 			<circle cx="363" cy="314" {r} fill={bg ? 'var(--bg)' : 'none'} stroke={shine} stroke-width={12} />
@@ -50,7 +50,7 @@
 			scale: 1;
 		}
 		to {
-			scale: 1.3;
+			scale: 1.15;
 		}
 	}
 </style>

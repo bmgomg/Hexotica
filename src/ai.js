@@ -2,7 +2,7 @@
 // ai.js
 // ---------------------------------------------------------------------------
 
-import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE } from './const';
+import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, N_TO_WIN } from './const';
 
 const ADJ = [
     { dr: -2, dc: 0 }, // 0 top
@@ -124,7 +124,7 @@ const legalRotations = (tile, map, row, col, excludeTile = null) => {
 
 // ─── Board evaluation ────────────────────────────────────────────────────────
 
-const N_TO_WIN = 5;
+// const N_TO_WIN = 6;
 
 const analyseLines = (map, placed, player, minLen) => {
     const myTiles = placed.filter(t => t.player === player);

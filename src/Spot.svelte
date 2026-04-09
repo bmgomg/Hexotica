@@ -86,7 +86,7 @@
 	});
 </script>
 
-<div {id} class="spot nope" style="grid-area: {ga};">
+<div {id} class="spot nope" style="grid-area: {ga};" in:fade>
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}

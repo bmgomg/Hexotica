@@ -299,24 +299,23 @@ const onRoboTurn = () => {
 
 export const doPlacement = (placement, bits) => {
     ss.to = placement;
-    const ftile = fromTile();
-    const totile = findTile(ss.to.row, ss.to.col);
+    const tileFrom = fromTile();
 
-    if (totile === ftile) {
+    if (tileFrom === findTile(ss.to.row, ss.to.col)) {
         ss.ms = 500;
     } else {
-        const { x: x1, y: y1 } = rectCenter(ftile.id);
+        const { x: x1, y: y1 } = rectCenter(tileFrom.id);
 
         const id = spotId(ss.to.row, ss.to.col);
         const { x: x2, y: y2 } = rectCenter(id);
 
-        ftile.off = { x: x2 - x1, y: y2 - y1 };
+        tileFrom.off = { x: x2 - x1, y: y2 - y1 };
 
         ss.ms = 750;
     }
 
     post(() => {
-        completePlacement(ftile, bits);
+        completePlacement(bits);
 
         winCheck();
 
@@ -331,16 +330,17 @@ export const doPlacement = (placement, bits) => {
     }, ss.ms);
 };
 
-const completePlacement = (ftile, bits) => {
+const completePlacement = (bits) => {
     _sound.play('cluck');
 
-    ftile.bits = bits;
-    ftile.imgTurns = (ftile.imgTurns + currentTurns()) % 6;
+    const tileFrom = fromTile();
+    tileFrom.bits = bits;
+    tileFrom.imgTurns = (tileFrom.imgTurns + currentTurns()) % 6;
 
-    if (ftile.off) {
-        delete ftile.off;
+    if (tileFrom.off) {
+        delete tileFrom.off;
 
-        if (ftile.place === 'tray') {
+        if (tileFrom.place === 'tray') {
             post(() => {
                 if (!ss.over) {
                     ss.actor = 3 - ss.actor;
@@ -349,7 +349,7 @@ const completePlacement = (ftile, bits) => {
             });
         }
 
-        ftile.place = { row: ss.to.row, col: ss.to.col };
+        tileFrom.place = { row: ss.to.row, col: ss.to.col };
     }
 
     delete ss.from;

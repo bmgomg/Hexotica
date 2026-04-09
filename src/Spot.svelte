@@ -1,15 +1,14 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { checkWin, getBestMove, validateMove } from './ai';
-	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH, MSG_SUCCESS } from './const';
-	import { currentTurns, drawTile, goTile, isMoving, persist, remesh, roboTurn, showMessage, ss, stats } from './shared.svelte';
+	import { validateMove } from './ai';
+	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
+	import { doPlacement, isMoving, showMessage, spotId, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
-	import { post, rectCenter } from './utils';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
-	const id = $derived('spot ' + (row < 0 ? 'tray' : row + ':' + col));
+	const id = $derived(spotId(row, col));
 	const ga = $derived(`${tile || row < 0 ? 1 : row}/${tile || col < 0 ? 1 : col}`);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -67,71 +66,7 @@
 				return;
 		}
 
-		ss.to = placement;
-		const gotile = goTile();
-
-		if (tile) {
-			ss.ms = 500;
-		} else {
-			const { x: x1, y: y1 } = rectCenter(gotile.id);
-			const { x: x2, y: y2 } = rectCenter(id);
-
-			gotile.off = { x: x2 - x1, y: y2 - y1 };
-
-			ss.ms = 750;
-		}
-
-		post(() => {
-			_sound.play('cluck');
-
-			gotile.bits = bits;
-			gotile.imgTurns = (gotile.imgTurns + currentTurns()) % 6;
-
-			if (gotile.off) {
-				delete gotile.off;
-
-				if (gotile.place === 'tray') {
-					post(() => {
-						if (!ss.over) {
-							ss.actor = 3 - ss.actor;
-							drawTile();
-						}
-					});
-				}
-
-				gotile.place = { row, col };
-			}
-
-			delete ss.from;
-			delete ss.to;
-			delete ss.ms;
-
-			const win = checkWin(ss.tiles);
-
-			if (win) {
-				ss.over = win;
-				showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
-				post(() => _sound.play(win.player === 1 ? 'player1wins' : 'player2wins'), 200);
-
-				stats.plays++;
-
-				if (win.player === 1) {
-					stats.wins1++;
-				} else {
-					stats.wins2++;
-				}
-			}
-
-			post(() => {
-				remesh();
-				persist();
-
-				if (roboTurn()) {
-					const bm = getBestMove(ss.tiles, 2);
-					console.log(bm);
-				}
-			}, 200);
-		}, ss.ms);
+		doPlacement(placement, bits);
 	};
 
 	const canClick = $derived.by(() => {

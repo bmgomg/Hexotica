@@ -1,7 +1,8 @@
 import { sample } from 'lodash-es';
 import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
-import { clientRect, post } from './utils';
+import { clientRect, post, rectCenter } from './utils';
+import { checkWin, getBestMove } from './ai';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -76,7 +77,7 @@ export const findTile = (row, col) => {
     return ss.tiles.find(tile => tile.place?.row === row && tile.place?.col === col);
 };
 
-export const goTile = () => ss.from ? findTile(ss.from.row, ss.from.col) : null;
+export const fromTile = () => ss.from ? findTile(ss.from.row, ss.from.col) : null;
 
 export const neighbors = (row, col, tiles = ss.tiles) => {
     const nbs = [
@@ -279,3 +280,99 @@ export const showMessage = (text, type = MSG_ERROR) => {
 export const roboTurn = () => !ss.over && ss.opp === OPP_ROBOT && ss.actor === 2;
 
 export const isWinner = (tile) => tile && ss.over && ss.over.tileIds?.some((id) => id === tile.id);
+
+const onRoboTurn = () => {
+    let bm = getBestMove(ss.tiles, 2);
+    console.log(bm);
+
+    if (bm.reposition) {
+        bm = bm.reposition;
+    }
+
+    _sound.play('click');
+    ss.from = { row: bm.fromRow || -1, col: bm.fromCol || -1, sector: 1 };
+
+    post(() => {
+        doPlacement({ row: bm.targetRow, col: bm.targetCol, sector: 1 + bm.turns }, bm.bits);
+    }, 3000);
+};
+
+export const doPlacement = (placement, bits) => {
+    ss.to = placement;
+    const ftile = fromTile();
+    const totile = findTile(ss.to.row, ss.to.col);
+
+    if (totile === ftile) {
+        ss.ms = 500;
+    } else {
+        const { x: x1, y: y1 } = rectCenter(ftile.id);
+
+        const id = spotId(ss.to.row, ss.to.col);
+        const { x: x2, y: y2 } = rectCenter(id);
+
+        ftile.off = { x: x2 - x1, y: y2 - y1 };
+
+        ss.ms = 750;
+    }
+
+    post(() => {
+        completePlacement(ftile, bits);
+
+        winCheck();
+
+        post(() => {
+            remesh();
+            persist();
+
+            if (roboTurn()) {
+                onRoboTurn();
+            }
+        }, 200);
+    }, ss.ms);
+};
+
+const completePlacement = (ftile, bits) => {
+    _sound.play('cluck');
+
+    ftile.bits = bits;
+    ftile.imgTurns = (ftile.imgTurns + currentTurns()) % 6;
+
+    if (ftile.off) {
+        delete ftile.off;
+
+        if (ftile.place === 'tray') {
+            post(() => {
+                if (!ss.over) {
+                    ss.actor = 3 - ss.actor;
+                    drawTile();
+                }
+            });
+        }
+
+        ftile.place = { row: ss.to.row, col: ss.to.col };
+    }
+
+    delete ss.from;
+    delete ss.to;
+    delete ss.ms;
+};
+
+const winCheck = () => {
+    const win = checkWin(ss.tiles);
+
+    if (win) {
+        ss.over = win;
+        showMessage(`Player ${ss.actor} wins!`, MSG_SUCCESS);
+        post(() => _sound.play(win.player === 1 ? 'player1wins' : 'player2wins'), 200);
+
+        stats.plays++;
+
+        if (win.player === 1) {
+            stats.wins1++;
+        } else {
+            stats.wins2++;
+        }
+    }
+};
+
+export const spotId = (row, col) => 'spot ' + (row < 0 ? 'tray' : row + ':' + col);

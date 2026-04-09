@@ -2,7 +2,7 @@
 	import HexBg from '$lib/images/Hex Background.webp';
 	import { DECK, HEX_WIDTH, HEXES } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, goTile, isWinner, ss } from './shared.svelte';
+	import { currentTurns, fromTile, isWinner, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -10,7 +10,7 @@
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tile.off || !tt ? ss.zoom : 0.9);
-	const turns = $derived(tile === goTile() ? currentTurns() : 0);
+	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
 </script>

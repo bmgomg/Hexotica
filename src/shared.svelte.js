@@ -295,7 +295,7 @@ const onRoboTurn = () => {
 
     post(() => {
         doPlacement({ row: bm.targetRow, col: bm.targetCol, sector: 1 + bm.turns }, bm.bits);
-    }, 3000);
+    }, 2000);
 };
 
 export const doPlacement = (placement, bits) => {

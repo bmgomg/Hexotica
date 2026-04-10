@@ -16,7 +16,7 @@
 	const selected = $derived(ss.from && !ss.to && ss.from.row === row && ss.from.col === col);
 </script>
 
-<div id={tile.id} class="tile nope {tt ? 'swirl' : ''}" {style}>
+<div id={tile.id} class="tile nope {tt ? 'swirl' : ss.restart ? 'fade-out' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
 		<img src={HEXES[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
@@ -44,6 +44,21 @@
 		display: grid;
 		place-items: center;
 		transition: rotate linear;
+	}
+
+	.fade-out {
+		animation: fade 1s forwards;
+	}
+
+	@keyframes fade {
+		0% {
+			transform: scale(1);
+			rotate: 0deg;
+		}
+		100% {
+			transform: scale(0);
+			rotate: 360deg;
+		}
 	}
 
 	.swirl {

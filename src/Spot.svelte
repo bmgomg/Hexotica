@@ -86,7 +86,7 @@
 	});
 </script>
 
-<div {id} class="spot nope" style="grid-area: {ga};" in:fade>
+<div {id} class="spot nope {ss.restart && !tile ? 'fade-out' : ''}" style="grid-area: {ga};" in:fade>
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
@@ -148,5 +148,20 @@
 	svg {
 		grid-area: 1/1;
 		transition: scale 1s linear;
+	}
+
+	.fade-out {
+		animation: fade 1s forwards;
+	}
+
+	@keyframes fade {
+		0% {
+			transform: scale(1);
+			rotate: 0deg;
+		}
+		100% {
+			transform: scale(0);
+			rotate: 360deg;
+		}
 	}
 </style>

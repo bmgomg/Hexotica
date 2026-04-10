@@ -30,7 +30,7 @@
 
 {#if !ss.menu && !ss.decks}
 	<div id="board" bind={_this} class="board no-highlight {scrollClass()}" transition:fade>
-		<div id="mesh" class="mesh {ss.restart ? 'fade' : ''}" style="grid: {grid}; gap: {gap}; padding: {padding};">
+		<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
 			{#each _range(1, rows) as row (row)}
 				{#each _range(1, cols) as col (col)}
 					{@const style = `grid-area: ${row}/${col}; width: ${colWidth}; height: ${rowHeight}`}
@@ -64,10 +64,6 @@
 		place-self: center;
 		/* border: 1px dotted var(--text); */
 		transition: opacity 0.5s;
-	}
-
-	.fade {
-		opacity: 0;
 	}
 
 	.cell {

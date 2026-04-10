@@ -1,8 +1,8 @@
 import { sample } from 'lodash-es';
 import { checkWin, getBestMove } from './ai';
-import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
+import { APP_STATE, DECK, HEX_RATIO, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
-import { clientRect, post, rectCenter } from './utils';
+import { clientRect, inView, post, rectCenter } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -295,7 +295,6 @@ export const isWinner = (tile) => tile && ss.over && ss.over.tileIds?.some((id) 
 
 const onRoboTurn = () => {
     let bm = getBestMove(ss.tiles, 2);
-    console.log(bm);
 
     if (bm.reposition) {
         bm = bm.reposition;
@@ -303,6 +302,12 @@ const onRoboTurn = () => {
 
     _sound.play('click');
     ss.from = { row: bm.fromRow || -1, col: bm.fromCol || -1, sector: 1 };
+
+    // if (ss.from.row >= 0) {
+    //     const tile = findTile(ss.from.row, ss.from.col);
+    //     const ob = document.getElementById(tile.id);
+    //     scrollIntoView(ob);
+    // }
 
     post(() => {
         doPlacement({ row: bm.targetRow, col: bm.targetCol, sector: 1 + bm.turns }, bm.bits);
@@ -319,11 +324,18 @@ export const doPlacement = (placement, bits) => {
         const { x: x1, y: y1 } = rectCenter(tileFrom.id);
 
         const id = spotId(ss.to.row, ss.to.col);
+        const ob = document.getElementById(id);
+
+        // if (inView(ob)) {
+        if (true) {
+            ss.ms = 750;
+        } else {
+            scrollIntoView(ob);
+            ss.ms = 2000;
+        }
+
         const { x: x2, y: y2 } = rectCenter(id);
-
         tileFrom.off = { x: x2 - x1, y: y2 - y1 };
-
-        ss.ms = 750;
     }
 
     post(() => {
@@ -388,3 +400,44 @@ const winCheck = () => {
 };
 
 export const spotId = (row, col) => 'spot ' + (row < 0 ? 'tray' : row + ':' + col);
+
+const scrollIntoView = (ob) => {
+    if (!ob) {
+        return;
+    }
+
+    const e = document.getElementById(ob.id);
+
+    if (!e) {
+        return;
+    }
+
+    const r1 = { x1: e.offsetLeft, y1: e.offsetTop };
+    r1.x2 = r1.x1 + e.offsetWidth;
+    r1.y2 = r1.y1 + e.offsetHeight;
+
+    const b = document.getElementById('board');
+    const r2 = { x1: b.offsetLeft + b.scrollLeft, y1: b.offsetTop + b.scrollTop };
+    r2.x2 = r2.x1 + b.offsetWidth;
+    r2.y2 = r2.y1 + b.offsetHeight;
+
+    let top = 0;
+    let left = 0;
+
+    const width = $derived(HEX_WIDTH * ss.zoom);
+    const height = $derived(width / HEX_RATIO);
+
+    if (r1.x1 > r2.x1) {
+        top = r1.x1 - r2.x1 + width;
+    } else if (r1.x2 < r2.x2) {
+        top = r1.x2 - r2.x2 - width;
+    }
+
+    if (r1.y1 > r2.y1) {
+        left = r1.y1 - r2.y1 + height;
+    } else if (r1.y2 < r2.y2) {
+        left = r1.y2 - r2.y2 - height;
+    }
+
+    b.scrollBy({ top, left, behavior: 'smooth' });
+};

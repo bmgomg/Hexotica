@@ -72,7 +72,7 @@ export const post = (fn, ms) => setTimeout(fn, ms);
 
 export const _range = (start, end) => Array.from({ length: end + 1 - start }, (_, i) => start + i);
 
-const inView = ob => {
+export const inView = ob => {
     if (!ob) {
         return;
     }
@@ -87,10 +87,10 @@ const inView = ob => {
     r1.x2 = r1.x1 + e.offsetWidth;
     r1.y2 = r1.y1 + e.offsetHeight;
 
-    const s = document.getElementById('mesh');
-    const r2 = { x1: s.offsetLeft + s.scrollLeft, y1: s.offsetTop + s.scrollTop };
-    r2.x2 = r2.x1 + s.offsetWidth;
-    r2.y2 = r2.y1 + s.offsetHeight;
+    const b = document.getElementById('board');
+    const r2 = { x1: b.offsetLeft + b.scrollLeft, y1: b.offsetTop + b.scrollTop };
+    r2.x2 = r2.x1 + b.offsetWidth;
+    r2.y2 = r2.y1 + b.offsetHeight;
 
     return r1.x1 >= r2.x1 && r1.x2 <= r2.x2 && r1.y1 >= r2.y1 && r1.y2 <= r2.y2;
 };

@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { validateMove } from './ai';
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { doPlacement, isMoving, roboTurn, showMessage, spotId, ss } from './shared.svelte';
+	import { doPlacement, isMoving, placedTiles, roboTurn, showMessage, spotId, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 
 	const { row, col, tile, scale = ss.zoom } = $props();
@@ -86,7 +86,12 @@
 	});
 </script>
 
-<div {id} class="spot nope {ss.restart && !tile ? 'fade-out' : ''}" style="grid-area: {ga};" in:fade>
+<div
+	{id}
+	class="spot nope {ss.restart && !tile ? 'fade-out' : !tile && placedTiles().length === 0 ? 'fade-in' : ''}"
+	style="grid-area: {ga};"
+	in:fade
+>
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
@@ -150,11 +155,26 @@
 		transition: scale 1s linear;
 	}
 
-	.fade-out {
-		animation: fade 1s forwards;
+	.fade-in {
+		animation: fade-in 1s forwards;
 	}
 
-	@keyframes fade {
+	@keyframes fade-in {
+		0% {
+			transform: scale(0);
+			rotate: -360deg;
+		}
+		100% {
+			transform: scale(1);
+			rotate: 0deg;
+		}
+	}
+
+	.fade-out {
+		animation: fade-out 1s forwards;
+	}
+
+	@keyframes fade-out {
 		0% {
 			transform: scale(1);
 			rotate: 0deg;

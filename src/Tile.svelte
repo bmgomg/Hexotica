@@ -1,6 +1,5 @@
 <script>
 	import HexBg from '$lib/images/Hex Background.webp';
-	import { fade } from 'svelte/transition';
 	import { DECK, HEX_WIDTH, HEXES } from './const';
 	import Knob from './Knob.svelte';
 	import { currentTurns, fromTile, isWinner, roboTurn, ss } from './shared.svelte';

@@ -1,8 +1,8 @@
 import { sample } from 'lodash-es';
+import { checkWin, getBestMove } from './ai';
 import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
 import { clientRect, post, rectCenter } from './utils';
-import { checkWin, getBestMove } from './ai';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -254,21 +254,32 @@ export const drawTile = () => {
     tile.place = 'tray';
 };
 
-export const makeGame = () => {
-    _sound.play('dice');
+export const makeGame = (restart = false) => {
+    const doMakeGame = () => {
+        _sound.play('dice');
 
-    delete ss.over;
-    delete ss.from;
-    delete ss.to;
+        delete ss.over;
+        delete ss.from;
+        delete ss.to;
 
-    ss.tiles = initDecks();
-    ss.actor = 1;
+        ss.tiles = initDecks();
+        ss.actor = 1;
+
+        post(() => {
+            drawTile();
+            remesh();
+            persist();
+        });
+    };
+
+    if (restart) {
+        ss.restart = true;
+    }
 
     post(() => {
-        drawTile();
-        remesh();
-        persist();
-    });
+        delete ss.restart;
+        doMakeGame();
+    }, restart ? 500 : 0);
 };
 
 export const showMessage = (text, type = MSG_ERROR) => {

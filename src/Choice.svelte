@@ -16,7 +16,7 @@
 			showMessage('Game reset!', MSG_INFO);
 		}
 
-		makeGame();
+		makeGame(true);
 	};
 
 	const onCancel = () => {

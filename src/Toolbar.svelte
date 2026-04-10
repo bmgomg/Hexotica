@@ -38,7 +38,7 @@
 
 	const onNewGame = () => {
 		if (ss.over) {
-			makeGame();
+			makeGame(true);
 		} else {
 			ss.choice = true;
 		}

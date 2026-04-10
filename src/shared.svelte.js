@@ -2,7 +2,7 @@ import { sample } from 'lodash-es';
 import { checkWin, getBestMove } from './ai';
 import { APP_STATE, DECK, HEX_RATIO, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
-import { clientRect, inView, post, rectCenter } from './utils';
+import { clientRect, post, rectCenter } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 

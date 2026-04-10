@@ -84,14 +84,23 @@
 
 		return true;
 	});
+
+	const classes = $derived.by(() => {
+		let cls = 'spot nope ';
+
+		if (!tile) {
+			if (ss.restart) {
+				cls += 'fade-out';
+			} else if (placedTiles().length === 0) {
+				cls += 'fade-in';
+			}
+		}
+
+		return cls;
+	});
 </script>
 
-<div
-	{id}
-	class="spot nope {ss.restart && !tile ? 'fade-out' : !tile && placedTiles().length === 0 ? 'fade-in' : ''}"
-	style="grid-area: {ga};"
-	in:fade
->
+<div {id} class={classes} style="grid-area: {ga};" in:fade>
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}

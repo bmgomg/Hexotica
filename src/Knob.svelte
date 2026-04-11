@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
-	import { findTile, isWinner, roboTurn, ss } from './shared.svelte';
+	import { fromTile, isWinner, roboTurn, ss } from './shared.svelte';
 
 	const { tile, scale = ss.zoom } = $props();
 	const player = $derived(tile?.player);
@@ -11,7 +11,7 @@
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
 	const shine = $derived(`var(--${player === 1 ? 'amber-shine' : 'slate-shine'})`);
-	const roboSelect = $derived(roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile);
+	const roboSelect = $derived(roboTurn() && fromTile() === tile);
 	const winner = $derived(isWinner(tile));
 	const pulse = $derived(winner || roboSelect);
 

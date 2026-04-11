@@ -11,10 +11,11 @@
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
 	const shine = $derived(`var(--${player === 1 ? 'amber-shine' : 'slate-shine'})`);
-	const pulse = $derived(!bg && (isWinner(tile) || (roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile)));
+	const roboSelect = $derived((roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile));
+	const pulse = $derived((isWinner(tile) && !bg) || roboSelect);
 </script>
 
-<div class="knob nope {pulse ? 'pulse' : ''}" in:fade={{ duration: pulse ? 200 : 0 }}>
+<div class="knob nope {pulse ? 'pulse' : ''} {roboSelect ? 'robo-select' : ''}" in:fade={{ duration: pulse ? 200 : 0 }}>
 	<svg {width} {height} {viewBox} {xmlns}>
 		<g class="core" stroke="none">
 			<circle cx="363" cy="314" {r} fill={bg ? 'var(--bg)' : 'none'} stroke={shine} stroke-width={12} />
@@ -31,6 +32,10 @@
 		place-content: center;
 		place-items: center;
 		z-index: 1;
+	}
+
+	.robo-select {
+		filter: contrast(1.7) brightness(1.7);
 	}
 
 	svg {

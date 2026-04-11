@@ -22,7 +22,8 @@
 		<img src={HEXES[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
 		<Spot {row} {col} {tile} {scale} />
 	</div>
-	{#if isWinner(tile) || (roboTurn() && selected)}
+	<!-- {#if isWinner(tile) || (roboTurn() && selected)} -->
+	{#if isWinner(tile)}
 		<Knob {tile} bg={false} scale={scale * 1.15} />
 	{/if}
 	<Knob {tile} {scale} />

@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------------
 
 import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, N_TO_WIN } from './const';
+import { _log } from './shared.svelte';
 
 const ADJ = [
     { dr: -2, dc: 0 }, // 0 top
@@ -90,13 +91,14 @@ const isContiguous = (placed, movedTile, newRow, newCol) => {
     return visited.size === nodes.length;
 };
 
-const candidatePositions = (map, placed) => {
+const candidatePositions = (map, placed, bounds = null) => {
     const occupied = new Set(placed.map(t => `${t.place.row}/${t.place.col}`));
     const candidates = new Set();
     for (const t of placed) {
         for (const { dr, dc } of ADJ) {
             const r = t.place.row + dr;
             const c = t.place.col + dc;
+            if (bounds && (r < 1 || r > bounds.rows || c < 1 || c > bounds.cols)) continue;
             const k = `${r}/${c}`;
             if (!occupied.has(k)) candidates.add(k);
         }
@@ -123,8 +125,6 @@ const legalRotations = (tile, map, row, col, excludeTile = null) => {
 };
 
 // ─── Board evaluation ────────────────────────────────────────────────────────
-
-// const N_TO_WIN = 6;
 
 const analyseLines = (map, placed, player, minLen) => {
     const myTiles = placed.filter(t => t.player === player);
@@ -183,14 +183,14 @@ const evaluateBoard = (map, placed, aiPlayer) => {
 
 // ─── Reposition helper ───────────────────────────────────────────────────────
 
-const tryReposition = (repoTile, placed, currentMap) => {
+const tryReposition = (repoTile, placed, currentMap, bounds) => {
     const oldRow = repoTile.place.row;
     const oldCol = repoTile.place.col;
     const oldNeighborCount = neighborCount(currentMap, repoTile, oldRow, oldCol);
 
     const mapWithout = buildMap(placed.filter(t => t !== repoTile));
     const placedWithout = placed.filter(t => t !== repoTile);
-    const repoPositions = candidatePositions(mapWithout, placedWithout);
+    const repoPositions = candidatePositions(mapWithout, placedWithout, bounds);
 
     const results = [];
 
@@ -227,7 +227,7 @@ const tryReposition = (repoTile, placed, currentMap) => {
 
 // ─── Main AI function ────────────────────────────────────────────────────────
 
-export const getBestMove = (tiles, aiPlayer) => {
+export const getBestMove = (tiles, aiPlayer, boardDims = null) => {
     const placed = getPlaced(tiles);
     const trayTile = tiles.find(t => t.player === aiPlayer && t.place === 'tray');
 
@@ -258,7 +258,7 @@ export const getBestMove = (tiles, aiPlayer) => {
     const myPlaced = placed.filter(t => t.player === aiPlayer);
 
     const tryPlacement = (placedState, mapState, reposition, reposition2, threshold = Infinity) => {
-        const positions = candidatePositions(mapState, placedState);
+        const positions = candidatePositions(mapState, placedState, boardDims);
 
         for (const { row, col } of positions) {
             if (neighborCount(mapState, null, row, col) === 0) continue;
@@ -297,7 +297,7 @@ export const getBestMove = (tiles, aiPlayer) => {
 
     // ── Step 2: one reposition — always complete the full search ─────────────
     for (const repoTile of myPlaced) {
-        const repos = tryReposition(repoTile, placed, baseMap);
+        const repos = tryReposition(repoTile, placed, baseMap, boardDims);
 
         for (const { placedAfter, mapAfter, repoMove } of repos) {
             tryPlacement(placedAfter, mapAfter, repoMove, null);
@@ -307,7 +307,7 @@ export const getBestMove = (tiles, aiPlayer) => {
     // ── Step 3: two repositions — short-circuit on score >= 5000 ─────────────
     outer:
     for (const repoTile1 of myPlaced) {
-        const repos1 = tryReposition(repoTile1, placed, baseMap);
+        const repos1 = tryReposition(repoTile1, placed, baseMap, boardDims);
 
         for (const { placedAfter: placed1, mapAfter: map1, repoMove: repoMove1 } of repos1) {
             const myPlaced1 = placed1.filter(t => t.player === aiPlayer);
@@ -315,7 +315,7 @@ export const getBestMove = (tiles, aiPlayer) => {
             for (const repoTile2 of myPlaced1) {
                 if (repoTile2.id === repoTile1.id) continue;
 
-                const repos2 = tryReposition(repoTile2, placed1, map1);
+                const repos2 = tryReposition(repoTile2, placed1, map1, boardDims);
 
                 for (const { placedAfter: placed2, mapAfter: map2, repoMove: repoMove2 } of repos2) {
                     const goodEnough = tryPlacement(placed2, map2, repoMove1, repoMove2, 5000);
@@ -340,20 +340,15 @@ export const checkWin = (tiles, nToWin = N_TO_WIN) => {
         const player = anchor.player;
 
         for (const { dr, dc } of WIN_DIRS) {
-            // Only start from the beginning of a run
             const prev = getTile(map, row - dr, col - dc);
             if (prev?.player === player) continue;
 
-            // Measure run length, collecting tiles
             const run = [];
             let r = row, c = col;
             while (true) {
                 const t = getTile(map, r, c);
-                if (t?.player === player) {
-                    run.push(t);
-                    r += dr;
-                    c += dc;
-                } else break;
+                if (t?.player === player) { run.push(t); r += dr; c += dc; }
+                else break;
             }
 
             if (run.length >= nToWin) {

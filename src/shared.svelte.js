@@ -294,7 +294,7 @@ export const roboTurn = () => !ss.over && ss.opp === OPP_ROBOT && ss.actor === 2
 export const isWinner = (tile) => tile && ss.over && ss.over.tileIds?.some((id) => id === tile.id);
 
 const onRoboTurn = () => {
-    let bm = getBestMove(ss.tiles, 2);
+    let bm = getBestMove(ss.tiles, 2, ss.dims);
 
     if (bm.reposition) {
         bm = bm.reposition;

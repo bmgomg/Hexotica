@@ -44,7 +44,7 @@
 	}
 
 	.hi-2 {
-		filter: contrast(1.65) brightness(1.65);
+		filter: contrast(1.6) brightness(1.6);
 	}
 
 	svg {
@@ -64,7 +64,7 @@
 			scale: 1;
 		}
 		to {
-			scale: 1.15;
+			scale: 1.2;
 		}
 	}
 </style>

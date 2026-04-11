@@ -1,3 +1,4 @@
+import { DASH } from './const';
 
 export const windowSize = () => {
     const d = document,
@@ -160,3 +161,5 @@ export const scrollIntoView = (ob) => {
 
     b.scrollBy({ top, left, behavior: 'smooth' });
 };
+
+export const dashes = (length = 10) => console.log(DASH.repeat(length));

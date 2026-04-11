@@ -13,6 +13,7 @@ import Hex7 from '$lib/images/Hex 7.webp';
 import Hex8 from '$lib/images/Hex 8.webp';
 import Hex9 from '$lib/images/Hex 9.webp';
 
+export const DASH = '─';
 export const HEXES = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14];
 export const APP_STATE = 'Hexotica V2';
 export const HEX_DIMS = { X: 726, Y: 628 };

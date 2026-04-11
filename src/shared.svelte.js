@@ -2,7 +2,7 @@ import { sample } from 'lodash-es';
 import { checkWin, getBestMove } from './ai';
 import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
-import { clientRect, post, rectCenter } from './utils';
+import { clientRect, dashes, post, rectCenter } from './utils';
 
 export const _log = (value) => console.log($state.snapshot(value));
 
@@ -311,6 +311,12 @@ const onRoboTurn = () => {
 export const doPlacement = (placement, bits) => {
     ss.to = placement;
     const tileFrom = fromTile();
+
+    _log(ss.actor);
+    _log(tileFrom.idBits);
+    _log(ss.from);
+    _log(ss.to);
+    dashes();
 
     if (tileFrom === findTile(ss.to.row, ss.to.col)) {
         ss.ms = 500;

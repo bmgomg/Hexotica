@@ -122,3 +122,41 @@ export const isScrollable = obid => {
 
     return { horz, vert };
 };
+
+export const scrollIntoView = (ob) => {
+    if (!ob) {
+        return;
+    }
+
+    const e = document.getElementById(ob.id);
+
+    if (!e) {
+        return;
+    }
+
+    const r1 = { x1: e.offsetLeft, y1: e.offsetTop };
+    r1.x2 = r1.x1 + e.offsetWidth;
+    r1.y2 = r1.y1 + e.offsetHeight;
+
+    const b = document.getElementById('board');
+    const r2 = { x1: b.offsetLeft + b.scrollLeft, y1: b.offsetTop + b.scrollTop };
+    r2.x2 = r2.x1 + b.offsetWidth;
+    r2.y2 = r2.y1 + b.offsetHeight;
+
+    let top = 0;
+    let left = 0;
+
+    if (r1.x1 > r2.x1) {
+        top = r1.x1 - r2.x1;
+    } else if (r1.x2 < r2.x2) {
+        top = r1.x2 - r2.x2;
+    }
+
+    if (r1.y1 > r2.y1) {
+        left = r1.y1 - r2.y1;
+    } else if (r1.y2 < r2.y2) {
+        left = r1.y2 - r2.y2;
+    }
+
+    b.scrollBy({ top, left, behavior: 'smooth' });
+};

@@ -3,9 +3,8 @@
 	import { boardParams, neighbors, placedTiles, remesh, ss, trayTile } from './shared.svelte';
 	import Spot from './Spot.svelte';
 	import Tile from './Tile.svelte';
-	import { _range, post, scrollClass } from './utils';
+	import { _range } from './utils';
 
-	let _this = $state();
 	const { rows, cols } = $derived(ss.dims);
 	const { rowHeight, colWidth, gap: g, pad } = boardParams();
 	const grid = $derived(`repeat(${rows}, ${rowHeight}px)/ repeat(${cols}, ${colWidth}px)`);
@@ -18,8 +17,6 @@
 			remesh();
 		};
 
-		post(onResize);
-
 		window.addEventListener('resize', onResize);
 
 		return () => {
@@ -29,7 +26,7 @@
 </script>
 
 {#if !ss.menu && !ss.decks}
-	<div id="board" bind={_this} class="board no-highlight {scrollClass()}" transition:fade>
+	<div id="board" class="board no-highlight" transition:fade>
 		<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
 			{#each _range(1, rows) as row (row)}
 				{#each _range(1, cols) as col (col)}
@@ -55,8 +52,10 @@
 <style>
 	.board {
 		grid-area: 2/1;
+		display: grid;
 		box-sizing: border-box;
 		/* border: 1px dotted var(--text); */
+		overflow: hidden;
 	}
 
 	.mesh {
@@ -67,9 +66,9 @@
 	}
 
 	.cell {
-		display: none;
+		display: grid;
 		font-family: Crimson;
-		opacity: 0.5;
+		opacity: 0.35;
 		box-sizing: border-box;
 		border: 1px dotted #ffffff;
 		place-content: center;

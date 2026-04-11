@@ -21,7 +21,7 @@
 		ss.appKey = `${APP_STATE} • ${(ss.appSubKey = opp)}`;
 
 		if (loadGame()) {
-			remesh();
+			post(remesh);
 		} else {
 			makeGame();
 		}

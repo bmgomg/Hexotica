@@ -40,7 +40,7 @@
 	}
 
 	.hi {
-		filter: contrast(1.4) brightness(1.4);
+		filter: contrast(1.35) brightness(1.35);
 	}
 
 	svg {

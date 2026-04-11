@@ -3,7 +3,6 @@
 // ---------------------------------------------------------------------------
 
 import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, N_TO_WIN } from './const';
-import { _log } from './shared.svelte';
 
 const ADJ = [
     { dr: -2, dc: 0 }, // 0 top
@@ -358,11 +357,6 @@ export const checkWin = (tiles, nToWin = N_TO_WIN) => {
     }
 
     return null;
-};
-
-// checkDraw: returns true when all tiles have been placed and no win exists.
-export const checkDraw = (tiles) => {
-    return tiles.every(t => t.place?.row);
 };
 
 // validateMove: checks whether a proposed move is legal.

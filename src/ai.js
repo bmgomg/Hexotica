@@ -166,13 +166,13 @@ const evaluateBoard = (map, placed, aiPlayer) => {
 
     for (const { len, openEnds } of aiLines) {
         if (openEnds === 0) continue;
-        const base = len === 4 ? 2000 : len === 3 ? 300 : len === 2 ? 50 : 5;
+        const base = len === 5 ? 8000 : len === 4 ? 2000 : len === 3 ? 300 : len === 2 ? 50 : 5;
         score += base * openEnds;
     }
 
     for (const { len, openEnds } of oppLines) {
         if (openEnds === 0) continue;
-        const base = len === 4 ? 5000 : len === 3 ? 800 : len === 2 ? 80 : 5;
+        const base = len === 5 ? 20000 : len === 4 ? 5000 : len === 3 ? 800 : len === 2 ? 80 : 5;
         const multiplier = openEnds === 2 ? 3 : 1;
         score -= base * multiplier;
     }

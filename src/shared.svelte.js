@@ -55,7 +55,7 @@ export const loadGame = () => {
 
         if (ss.seenPage[ss.appSubKey] || !job.over) {
             ss.tiles = job.tiles;
-            ss.actor = job.actor;
+            // ss.actor = job.actor;
             ss.over = job.over;
 
             return true;
@@ -293,7 +293,7 @@ export const roboTurn = () => !ss.over && ss.opp === OPP_ROBOT && ss.actor === 2
 
 export const isWinner = (tile) => tile && ss.over && ss.over.tileIds?.some((id) => id === tile.id);
 
-const onRoboTurn = () => {
+export const onRoboTurn = () => {
     let bm = getBestMove(ss.tiles, 2, ss.dims);
 
     if (bm.reposition) {
@@ -336,7 +336,6 @@ export const doPlacement = (placement, bits) => {
         winCheck();
 
         post(() => {
-            // remesh();
             persist();
 
             if (roboTurn()) {

@@ -3,7 +3,7 @@
 	import HumanB from '$lib/images/Human Blue.webp';
 	import HumanY from '$lib/images/Human Yellow.webp';
 	import Robot from '$lib/images/Robot.webp';
-	import { drawTile, playerTiles, roboTurn, ss, trayTile } from './shared.svelte';
+	import { drawTile, onRoboTurn, persist, playerTiles, roboTurn, ss, trayTile } from './shared.svelte';
 	import { post } from './utils';
 
 	const { player } = $props();
@@ -19,7 +19,15 @@
 		delete tile.place;
 
 		ss.actor = 3 - ss.actor;
-		post(drawTile);
+
+		post(() => {
+			drawTile();
+			persist();
+
+			if (roboTurn()) {
+				onRoboTurn();
+			}
+		});
 	};
 </script>
 

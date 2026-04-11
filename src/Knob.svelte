@@ -16,7 +16,7 @@
 	const pulse = $derived(winner || roboSelect);
 
 	const classes = $derived(
-		`knob nope ${pulse ? 'pulse' : ''} ${roboSelect || winner && ss.over?.player === 2 ? 'hi-2' : ss.over?.player === 1 ? 'hi-1' : ''}`
+		`knob nope ${pulse ? 'pulse' : ''} ${roboSelect || winner ? 'hi' : ''}`
 	);
 </script>
 
@@ -39,12 +39,8 @@
 		z-index: 1;
 	}
 
-	.hi-1 {
-		filter: contrast(1.25) brightness(1.25);
-	}
-
-	.hi-2 {
-		filter: contrast(1.6) brightness(1.6);
+	.hi {
+		filter: contrast(1.4) brightness(1.4);
 	}
 
 	svg {

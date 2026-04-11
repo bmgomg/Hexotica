@@ -3,7 +3,7 @@
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { findTile, isWinner, roboTurn, ss } from './shared.svelte';
 
-	const { tile, bg = true, scale = ss.zoom } = $props();
+	const { tile, scale = ss.zoom } = $props();
 	const player = $derived(tile?.player);
 	const width = $derived(HEX_WIDTH * scale);
 	const height = $derived(width / HEX_RATIO);
@@ -11,14 +11,19 @@
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
 	const shine = $derived(`var(--${player === 1 ? 'amber-shine' : 'slate-shine'})`);
-	const roboSelect = $derived((roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile));
-	const pulse = $derived((isWinner(tile) && !bg) || roboSelect);
+	const roboSelect = $derived(roboTurn() && !ss.to && findTile(ss.from?.row, ss.from?.col) === tile);
+	const winner = $derived(isWinner(tile));
+	const pulse = $derived(winner || roboSelect);
+
+	const classes = $derived(
+		`knob nope ${pulse ? 'pulse' : ''} ${roboSelect || winner && ss.over?.player === 2 ? 'hi-2' : ss.over?.player === 1 ? 'hi-1' : ''}`
+	);
 </script>
 
-<div class="knob nope {pulse ? 'pulse' : ''} {roboSelect ? 'robo-select' : ''}" in:fade={{ duration: pulse ? 200 : 0 }}>
+<div class={classes} in:fade={{ duration: pulse ? 200 : 0 }}>
 	<svg {width} {height} {viewBox} {xmlns}>
 		<g class="core" stroke="none">
-			<circle cx="363" cy="314" {r} fill={bg ? 'var(--bg)' : 'none'} stroke={shine} stroke-width={12} />
+			<circle cx="363" cy="314" {r} fill="var(--bg)" stroke={shine} stroke-width={12} />
 			<circle cx="363" cy="314" r={r * 0.65} fill="var(--{player === 1 ? 'amber-fill' : 'slate-stroke'})" />
 			<circle cx={363 - r * 0.2} cy={314 - r * 0.2} r={r * 0.22} fill={shine} />
 		</g>
@@ -34,8 +39,12 @@
 		z-index: 1;
 	}
 
-	.robo-select {
-		filter: contrast(1.7) brightness(1.7);
+	.hi-1 {
+		filter: contrast(1.25) brightness(1.25);
+	}
+
+	.hi-2 {
+		filter: contrast(1.65) brightness(1.65);
 	}
 
 	svg {

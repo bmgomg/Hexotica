@@ -2,7 +2,7 @@
 	import HexBg from '$lib/images/Hex Background.webp';
 	import { DECK, HEX_WIDTH, HEXES } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, fromTile, isWinner, roboTurn, ss } from './shared.svelte';
+	import { currentTurns, fromTile, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -13,7 +13,6 @@
 	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
-	const selected = $derived(ss.from && !ss.to && ss.from.row === row && ss.from.col === col);
 </script>
 
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ss.restart ? 'fade-out' : ''}" {style}>
@@ -22,10 +21,6 @@
 		<img src={HEXES[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
 		<Spot {row} {col} {tile} {scale} />
 	</div>
-	<!-- {#if isWinner(tile) || (roboTurn() && selected)} -->
-	{#if isWinner(tile)}
-		<Knob {tile} bg={false} scale={scale * 1.15} />
-	{/if}
 	<Knob {tile} {scale} />
 </div>
 

@@ -2,7 +2,7 @@
 	import HexBg from '$lib/images/Hex Background.webp';
 	import { DECK, HEX_WIDTH, HEXES } from './const';
 	import Knob from './Knob.svelte';
-	import { currentTurns, fromTile, ss } from './shared.svelte';
+	import { currentTurns, fromTile, roboTurn, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
@@ -13,9 +13,10 @@
 	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
 	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
+	const roboSelect = $derived(roboTurn() && fromTile() === tile);
 </script>
 
-<div id={tile.id} class="tile nope {tt ? 'swirl' : ss.restart ? 'fade-out' : ''}" {style}>
+<div id={tile.id} class="tile nope {roboSelect ? 'pulse' : ''} {tt ? 'swirl' : ss.restart ? 'fade-out' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
 		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
 		<img src={HEXES[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
@@ -76,5 +77,18 @@
 	img {
 		grid-area: 1/1;
 		transition: scale 1s linear;
+	}
+
+	.pulse {
+		animation: pulse 0.3s alternate infinite ease-in-out;
+	}
+
+	@keyframes pulse {
+		from {
+			scale: 1;
+		}
+		to {
+			scale: 0.85;
+		}
 	}
 </style>

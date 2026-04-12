@@ -7,15 +7,20 @@
 	import Decks from './Decks.svelte';
 	import { ss } from './shared.svelte';
 	import { underMouse } from './utils';
+	import Rules from './Rules.svelte';
 
 	const onClick = (e) => {
-		if (underMouse(e, ['#menu', '#decks'])) {
+		if (underMouse(e, ['#menu', '#rules', '#tutorial', '#decks'])) {
 			e.stopPropagation();
 			return;
 		}
 
-		if (ss.menu && ss.tiles.some(t => t.place)) {
+		if (ss.menu && ss.tiles.some((t) => t.place)) {
 			delete ss.menu;
+		}
+
+		if (ss.rules) {
+			delete ss.rules;
 		}
 
 		if (ss.decks) {
@@ -28,6 +33,7 @@
 	<Header />
 	<Board />
 	<Menu />
+	<Rules />
 	<Decks />
 	<Footer />
 </div>

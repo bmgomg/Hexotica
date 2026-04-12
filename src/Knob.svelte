@@ -15,9 +15,12 @@
 	const winner = $derived(isWinner(tile));
 	const pulse = $derived(winner || roboSelect);
 
-	const classes = $derived(
-		`knob nope ${pulse ? 'pulse' : ''} ${roboSelect || (winner && ss.over?.player === 2) ? 'hi2' : winner && ss.over?.player === 1 ? 'hi1' : ''}`
-	);
+	const classes = $derived.by(() => {
+		const hi1 = winner && ss.over?.player === 1;
+		const hi2 = winner && ss.over?.player === 2;
+
+		return `knob nope ${pulse ? 'pulse' : ''} ${roboSelect || hi2 ? 'hi2' : hi1 ? 'hi1' : ''}`;
+	});
 </script>
 
 <div class={classes} in:fade={{ duration: pulse ? 200 : 0 }}>
@@ -39,12 +42,12 @@
 		z-index: 1;
 	}
 
-	.hi2 {
-		filter: contrast(1.6) brightness(1.6);
-	}
-
 	.hi1 {
 		filter: contrast(1.3) brightness(1.3);
+	}
+
+	.hi2 {
+		filter: contrast(1.6) brightness(1.6);
 	}
 
 	svg {

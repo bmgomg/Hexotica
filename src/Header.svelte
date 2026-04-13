@@ -9,7 +9,7 @@
 </script>
 
 {#if !ss.menu && !ss.decks}
-	<div class="header" transition:fade>
+	<div class="header no-highlight" transition:fade>
 		<Stats player={1} info={INFO_STATS}/>
 		<Avatar player={1} />
 		<Stats player={1} info={INFO_DECK} />

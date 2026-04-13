@@ -9,35 +9,48 @@
 	const bl = '<span style="color: var(--slate-shine);">';
 	const head = '<span style="font-weight: bold; margin-bottom: 10px; color: var(--amber-shine);">';
 	const subhead = '<span style="margin-bottom: 10px; color: var(--amber-shine);">';
+	const para = '<span style="margin-bottom: 10px;">';
+	const S = '</span>';
 
 	const CONTENT = `
-${head}Setup</span>
+${head}Setup${S}
 ${ul}
-${li}Each player has a deck of 14 hexagonal tiles.
-${li}Each tile has ${hi}6 sectors</span>, colored ${ye}yellow</span> or ${bl}blue</span>, and a colored ${hi}knob</span> identifying its ${hi}owner</span>.
+${li}Each player has a ${hi}deck${S} of 14 hexagonal tiles.
+${li}Each tile has ${hi}6 sectors${S}, colored ${ye}yellow${S} or ${bl}blue${S}, and a colored ${hi}knob${S} identifying its ${hi}owner${S}.
 </ul>
-${head}</span>
-${head}</span>
-${head}Playing a turn</span>
+${head}${S}
+${head}${S}
+${head}Playing a turn${S}
 ${ul}
-${li}A tile is drawn from your deck.</span>
-${li}Optionally ${hi}reposition</span> any of your tiles already on the board (see below).</span>
-${li}Place the drawn tile somewhere on the board.</span>
+${li}A tile is drawn from your deck.${S}
+${li}Optionally ${hi}reposition${S} any of your tiles already on the board (see below).${S}
+${li}Place the drawn tile somewhere on the board.${S}
 </ul>
-${head}</span>
-${head}</span>
-${subhead}When placing a tile, it must:</span>
+${head}${S}
+${head}${S}
+${subhead}When placing a tile, it must:${S}
 ${ul}
-${li}Be ${hi}adjacent</span> to at least one existing tile</span>
-${li}Have ${hi}matching colors</span> on every shared side with its ${hi}neighbors</span></span>
-${li}You may ${hi}rotate</span> a tile freely while placing it.</ul></span>
-</ul>
+${li}Be ${hi}adjacent${S} to at least one existing tile${S}
+${li}Have ${hi}matching colors${S} on every shared side with its ${hi}neighbors${S}${S}
+${li}You may ${hi}rotate${S} a tile freely while placing it.</ul>${S}
+${head}${S}
+${head}${S}
+${head}Repositioning${S}
+${para}${hi}Before${S} placing the drawn tile, you may ${hi}move${S} and/or ${hi}rotate${S} any of your tiles already on the board, subject to three constraints:${S}
+${ul}
+${li}${hi}Colors${S} must still ${hi}match${S} on all shared sides${S}
+${li}The moved tile must end up with ${hi}at least as many${S} neighbors as it had before${S}
+${li}All tiles on the board must remain in one connected group — ${hi}no isolated islands${S}</ul>${S}
+${head}${S}
+${head}${S}
+${head}Skipping${S}
+${para}If you cannot legally place the drawn tile anywhere, click your ${hi}opponent's icon${S} to skip your turn.${S}
 		`;
 </script>
 
 {#if ss.rules}
 	<div id="rules" class="rules" transition:fade>
-		<div class="content" tabindex="-1">
+		<div class="content no-highlight" tabindex="-1">
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html CONTENT}
 		</div>
@@ -59,7 +72,7 @@ ${li}You may ${hi}rotate</span> a tile freely while placing it.</ul></span>
 	.content {
 		display: grid;
 		align-content: start;
-		width: 600px;
+		width: 650px;
 		font-size: 20px;
 		color: var(--text);
 		font-family: Crimson;

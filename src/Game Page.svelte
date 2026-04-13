@@ -15,15 +15,11 @@
 			return;
 		}
 
-		if (ss.menu && ss.tiles.some((t) => t.place)) {
-			delete ss.menu;
-		}
-
 		if (ss.rules) {
 			delete ss.rules;
-		}
-
-		if (ss.decks) {
+		} else if (ss.menu && ss.tiles.some((t) => t.place)) {
+			delete ss.menu;
+		} else if (ss.decks) {
 			delete ss.decks;
 		}
 	};

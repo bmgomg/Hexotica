@@ -4,6 +4,7 @@
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { doPlacement, isMoving, placedTiles, roboTurn, showMessage, spotId, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
+	import { post } from './utils';
 
 	const { row, col, tile, scale = ss.zoom, deck } = $props();
 	const tt = $derived(tile?.place === 'tray');
@@ -18,6 +19,7 @@
 	const sw = 10;
 	const selected = $derived(ss.from && ss.from.row === row && ss.from.col === col ? ss.from.sector : 0);
 	const moving = $derived(isMoving());
+	let clickSector = $state(0);
 
 	const onClick = (i) => {
 		delete ss.choice;
@@ -49,6 +51,9 @@
 			ss.from = placement;
 			return;
 		}
+
+		clickSector = i;
+		post(() => clickSector = 0, 750);
 
 		let bits = validateMove(ss.from, placement, ss.tiles);
 
@@ -104,9 +109,10 @@
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
+		{@const fill = clickSector === i ? 'var(--spoke)' : 'none'}
 		{@const sw = tile ? 0 : 10}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			<path class="sector {canClick ? 'ape' : 'nope'}" d="M363,314 183,8 543,8 Z" onpointerdown={() => onClick(i)} />
+			<path class="sector {canClick ? 'ape' : 'nope'}" d="M363,314 183,8 543,8 Z" {fill} onpointerdown={() => onClick(i)} />
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#snippet dot(angle)}
 				{@const r = width * 0.6}

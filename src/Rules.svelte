@@ -19,31 +19,35 @@ ${ul}
 ${li}Each player has a ${hi}deck${S} of 14 hexagonal tiles.
 ${li}Each tile has ${hi}6 sectors${S}, colored ${ye}yellow${S} or ${bl}blue${S}, and a colored ${hi}knob${S} identifying its ${hi}owner${S}.
 </ul>
-${head}${S}
-${head}${S}
+${para}${S}
+${para}${S}
 ${head}Playing a turn${S}
 ${ul}
 ${li}A tile is drawn from your deck.${S}
 ${li}Optionally ${hi}reposition${S} any of your tiles already on the board (see below).${S}
 ${li}Place the drawn tile somewhere on the board.${S}
 </ul>
-${head}${S}
-${head}${S}
+${para}${S}
+${para}${S}
 ${subhead}When placing a tile, it must:${S}
 ${ul}
 ${li}Be ${hi}adjacent${S} to at least one existing tile${S}
 ${li}Have ${hi}matching colors${S} on every shared side with its ${hi}neighbors${S}${S}
-${li}You may ${hi}rotate${S} a tile freely while placing it.</ul>${S}
-${head}${S}
-${head}${S}
+</ul>
+${para}${S}
+${para}${S}
+${para}You may ${hi}rotate${S} a tile freely while placing it.</ul>${S}
+${para}${S}
+${para}${S}
 ${head}Repositioning${S}
 ${para}${hi}Before${S} placing the drawn tile, you may ${hi}move${S} and/or ${hi}rotate${S} any of your tiles already on the board, subject to three constraints:${S}
 ${ul}
 ${li}${hi}Colors${S} must still ${hi}match${S} on all shared sides${S}
 ${li}The moved tile must end up with ${hi}at least as many${S} neighbors as it had before${S}
 ${li}All tiles on the board must remain in one connected group — ${hi}no isolated islands${S}</ul>${S}
-${head}${S}
-${head}${S}
+</ul>
+${para}${S}
+${para}${S}
 ${head}Skipping${S}
 ${para}If you cannot legally place the drawn tile anywhere, click your ${hi}opponent's icon${S} to skip your turn.${S}
 		`;
@@ -73,7 +77,7 @@ ${para}If you cannot legally place the drawn tile anywhere, click your ${hi}oppo
 		place-self: center;
 		box-sizing: border-box;
 		/* border: 1px solid var(--text); */
-		padding: 40px 30px;
+		padding: 40px 30px 30px;
 		background: var(--menu-bg);
 		z-index: 4;
 		overflow-x: hidden;

@@ -1,0 +1,14 @@
+• Player 1 chooses a sector on the drawn tile.
+• Player 1 chooses a sector on an empty space on the board.
+ The chosen sector sets the tile’s orientation when it’s placed.
+• A tile from Player 2’s deck is drawn.
+• Player 2 places the drawn tile on the board.
+• A tile from Player 1’s deck is drawn.
+• Before placing it, the current player may rotate or reposition any of their tiles already on the board.
+• Placing the drawn tile ends the player’s turn.
+
+When placing a tile, remember:
+
+• The placed tile must be adjacent to at least one existing tile
+• It must have matching colors on every shared side with its neighbors
+• All tiles on the board must remain in one connected group — no isolated islands

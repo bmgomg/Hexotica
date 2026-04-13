@@ -69,7 +69,7 @@
 {#if !ss.message && !ss.choice}
 	<div class="toolbar" in:fade>
 		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={onHome} />
-		<TextButton id="tb-deck" text={['Show Decks']} onClick={onShowDecks} />
+		<TextButton id="tb-deck" text={['Show Decks']} disabled={mustWait} onClick={onShowDecks} />
 		<TextButton id="tb-new-game" text={['New Game']} style={newGameStyle} framed={ss.over} disabled={!canNewGame} onClick={onNewGame} />
 		<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
 		<MusicVolume />

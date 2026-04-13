@@ -1,6 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import { ss } from './shared.svelte';
+	import { scrollClass } from './utils';
 
 	const ul = '<ul style="margin: -10px 0 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -49,17 +50,25 @@ ${para}If you cannot legally place the drawn tile anywhere, click your ${hi}oppo
 </script>
 
 {#if ss.rules}
-	<div id="rules" class="rules" transition:fade>
-		<div class="content no-highlight" tabindex="-1">
-			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			{@html CONTENT}
+	<div class="rules-container">
+		<div id="rules" class="rules {scrollClass()}" tabindex="-1" transition:fade>
+			<div class="content no-highlight" tabindex="-1">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+				{@html CONTENT}
+			</div>
 		</div>
 	</div>
 {/if}
 
 <style>
-	.rules {
+	.rules-container {
 		grid-area: 2/1;
+		overflow: hidden;
+		display: grid;
+	}
+
+	.rules {
+		height: 100%;
 		display: grid;
 		place-self: center;
 		box-sizing: border-box;
@@ -67,6 +76,7 @@ ${para}If you cannot legally place the drawn tile anywhere, click your ${hi}oppo
 		padding: 40px 30px;
 		background: var(--menu-bg);
 		z-index: 4;
+		overflow-x: hidden;
 	}
 
 	.content {

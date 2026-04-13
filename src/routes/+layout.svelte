@@ -79,20 +79,20 @@
 		}
 
 		.root-scroll::-webkit-scrollbar-thumb {
-			background: #ffffff20;
+			background: #f0d08020;
 			border-radius: 10px;
 		}
 
 		.root-scroll::-webkit-scrollbar-thumb:hover {
-			background: #ffffff30;
+			background: #f0d08030;
 		}
 
 		/* .root-scroll::-webkit-scrollbar-track {
-			background: #fff2;
+			background: #f0d08022;
 		} */
 
 		.root-scroll::-webkit-scrollbar-track:hover {
-			background: #ffffff05;
+			background: #f0d08005;
 		}
 
 		.root-scroll-mobile::-webkit-scrollbar {

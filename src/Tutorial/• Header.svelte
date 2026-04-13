@@ -6,7 +6,7 @@
 
 <div class="header no-highlight" transition:fade>
 	<Avatar player={1} />
-	<!-- <Tray /> -->
+	<Tray />
 	<Avatar player={2} />
 </div>
 
@@ -17,6 +17,6 @@
 		align-items: center;
 		display: grid;
 		grid-auto-flow: column;
-		grid: auto / 100px auto 120px 80px 120px auto 100px;
+		grid: auto / 10px auto 85px 80px 85px auto 10px;
 	}
 </style>

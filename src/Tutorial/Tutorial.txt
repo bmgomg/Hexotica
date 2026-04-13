@@ -1,3 +1,4 @@
+• A tile from Player 1’s deck is drawn.
 • Player 1 chooses a sector on the drawn tile.
 • Player 1 chooses a sector on an empty space on the board.
  The chosen sector sets the tile’s orientation when it’s placed.

@@ -5,7 +5,7 @@
 	import { doPlacement, isMoving, placedTiles, roboTurn, showMessage, spotId, ss } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 
-	const { row, col, tile, scale = ss.zoom } = $props();
+	const { row, col, tile, scale = ss.zoom, deck } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
 	const id = $derived(spotId(row, col));
@@ -130,7 +130,8 @@
 			{/each}
 			<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
 			{#if !tile}
-				<circle class='center' cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} fill="var(--bg)" />
+				{@const fill = deck ? 'var(--menu-bg' : 'var(--bg'}
+				<circle class="center" cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} {fill} />
 			{/if}
 		</svg>
 	{/key}

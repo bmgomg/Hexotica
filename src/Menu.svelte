@@ -34,7 +34,7 @@
 	};
 
 	const onTutorial = () => {
-		// delete ss.menu;
+		ss.tutorial = true;
 	};
 </script>
 

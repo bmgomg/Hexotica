@@ -4,7 +4,7 @@
 	import Tray from './• Tray.svelte';
 </script>
 
-<div class="header no-highlight" transition:fade>
+<div class="header no-highlight">
 	<Avatar player={1} />
 	<Tray />
 	<Avatar player={2} />

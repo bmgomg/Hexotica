@@ -12,7 +12,7 @@ export const spotId = (row, col) => 'tutorial spot ' + (row < 0 ? 'tray' : row +
 export const isMoving = () => ts.from && ts.to;
 
 export const remesh = () => {
-    ts.dims = { rows: 9, cols: 4 };
+    ts.dims = { rows: 9, cols: 5 };
 };
 
 const initDecks = () => {
@@ -31,8 +31,6 @@ const initDecks = () => {
 
     return tiles;
 };
-
-export const placedTiles = (tiles = ts.tiles) => tiles.filter(tile => tile.place?.row);
 
 export const trayTile = () => ts.tiles.find((tile) => tile.place === 'tray');
 

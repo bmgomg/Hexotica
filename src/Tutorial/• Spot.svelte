@@ -1,7 +1,7 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { showMessage } from '../shared.svelte';
-	import { doPlacement, isMoving, placedTiles, spotId, ts } from './ts.svelte';
+	import { placedTiles, showMessage } from '../shared.svelte';
+	import { doPlacement, isMoving, spotId, ts } from './ts.svelte';
 	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from '../const';
 	import { _sound } from '../sound.svelte';
 	import { post } from '../utils';
@@ -75,7 +75,7 @@
 		if (!tile) {
 			if (ts.restart) {
 				cls += 'fade-out';
-			} else if (placedTiles().length === 0) {
+			} else if (placedTiles(ts.tiles).length === 0) {
 				cls += 'fade-in';
 			}
 		}
@@ -115,8 +115,7 @@
 			{/each}
 			<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
 			{#if !tile}
-				{@const fill = deck ? 'var(--menu-bg' : 'var(--bg'}
-				<circle class="center" cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} {fill} />
+				<circle class="center" cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} fill='var(--menu-bg)' />
 			{/if}
 		</svg>
 	{/key}

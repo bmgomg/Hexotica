@@ -1,17 +1,17 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { boardParams, neighbors } from '../shared.svelte';
-	import { _range } from '../utils';
-	import { placedTiles, remesh, trayTile, ts } from './ts.svelte';
+	import { _log, boardParams, neighbors, placedTiles } from '../shared.svelte';
+	import { _range, dashes } from '../utils';
+	import { remesh, trayTile, ts } from './ts.svelte';
 	import Tile from './• Tile.svelte';
 	import Spot from './• Spot.svelte';
 
 	const { rows, cols } = $derived(ts.dims);
-	const { rowHeight, colWidth, gap: g, pad } = boardParams();
+	const { rowHeight, colWidth, gap: g, pad } = boardParams(1);
 	const grid = $derived(`repeat(${rows}, ${rowHeight}px)/ repeat(${cols}, ${colWidth}px)`);
 	const gap = $derived(`${g?.y}px ${g?.x}px`);
 	const padding = $derived(`${pad?.y / 2}px ${pad?.x / 2}px`);
-	const ptiles = $derived(placedTiles());
+	const ptiles = $derived(placedTiles(ts.tiles));
 
 	$effect(() => {
 		const onResize = () => {
@@ -65,7 +65,7 @@
 	}
 
 	.cell {
-		display: grid;
+		display: none;
 		font-family: Crimson;
 		opacity: 0.35;
 		box-sizing: border-box;

@@ -153,8 +153,8 @@ const calcDims = (boardParams) => {
     return { rows, cols };
 };
 
-export const boardParams = () => {
-    const m = HEX_WIDTH * ss.zoom / 100;
+export const boardParams = (zoom = ss.zoom) => {
+    const m = HEX_WIDTH * zoom / 100;
     const rowHeight = 43.25 * m;
     const colWidth = 75 * m;
     const gap = { y: 2 * m, x: 4.75 * m };

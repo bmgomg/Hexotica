@@ -4,6 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import { APP_STATE, OPP_HUMAN, OPP_ROBOT } from './const';
 	import { loadGame, makeGame, remesh, ss } from './shared.svelte';
+	import { makeGame as makeTutorialGame } from './Tutorial/ts.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -35,11 +36,12 @@
 
 	const onTutorial = () => {
 		ss.tutorial = true;
+		makeTutorialGame();
 	};
 </script>
 
 {#if ss.menu}
-	<div id='menu' class="menu" transition:fade>
+	<div id="menu" class="menu" transition:fade>
 		<div class="title no-highlight grad-text grad-gold-blue">Hexotica</div>
 		<div class="goal no-highlight">Be the first to place 6 of your tiles in a straight line in any direction.</div>
 		<div class="ops">

@@ -2,6 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { ss } from '../shared.svelte';
 	import { scrollClass } from '../utils';
+	import Board from './• Board.svelte';
 	import Header from './• Header.svelte';
 
 	let step = $state(1);
@@ -31,6 +32,7 @@
 		</div>
 		<div class="game" transition:fade>
 			<Header />
+			<Board />
 		</div>
 	</div>
 {/if}

@@ -1,6 +1,6 @@
 <script>
-	import { trayTile } from '../shared.svelte';
-	import Tile from '../Tile.svelte';
+	import { trayTile } from './ts.svelte';
+	import Tile from './• Tile.svelte';
 
 	let tile = $derived(trayTile());
 </script>

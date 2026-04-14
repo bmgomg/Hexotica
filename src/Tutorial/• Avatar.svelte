@@ -1,11 +1,11 @@
 <script>
 	import HumanB from '$lib/images/Human Blue.webp';
 	import HumanY from '$lib/images/Human Yellow.webp';
-	import { ss } from '../shared.svelte';
+	import { ts } from './ts.svelte';
 
 	const { player } = $props();
 	const src = $derived(player === 1 ? HumanY : HumanB);
-	const spin = $derived(ss.actor === player);
+	const spin = $derived(ts.actor === player);
 	const classes = $derived(`${player === 1 ? 'p1' : 'p2'} ${spin ? 'spin' : ''}`);
 </script>
 

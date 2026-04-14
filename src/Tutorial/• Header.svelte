@@ -1,5 +1,4 @@
 <script>
-	import { fade } from 'svelte/transition';
 	import Avatar from './• Avatar.svelte';
 	import Tray from './• Tray.svelte';
 </script>

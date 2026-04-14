@@ -1,0 +1,76 @@
+<script>
+	import { fade } from 'svelte/transition';
+	import { boardParams, neighbors } from '../shared.svelte';
+	import { _range } from '../utils';
+	import { placedTiles, remesh, trayTile, ts } from './ts.svelte';
+	import Tile from './• Tile.svelte';
+	import Spot from './• Spot.svelte';
+
+	const { rows, cols } = $derived(ts.dims);
+	const { rowHeight, colWidth, gap: g, pad } = boardParams();
+	const grid = $derived(`repeat(${rows}, ${rowHeight}px)/ repeat(${cols}, ${colWidth}px)`);
+	const gap = $derived(`${g?.y}px ${g?.x}px`);
+	const padding = $derived(`${pad?.y / 2}px ${pad?.x / 2}px`);
+	const ptiles = $derived(placedTiles());
+
+	$effect(() => {
+		const onResize = () => {
+			remesh();
+		};
+
+		window.addEventListener('resize', onResize);
+
+		return () => {
+			window.removeEventListener('resize', onResize);
+		};
+	});
+</script>
+
+<div id="board" class="board no-highlight" transition:fade>
+	<div id="mesh" class="mesh" style="grid: {grid}; gap: {gap}; padding: {padding};">
+		{#each _range(1, rows) as row (row)}
+			{#each _range(1, cols) as col (col)}
+				{@const style = `grid-area: ${row}/${col}; width: ${colWidth}; height: ${rowHeight}`}
+				<div class="cell nope" {style}>{row + ':' + col}</div>
+				{@const i = ts.tiles.findIndex((tile) => tile.place?.row === row && tile.place?.col === col)}
+				{#if i >= 0}
+					<Tile bind:tile={ts.tiles[i]} {row} {col} />
+				{:else if ptiles.length === 0 && row === (rows + 1) / 2 && col === (cols + 1) / 2 && trayTile()}
+					<Spot {row} {col} />
+				{:else}
+					{@const nbs = neighbors(row, col, ts.tiles)}
+					{#if nbs.some((a) => !!a)}
+						<Spot {row} {col} />
+					{/if}
+				{/if}
+			{/each}
+		{/each}
+	</div>
+</div>
+
+<style>
+	.board {
+		grid-area: 2/1;
+		display: grid;
+		box-sizing: border-box;
+		/* border: 1px dotted var(--text); */
+		overflow: hidden;
+	}
+
+	.mesh {
+		display: grid;
+		place-self: center;
+		/* border: 1px dotted var(--text); */
+		transition: opacity 0.5s;
+	}
+
+	.cell {
+		display: grid;
+		font-family: Crimson;
+		opacity: 0.35;
+		box-sizing: border-box;
+		border: 1px dotted #ffffff;
+		place-content: center;
+		z-index: -1;
+	}
+</style>

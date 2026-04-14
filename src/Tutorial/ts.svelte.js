@@ -4,7 +4,9 @@ import { post, rectCenter } from '../utils';
 
 export const ts = $state({
     tiles: [],
-    dims: { rows: 9, cols: 5 }
+    dims: { rows: 9, cols: 5 },
+    step: 1,
+    hands: [{}, {}],
 });
 
 export const spotId = (row, col) => 'tutorial spot ' + (row < 0 ? 'tray' : row + ':' + col);
@@ -58,6 +60,50 @@ export const drawTile = () => {
     tile.place = 'tray';
 };
 
+const step2 = () => {
+    ts.step = 2;
+    const hand = ts.hands[0];
+    hand.show = true;
+
+    post(() => {
+        hand.off = { x: 57, y: 30 };
+
+        post(() => {
+            hand.scale = 0.8;
+
+            _sound.play('click');
+            ts.from = { row: -1, col: -1, sector: 5 };
+
+            post(() => {
+                hand.scale = 1;
+                post (step3, 1000);
+            }, 200);
+        }, 3500);
+    });
+};
+
+const step3 = () => {
+    ts.step = 3;
+    const hand = ts.hands[0];
+
+    post(() => {
+        hand.off = { x: 107, y: 270 };
+
+        post(() => {
+            hand.scale = 0.8;
+
+            _sound.play('click');
+            ts.to = { row: 5, col: 3, sector: 3 };
+            ts.ms = 1500;
+
+            post(() => {
+                hand.scale = 1;
+                // post (step4, 1000);
+            }, 200);
+        }, 3500);
+    });
+};
+
 export const makeGame = (restart = false) => {
     const doMakeGame = () => {
         _sound.play('dice');
@@ -67,10 +113,14 @@ export const makeGame = (restart = false) => {
 
         ts.tiles = initDecks();
         ts.actor = 1;
+        ts.step = 1;
+        ts.hands = [{}, {}];
 
         post(() => {
             drawTile();
             remesh();
+
+            post(step2, 3000);
         });
     };
 

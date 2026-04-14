@@ -20,7 +20,6 @@
 	const sw = 10;
 	const selected = $derived(ts.from && ts.from.row === row && ts.from.col === col ? ts.from.sector : 0);
 	const moving = $derived(isMoving());
-	let clickSector = $state(0);
 
 	const onClick = (i) => {
 		_sound.play('click');
@@ -46,9 +45,6 @@
 			ts.from = placement;
 			return;
 		}
-
-		clickSector = i;
-		post(() => (clickSector = 0), 750);
 
 		let bits = validateMove(ts.from, placement, ts.tiles);
 
@@ -88,7 +84,7 @@
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
-		{@const fill = clickSector === i ? 'var(--spoke)' : 'none'}
+		{@const fill = !tile && ts.to?.sector === i ? 'var(--spoke)' : 'none'}
 		{@const sw = tile ? 0 : 10}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			<path class="sector nope" d="M363,314 183,8 543,8 Z" {fill} onpointerdown={() => onClick(i)} />

@@ -4,15 +4,14 @@
 	import { scrollClass } from '../utils';
 	import Board from './• Board.svelte';
 	import Header from './• Header.svelte';
-
-	let step = $state(1);
+	import { ts } from './ts.svelte';
 
 	const SCRIPT = [
 		['A tile from Player 1’s deck is drawn.'],
 		['Player 1 chooses a sector on the drawn tile.'],
 		['Player 1 chooses a sector on an empty space on the board.', 'The chosen sector sets the tile’s orientation when it’s placed.'],
 		['A tile from Player 2’s deck is drawn.'],
-		['Player 2 places the drawn tile on the board.'],
+		['Player 2 places the tile on the board.'],
 		['A tile from Player 1’s deck is drawn.'],
 		['Before placing the drawn tile, the player may rotate or reposition any of their tiles already on the board.'],
 		['Placing the drawn tile ends the player’s turn.']
@@ -25,7 +24,7 @@
 			<div class="script no-highlight {scrollClass()}" tabindex="-1">
 				{#each SCRIPT as section, i (i)}
 					{#each section as line, j (j)}
-						<div class="line {step === i + 1 ? 'hi' : ''}">{line}</div>
+						<div class="line {ts.step === i + 1 ? 'hi' : ''}">{line}</div>
 					{/each}
 				{/each}
 			</div>
@@ -64,6 +63,7 @@
 	.line {
 		margin-bottom: 15px;
 		opacity: 0.4;
+		transition: opacity 1s;
 	}
 
 	.hi {

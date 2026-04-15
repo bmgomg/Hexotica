@@ -83,7 +83,7 @@ export const drawTile = () => {
 
 const onStep = (step) => {
     ts.step = step;
-    // _sound.play('draw', { rate: 4 });
+    _sound.play('draw', { rate: 4 });
 };
 
 const step2 = () => {
@@ -164,9 +164,7 @@ const step3 = () => {
                     const bits = validateMove(ts.from, placement, ts.tiles);
 
                     doPlacement(placement, bits);
-
                     step4();
-                    post(step5, 3000);
                 });
             }, 200);
         }, 3500);
@@ -179,6 +177,7 @@ const step4 = () => {
     }
 
     onStep(4);
+    post(step5, 3000);
 };
 
 const step5 = () => {
@@ -271,7 +270,6 @@ const step7 = () => {
     }
 
     onStep(7);
-
     post(step8, 3000);
 };
 
@@ -308,7 +306,7 @@ const step8 = () => {
                 }
 
                 hand.scale = 1;
-                hand.off = { x: 102, y: 257 };
+                hand.off = { x: 103, y: 257 };
 
                 post(() => {
                     if (!ss.tutorial) {
@@ -341,7 +339,7 @@ const step8 = () => {
                                 }
 
                                 hand.show = true;
-                                hand.off = { x: 102, y: 287 };
+                                hand.off = { x: 103, y: 285 };
 
                                 post(() => {
                                     if (!ss.tutorial) {
@@ -359,7 +357,7 @@ const step8 = () => {
                                         }
 
                                         hand.scale = 1;
-                                        hand.off = { x: 152, y: 287 };
+                                        hand.off = { x: 152, y: 285 };
 
                                         post(() => {
                                             if (!ss.tutorial) {
@@ -385,8 +383,8 @@ const step8 = () => {
                                                     const bits = validateMove(ts.from, placement, ts.tiles);
 
                                                     doPlacement(placement, bits);
-                                                    post(step9, 3000);
-                                                }, 2000);
+                                                    post(step9, 2000);
+                                                });
                                             }, 200);
                                         }, 3500);
                                     }, 200);
@@ -433,7 +431,35 @@ const step9 = () => {
                 }
 
                 hand.scale = 1;
-                // post(step3, 1000);
+                hand.off = { x: 103, y: 257 };
+
+                post(() => {
+                    if (!ss.tutorial) {
+                        return;
+                    }
+
+                    hand.scale = 0.8;
+                    _sound.play('click');
+
+                    post(() => {
+                        if (!ss.tutorial) {
+                            return;
+                        }
+
+                        hand.scale = 1;
+
+                        post(() => {
+                            if (!ss.tutorial) {
+                                return;
+                            }
+
+                            const placement = { row: 5, col: 3, sector: 2 };
+                            const bits = validateMove(ts.from, placement, ts.tiles);
+
+                            doPlacement(placement, bits);
+                        });
+                    }, 200);
+                }, 3500);
             }, 200);
         }, 3500);
     });

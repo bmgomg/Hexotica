@@ -53,7 +53,7 @@
 		}
 
 		clickSector = i;
-		post(() => clickSector = 0, 750);
+		post(() => (clickSector = 0), 750);
 
 		const bits = validateMove(ss.from, placement, ss.tiles);
 
@@ -109,7 +109,7 @@
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
-		{@const fill = clickSector === i ? 'var(--spoke)' : 'none'}
+		{@const fill = !tile && clickSector === i ? 'var(--spoke)' : 'none'}
 		{@const sw = tile ? 0 : 10}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			<path class="sector {canClick ? 'ape' : 'nope'}" d="M363,314 183,8 543,8 Z" {fill} onpointerdown={() => onClick(i)} />

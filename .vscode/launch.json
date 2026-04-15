@@ -8,10 +8,7 @@
       "request": "launch",
       "type": "msedge",
       "url": "http://localhost:2230",
-      "webRoot": "${workspaceFolder}",
-      "runtimeArgs": [
-        "--start-maximized"
-      ]
+      "webRoot": "${workspaceFolder}"
     },
     {
       "name": "Edge Integrated",
@@ -25,10 +22,7 @@
       "request": "launch",
       "name": "Chrome",
       "url": "http://localhost:2230",
-      "webRoot": "${workspaceFolder}",
-      "runtimeArgs": [
-        "--start-maximized"
-      ]
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

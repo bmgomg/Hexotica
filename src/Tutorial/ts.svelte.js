@@ -303,7 +303,7 @@ const step8 = () => {
         }
 
         // move P1 hand to a placed tile
-        hand.off = { x: 80, y: 300 };
+        hand.off = { x: 80, y: 298 };
 
         post(() => {
             if (!ss.tutorial) {
@@ -323,7 +323,7 @@ const step8 = () => {
 
                 // move P1 hand to destination sector
                 hand.scale = 1;
-                hand.off = { x: 103, y: 257 };
+                hand.off = { x: 103, y: 255 };
 
                 post(() => {
                     if (!ss.tutorial) {

@@ -1,13 +1,10 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { validateMove } from '../ai';
-	import { ERR_COLOR, ERR_ISLAND, ERR_NEIGHBORS, ERR_NO_TILE, HEX_DIMS, HEX_RATIO, HEX_WIDTH } from '../const';
-	import { placedTiles, showMessage } from '../shared.svelte';
-	import { _sound } from '../sound.svelte';
-	import { doPlacement, isMoving, spotId, ts } from './ts.svelte';
+	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from '../const';
+	import { placedTiles } from '../shared.svelte';
+	import { isMoving, spotId, ts } from './ts.svelte';
 
 	const { row, col, tile } = $props();
-	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
 	const id = $derived(spotId(row, col));
 	const ga = $derived(`${tile || row < 0 ? 1 : row}/${tile || col < 0 ? 1 : col}`);
@@ -19,50 +16,6 @@
 	const sw = 10;
 	const selected = $derived(ts.from && ts.from.row === row && ts.from.col === col ? ts.from.sector : 0);
 	const moving = $derived(isMoving());
-
-	const onClick = (i) => {
-		_sound.play('click');
-
-		const placement = { row, col, sector: i };
-
-		if (!ts.from) {
-			ts.from = placement;
-			return;
-		}
-
-		if (ts.from.row === row && ts.from.col === col) {
-			if (ts.from.sector === i) {
-				delete ts.from;
-				return;
-			}
-
-			if (tt) {
-				ts.from.sector = i;
-				return;
-			}
-		} else if (tile) {
-			ts.from = placement;
-			return;
-		}
-
-		const bits = validateMove(ts.from, placement, ts.tiles);
-
-		switch (bits) {
-			case ERR_NO_TILE:
-				throw new Error('No tile!');
-			case ERR_COLOR:
-				showMessage('Color mismatch!');
-				return;
-			case ERR_NEIGHBORS:
-				showMessage('Too few neighbors!');
-				return;
-			case ERR_ISLAND:
-				showMessage('No islands!');
-				return;
-		}
-
-		doPlacement(placement, bits);
-	};
 
 	const classes = $derived.by(() => {
 		let cls = 'spot nope ';
@@ -86,7 +39,7 @@
 		{@const fill = !tile && ts.to?.row === row && ts.to?.col === col && ts.to?.sector === i ? 'var(--spoke)' : 'none'}
 		{@const sw = tile ? 0 : 10}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			<path class="sector nope" d="M363,314 183,8 543,8 Z" {fill} onpointerdown={() => onClick(i)} />
+			<path class="sector nope" d="M363,314 183,8 543,8 Z" {fill} />
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#snippet dot(angle)}
 				{@const r = width * 0.6}
@@ -139,7 +92,6 @@
 
 	.center {
 		cursor: initial;
-		/* pointer-events: all; */
 	}
 
 	svg {

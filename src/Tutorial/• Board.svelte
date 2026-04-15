@@ -65,7 +65,7 @@
 	}
 
 	.cell {
-		display: grid;
+		display: none;
 		font-family: Crimson;
 		opacity: 0.35;
 		box-sizing: border-box;

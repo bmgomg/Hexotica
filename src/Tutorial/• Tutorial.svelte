@@ -50,6 +50,8 @@
 		grid-auto-flow: column;
 		background: var(--menu-bg);
 		z-index: 4;
+		box-sizing: border-box;
+		padding: 0 10px 5px 0;
 	}
 
 	.script-container {
@@ -59,7 +61,7 @@
 
 	.script {
 		display: grid;
-		padding: 20px 10px 10px 20px;
+		padding: 20px 10px 10px 15px;
 		font-family: Crimson;
 		font-style: italic;
 		font-size: 20px;

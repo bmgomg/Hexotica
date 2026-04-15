@@ -63,18 +63,20 @@
 		font-family: Crimson;
 		font-style: italic;
 		font-size: 20px;
-		width: 300px;
+		width: 325px;
 	}
 
 	.line {
-		margin-bottom: 15px;
+		margin-bottom: 5px;
 		opacity: 0.35;
-		transition: opacity 1s;
+		transition: opacity 1s, background-color 0.1s;
 		box-sizing: border-box;
+		padding: 5px 10px 7px;
 	}
 
 	.hi {
 		opacity: 1;
+		background: #ffffff20;
 	}
 
 	.game {

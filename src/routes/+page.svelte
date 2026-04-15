@@ -18,7 +18,7 @@
 		};
 
 		const onBlur = () => {
-			if (_sound.music > 0) {
+			if (_sound.music > 0 && _sound.musicPlayed) {
 				toggleMusic();
 			}
 		};

@@ -83,7 +83,7 @@ export const drawTile = () => {
 
 const onStep = (step) => {
     ts.step = step;
-    _sound.play('draw', { rate: 4 });
+    // _sound.play('draw', { rate: 4 });
 };
 
 const step2 = () => {
@@ -92,7 +92,6 @@ const step2 = () => {
     }
 
     onStep(2);
-    _sound.play('win', { rate: 4 });
 
     const hand = ts.hand1;
     hand.show = true;
@@ -102,7 +101,7 @@ const step2 = () => {
             return;
         }
 
-        hand.off = { x: 57, y: 30 };
+        hand.off = { x: 57, y: 39 };
 
         post(() => {
             if (!ss.tutorial) {
@@ -139,7 +138,7 @@ const step3 = () => {
             return;
         }
 
-        hand.off = { x: 107, y: 270 };
+        hand.off = { x: 103, y: 277 };
 
         post(() => {
             if (!ss.tutorial) {

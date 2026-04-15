@@ -27,10 +27,9 @@ const initDecks = () => {
             return;
         }
 
-        for (const player of [1, 2]) {
-            const id = 'tutorial tile ' + player + ` ${bits}`.replaceAll(',', '');
-            tiles.push({ id, player, bits, idBits: bits, imgTurns: 0 });
-        }
+        const player = i === 4 ? 2 : 1;
+        const id = 'tutorial tile ' + player + ` ${bits}`.replaceAll(',', '');
+        tiles.push({ id, player, bits, idBits: bits, imgTurns: 0 });
     });
 
     return tiles;
@@ -58,8 +57,7 @@ export const drawTile = () => {
         tiles = playerTiles(ts.actor, 'deck');
     }
 
-    const tile = ts.tiles[0];
-    tile.place = 'tray';
+    tiles[0].place = 'tray';
 };
 
 const step2 = () => {

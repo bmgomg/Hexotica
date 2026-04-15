@@ -40,11 +40,11 @@ const initDecks = () => {
     const tiles = [];
 
     DECK.forEach((bits, i) => {
-        if (i < 3 || i > 5) {
+        if (i < 3 || i > 6) {
             return;
         }
 
-        const player = i === 4 ? 2 : 1;
+        const player = 2 - (i % 2);
         const id = 'tutorial tile ' + player + ` ${bits}`.replaceAll(',', '');
         tiles.push({ id, player, bits, idBits: bits, imgTurns: 0 });
     });
@@ -457,6 +457,7 @@ const step9 = () => {
                             const bits = validateMove(ts.from, placement, ts.tiles);
 
                             doPlacement(placement, bits);
+                            post(() => makeTutorialGame(true), 6000);
                         });
                     }, 200);
                 }, 3500);

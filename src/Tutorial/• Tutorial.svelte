@@ -67,11 +67,11 @@
 	}
 
 	.line {
-		margin-bottom: 5px;
+		margin-bottom: 3px;
 		opacity: 0.35;
 		transition: opacity 1s, background-color 0.1s;
 		box-sizing: border-box;
-		padding: 5px 10px 7px;
+		padding: 5px 10px 9px;
 	}
 
 	.hi {

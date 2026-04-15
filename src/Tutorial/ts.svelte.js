@@ -246,11 +246,17 @@ const step6 = () => {
 
                             hand.scale = 1;
 
-                            const placement = { row: 4, col: 4, sector: 5 };
-                            const bits = validateMove(ts.from, placement, ts.tiles);
+                            post(() => {
+                                if (!ss.tutorial) {
+                                    return;
+                                }
 
-                            doPlacement(placement, bits);
-                            post(step7, 3000);
+                                const placement = { row: 4, col: 4, sector: 5 };
+                                const bits = validateMove(ts.from, placement, ts.tiles);
+
+                                doPlacement(placement, bits);
+                                post(step7, 3000);
+                            });
                         }, 200);
                     }, 3500);
                 });
@@ -265,6 +271,8 @@ const step7 = () => {
     }
 
     onStep(7);
+
+    post(step8, 3000);
 };
 
 const step8 = () => {
@@ -273,6 +281,68 @@ const step8 = () => {
     }
 
     onStep(8);
+
+    const hand = ts.hand1;
+    hand.show = true;
+
+    post(() => {
+        if (!ss.tutorial) {
+            return;
+        }
+
+        hand.off = { x: 80, y: 300 };
+
+        post(() => {
+            if (!ss.tutorial) {
+                return;
+            }
+
+            hand.scale = 0.8;
+
+            _sound.play('click');
+            ts.from = { row: 5, col: 3, sector: 4 };
+
+            post(() => {
+                if (!ss.tutorial) {
+                    return;
+                }
+
+                hand.scale = 1;
+                hand.off = { x: 104, y: 257 };
+
+                post(() => {
+                    if (!ss.tutorial) {
+                        return;
+                    }
+
+                    hand.scale = 0.8;
+                    _sound.play('click');
+
+                    post(() => {
+                        if (!ss.tutorial) {
+                            return;
+                        }
+
+                        hand.scale = 1;
+
+                        post(() => {
+                            if (!ss.tutorial) {
+                                return;
+                            }
+
+                            const placement = { row: 5, col: 3, sector: 2 };
+                            const bits = validateMove(ts.from, placement, ts.tiles);
+
+                            doPlacement(placement, bits);
+
+                            // step4();
+                            // post(step5, 3000);
+                        });
+                    }, 200);
+                }, 3500);
+            }, 200);
+        }, 3500);
+    });
 };
 
 const step9 = () => {
@@ -280,7 +350,7 @@ const step9 = () => {
         return;
     }
 
-    onStep(8);
+    onStep(9);
 };
 
 export const makeTutorialGame = (restart = false) => {

@@ -22,10 +22,12 @@
 					{@const tile = getTile(i, player)}
 					<div class="hex no-highlight" style="grid-area: {row}/{col}">
 						{#if tile.place}
-							<Spot row={1} col={1} scale={0.9} deck/>
+							<Spot row={1} col={1} deck/>
 						{:else}
-							<img src={hex} alt="" width='100%' />
-                            <div class="knob"><Knob tile={{ player }} scale={0.9} /></div>
+							<img src={hex} alt="" width={80} />
+                            <div class="knob">
+								<Knob tile={{ player }} deck/>
+							</div>
 						{/if}
 					</div>
 				{/each}
@@ -58,7 +60,6 @@
 		display: grid;
 		place-items: center;
 		width: 80px;
-		/* aspect-ratio: 0.865; */
 		aspect-ratio: 1.156;
 	}
 

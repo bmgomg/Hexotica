@@ -11,7 +11,7 @@
 	const player = $derived(tile?.player);
 	const id = $derived(spotId(row, col));
 	const ga = $derived(`${tile || row < 0 ? 1 : row}/${tile || col < 0 ? 1 : col}`);
-	const width = $derived(HEX_WIDTH * ss.zoom);
+	const width = $derived(HEX_WIDTH * ss.zoom * (deck ? 0.9 : 1));
 	const height = $derived(width / HEX_RATIO);
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';

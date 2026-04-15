@@ -310,11 +310,11 @@ export const doPlacement = (placement, bits) => {
     ss.to = placement;
     const tileFrom = fromTile();
 
-    _log(ss.actor);
-    _log(tileFrom.idBits);
-    _log(ss.from);
-    _log(ss.to);
-    dashes();
+    // _log(ss.actor);
+    // _log(tileFrom.idBits);
+    // _log(ss.from);
+    // _log(ss.to);
+    // dashes();
 
     if (tileFrom === findTile(ss.to.row, ss.to.col)) {
         ss.ms = 500;
@@ -325,7 +325,7 @@ export const doPlacement = (placement, bits) => {
         const { x: x1, y: y1 } = rectCenter(tileFrom.id);
         tileFrom.off = { x: x2 - x1, y: y2 - y1 };
 
-        ss.ms = 1750;
+        ss.ms = 750;
     }
 
     post(() => {

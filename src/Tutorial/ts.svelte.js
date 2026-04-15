@@ -91,6 +91,7 @@ const step2 = () => {
         return;
     }
 
+    // P1 selects tray tile
     onStep(2);
 
     const hand = ts.hand1;
@@ -101,6 +102,7 @@ const step2 = () => {
             return;
         }
 
+        // move P1 hand to tray
         hand.off = { x: 57, y: 39 };
 
         post(() => {
@@ -116,6 +118,7 @@ const step2 = () => {
                     return;
                 }
 
+                // P1 clicks on tray
                 hand.scale = 1;
                 ts.from = { row: -1, col: -1, sector: 5 };
 
@@ -130,6 +133,7 @@ const step3 = () => {
         return;
     }
 
+    // P1 places tray tile
     onStep(3);
     const hand = ts.hand1;
 
@@ -138,6 +142,7 @@ const step3 = () => {
             return;
         }
 
+        // move P1 hand to destination
         hand.off = { x: 103, y: 277 };
 
         post(() => {
@@ -160,6 +165,7 @@ const step3 = () => {
                         return;
                     }
 
+                    // P1 selects destination
                     const placement = { row: 5, col: 3, sector: 3 };
                     const bits = validateMove(ts.from, placement, ts.tiles);
 
@@ -176,6 +182,7 @@ const step4 = () => {
         return;
     }
 
+    // Explain rotation
     onStep(4);
     post(step5, 3000);
 };
@@ -185,6 +192,7 @@ const step5 = () => {
         return;
     }
 
+    // P2 tile is drawn
     onStep(5);
     post(step6, 3000);
 };
@@ -194,6 +202,7 @@ const step6 = () => {
         return;
     }
 
+    // P2 places tray tile
     onStep(6);
 
     const hand = ts.hand2;
@@ -204,6 +213,7 @@ const step6 = () => {
             return;
         }
 
+        // move P2 hand to tray
         hand.off = { x: -78, y: 45 };
 
         post(() => {
@@ -219,6 +229,7 @@ const step6 = () => {
                     return;
                 }
 
+                // P2 selects tray tile
                 hand.scale = 1;
                 ts.from = { row: -1, col: -1, sector: 4 };
 
@@ -227,6 +238,7 @@ const step6 = () => {
                         return;
                     }
 
+                    // move P2 hand to destination
                     hand.off = { x: -27, y: 240 };
 
                     post(() => {
@@ -249,6 +261,7 @@ const step6 = () => {
                                     return;
                                 }
 
+                                // P2 selects destination
                                 const placement = { row: 4, col: 4, sector: 5 };
                                 const bits = validateMove(ts.from, placement, ts.tiles);
 
@@ -268,6 +281,7 @@ const step7 = () => {
         return;
     }
 
+    // P1 tile is drawn
     onStep(7);
     post(step8, 3000);
 };
@@ -277,6 +291,7 @@ const step8 = () => {
         return;
     }
 
+    // P1 rotates and repositions
     onStep(8);
 
     const hand = ts.hand1;
@@ -287,6 +302,7 @@ const step8 = () => {
             return;
         }
 
+        // move P1 hand to a placed tile
         hand.off = { x: 80, y: 300 };
 
         post(() => {
@@ -302,8 +318,10 @@ const step8 = () => {
                     return;
                 }
 
+                // P1 selects a sector for rotation
                 ts.from = { row: 5, col: 3, sector: 4 };
 
+                // move P1 hand to destination sector
                 hand.scale = 1;
                 hand.off = { x: 103, y: 257 };
 
@@ -327,6 +345,7 @@ const step8 = () => {
                                 return;
                             }
 
+                            // P1 selects destination sector for rotation
                             const placement = { row: 5, col: 3, sector: 2 };
                             const bits = validateMove(ts.from, placement, ts.tiles);
 
@@ -337,6 +356,7 @@ const step8 = () => {
                                     return;
                                 }
 
+                                // move P1 hand to a placed tile
                                 hand.show = true;
                                 hand.off = { x: 103, y: 285 };
 
@@ -353,8 +373,10 @@ const step8 = () => {
                                             return;
                                         }
 
+                                        // P1 selects a tile for repositioning
                                         ts.from = { row: 5, col: 3, sector: 3 };
 
+                                        // move P1 hand to destination for repositioning
                                         hand.scale = 1;
                                         hand.off = { x: 152, y: 285 };
 
@@ -378,6 +400,7 @@ const step8 = () => {
                                                         return;
                                                     }
 
+                                                    // P1 selects destination for repositioning
                                                     const placement = { row: 6, col: 4, sector: 1 };
                                                     const bits = validateMove(ts.from, placement, ts.tiles);
 
@@ -402,6 +425,7 @@ const step9 = () => {
         return;
     }
 
+    // P1 places tray tile
     onStep(9);
 
     const hand = ts.hand1;
@@ -412,6 +436,7 @@ const step9 = () => {
             return;
         }
 
+        // move P1 hand to tray
         hand.off = { x: 57, y: 13 };
 
         post(() => {
@@ -427,8 +452,10 @@ const step9 = () => {
                     return;
                 }
 
+                // P1 selects tray tile
                 ts.from = { row: -1, col: -1, sector: 6 };
 
+                // move P1 hand to destination
                 hand.scale = 1;
                 hand.off = { x: 103, y: 257 };
 
@@ -452,10 +479,13 @@ const step9 = () => {
                                 return;
                             }
 
+                            // P1 selects destination
                             const placement = { row: 5, col: 3, sector: 2 };
                             const bits = validateMove(ts.from, placement, ts.tiles);
 
                             doPlacement(placement, bits);
+
+                            // P2 tile is drawn; restart the tutorial
                             post(() => makeTutorialGame(true), 6000);
                         });
                     }, 200);

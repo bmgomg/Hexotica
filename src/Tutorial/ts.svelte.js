@@ -57,6 +57,10 @@ export const drawTile = () => {
         tiles = playerTiles(ts.actor, 'deck');
     }
 
+    if (ts.tiles.some(t => t.place)) {
+        _sound.play('link1', { rate: 0.5 });
+    }
+
     tiles[0].place = 'tray';
 };
 
@@ -101,7 +105,9 @@ const step3 = () => {
                     const bits = validateMove(ts.from, placement, ts.tiles);
 
                     doPlacement(placement, bits);
-                    post(step4, 3000);
+
+                    step4();
+                    post(step5, 3000);
                 });
             }, 200);
         }, 3500);
@@ -110,11 +116,15 @@ const step3 = () => {
 
 const step4 = () => {
     ts.step = 4;
-    post(step5, 2000);
 };
 
 const step5 = () => {
     ts.step = 5;
+    post(step6, 2000);
+};
+
+const step6 = () => {
+    ts.step = 6;
 
     const hand = ts.hand2;
     hand.show = true;
@@ -145,7 +155,7 @@ const step5 = () => {
                             const bits = validateMove(ts.from, placement, ts.tiles);
 
                             doPlacement(placement, bits);
-                            post(step6, 3000);
+                            post(step7, 3000);
                         }, 200);
                     }, 3500);
                 });
@@ -154,15 +164,15 @@ const step5 = () => {
     });
 };
 
-const step6 = () => {
-    ts.step = 6;
-};
-
 const step7 = () => {
     ts.step = 7;
 };
 
 const step8 = () => {
+    ts.step = 8;
+};
+
+const step9 = () => {
     ts.step = 8;
 };
 

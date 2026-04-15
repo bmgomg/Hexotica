@@ -7,14 +7,15 @@
 	import { ts } from './ts.svelte';
 
 	const SCRIPT = [
-		['A tile from Player 1’s deck is drawn.'],
-		['Player 1 chooses a sector on the drawn tile.'],
-		['Player 1 chooses a sector on an empty space on the board.', 'The chosen sector sets the tile’s orientation when it’s placed.'],
-		['A tile from Player 2’s deck is drawn.'],
-		['Player 2 places the tile on the board.'],
-		['A tile from Player 1’s deck is drawn.'],
-		['Before placing the drawn tile, the player may rotate or reposition any of their tiles already on the board.'],
-		['Placing the drawn tile ends the player’s turn.']
+		/*1*/ ['A tile from Player 1’s deck is drawn.'],
+		/*2*/ ['Player 1 chooses a sector on the drawn tile.'],
+		/*3*/ ['Player 1 chooses a sector on an empty space on the board.'],
+		/*4*/ ['The chosen sector sets the tile’s orientation when it’s placed.'],
+		/*5*/ ['A tile from Player 2’s deck is drawn.'],
+		/*6*/ ['Player 2 places the tile on the board.'],
+		/*7*/ ['A tile from Player 1’s deck is drawn.'],
+		/*8*/ ['Before placing the drawn tile, the player may rotate or reposition any of their tiles already on the board.'],
+		/*9*/ ['Placing the drawn tile ends the player’s turn.']
 	];
 </script>
 

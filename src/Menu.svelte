@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 	import { APP_STATE, OPP_HUMAN, OPP_ROBOT } from './const';
 	import { loadGame, makeGame, remesh, ss } from './shared.svelte';
-	import { makeGame as makeTutorialGame } from './Tutorial/ts.svelte';
+	import { makeTutorialGame } from './Tutorial/ts.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
 	import ToolButton from './Tool Button.svelte';
@@ -36,7 +36,7 @@
 
 	const onTutorial = () => {
 		ss.tutorial = true;
-		makeTutorialGame();
+		post(makeTutorialGame);
 	};
 </script>
 

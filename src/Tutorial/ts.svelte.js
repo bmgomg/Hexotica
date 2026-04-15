@@ -1,5 +1,6 @@
 import { validateMove } from '../ai';
 import { DECK } from '../const';
+import { ss } from '../shared.svelte';
 import { _sound } from '../sound.svelte';
 import { post, rectCenter } from '../utils';
 
@@ -9,6 +10,22 @@ export const ts = $state({
     step: 1,
     hand1: {},
     hand2: {},
+
+    init: () => {
+        const keys = Object.getOwnPropertyNames(ts);
+
+        for (const key of keys) {
+            if (key !== 'init') {
+                delete ts[key];
+            }
+        }
+
+        ts.tiles = [];
+        ts.dims = { rows: 9, cols: 5 };
+        ts.step = 1;
+        ts.hand1 = {};
+        ts.hand2 = {};
+    }
 });
 
 export const spotId = (row, col) => 'tutorial spot ' + (row < 0 ? 'tray' : row + ':' + col);
@@ -64,21 +81,44 @@ export const drawTile = () => {
     tiles[0].place = 'tray';
 };
 
+const onStep = (step) => {
+    ts.step = step;
+    _sound.play('draw', { rate: 4 });
+};
+
 const step2 = () => {
-    ts.step = 2;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(2);
+    _sound.play('win', { rate: 4 });
+
     const hand = ts.hand1;
     hand.show = true;
 
     post(() => {
+        if (!ss.tutorial) {
+            return;
+        }
+
         hand.off = { x: 57, y: 30 };
 
         post(() => {
+            if (!ss.tutorial) {
+                return;
+            }
+
             hand.scale = 0.8;
 
             _sound.play('click');
             ts.from = { row: -1, col: -1, sector: 5 };
 
             post(() => {
+                if (!ss.tutorial) {
+                    return;
+                }
+
                 hand.scale = 1;
                 post(step3, 1000);
             }, 200);
@@ -87,20 +127,40 @@ const step2 = () => {
 };
 
 const step3 = () => {
-    ts.step = 3;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(3);
     const hand = ts.hand1;
 
     post(() => {
+        if (!ss.tutorial) {
+            return;
+        }
+
         hand.off = { x: 107, y: 270 };
 
         post(() => {
+            if (!ss.tutorial) {
+                return;
+            }
+
             hand.scale = 0.8;
             _sound.play('click');
 
             post(() => {
+                if (!ss.tutorial) {
+                    return;
+                }
+
                 hand.scale = 1;
 
                 post(() => {
+                    if (!ss.tutorial) {
+                        return;
+                    }
+
                     const placement = { row: 5, col: 3, sector: 3 };
                     const bits = validateMove(ts.from, placement, ts.tiles);
 
@@ -115,40 +175,76 @@ const step3 = () => {
 };
 
 const step4 = () => {
-    ts.step = 4;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(4);
 };
 
 const step5 = () => {
-    ts.step = 5;
-    post(step6, 2000);
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(5);
+    post(step6, 3000);
 };
 
 const step6 = () => {
-    ts.step = 6;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(6);
 
     const hand = ts.hand2;
     hand.show = true;
 
     post(() => {
+        if (!ss.tutorial) {
+            return;
+        }
+
         hand.off = { x: -78, y: 45 };
 
         post(() => {
+            if (!ss.tutorial) {
+                return;
+            }
+
             hand.scale = 0.8;
 
             _sound.play('click');
             ts.from = { row: -1, col: -1, sector: 4 };
 
             post(() => {
+                if (!ss.tutorial) {
+                    return;
+                }
+
                 hand.scale = 1;
 
                 post(() => {
+                    if (!ss.tutorial) {
+                        return;
+                    }
+
                     hand.off = { x: -27, y: 240 };
 
                     post(() => {
+                        if (!ss.tutorial) {
+                            return;
+                        }
+
                         hand.scale = 0.8;
                         _sound.play('click');
 
                         post(() => {
+                            if (!ss.tutorial) {
+                                return;
+                            }
+
                             hand.scale = 1;
 
                             const placement = { row: 4, col: 4, sector: 5 };
@@ -165,18 +261,30 @@ const step6 = () => {
 };
 
 const step7 = () => {
-    ts.step = 7;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(7);
 };
 
 const step8 = () => {
-    ts.step = 8;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(8);
 };
 
 const step9 = () => {
-    ts.step = 8;
+    if (!ss.tutorial) {
+        return;
+    }
+
+    onStep(8);
 };
 
-export const makeGame = (restart = false) => {
+export const makeTutorialGame = (restart = false) => {
     const doMakeGame = () => {
         _sound.play('dice');
 
@@ -231,7 +339,13 @@ export const doPlacement = (placement, bits) => {
         ts.ms = 1500;
     }
 
-    post(() => completePlacement(bits), ts.ms);
+    post(() => {
+        if (!ss.tutorial) {
+            return;
+        }
+
+        completePlacement(bits);
+    }, ts.ms);
 };
 
 const completePlacement = (bits) => {
@@ -246,8 +360,19 @@ const completePlacement = (bits) => {
 
         if (tileFrom.place === 'tray') {
             post(() => {
+                if (!ss.tutorial) {
+                    return;
+                }
+
                 ts.actor = 3 - ts.actor;
-                post(drawTile, 2000);
+
+                post(() => {
+                    if (!ss.tutorial) {
+                        return;
+                    }
+
+                    drawTile();
+                }, 2000);
             });
         }
 

@@ -9,6 +9,7 @@
 	import { underMouse } from './utils';
 	import Rules from './Rules.svelte';
 	import Tutorial from './Tutorial/• Tutorial.svelte';
+	import { ts } from './Tutorial/ts.svelte';
 
 	const onClick = (e) => {
 		if (underMouse(e, ['#menu', '#rules', '#tutorial', '#decks'])) {
@@ -20,6 +21,7 @@
 			delete ss.rules;
 		} else if (ss.tutorial) {
 			delete ss.tutorial;
+			ts.init();
 		} else if (ss.menu && ss.tiles.some((t) => t.place)) {
 			delete ss.menu;
 		} else if (ss.decks) {

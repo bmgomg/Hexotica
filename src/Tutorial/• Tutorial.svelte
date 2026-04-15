@@ -2,9 +2,10 @@
 	import { fade } from 'svelte/transition';
 	import { ss } from '../shared.svelte';
 	import { scrollClass } from '../utils';
+	import { ts } from './ts.svelte';
 	import Board from './• Board.svelte';
 	import Header from './• Header.svelte';
-	import { ts } from './ts.svelte';
+	import { onMount } from 'svelte';
 
 	const SCRIPT = [
 		/*1*/ ['A tile from Player 1’s deck is drawn.'],
@@ -17,6 +18,10 @@
 		/*8*/ ['Before placing the drawn tile, the player may rotate or reposition any of their tiles already on the board.'],
 		/*9*/ ['Placing the drawn tile ends the player’s turn.']
 	];
+
+	onMount(() => {
+		ts.init();
+	});
 </script>
 
 {#if ss.tutorial}
@@ -63,8 +68,9 @@
 
 	.line {
 		margin-bottom: 15px;
-		opacity: 0.4;
+		opacity: 0.35;
 		transition: opacity 1s;
+		box-sizing: border-box;
 	}
 
 	.hi {

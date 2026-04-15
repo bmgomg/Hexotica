@@ -303,9 +303,7 @@ export const onRoboTurn = () => {
     _sound.play('click');
     ss.from = { row: bm.fromRow || -1, col: bm.fromCol || -1, sector: 1 };
 
-    post(() => {
-        doPlacement({ row: bm.targetRow, col: bm.targetCol, sector: 1 + bm.turns }, bm.bits);
-    }, 2000);
+    post(() => doPlacement({ row: bm.targetRow, col: bm.targetCol, sector: 1 + bm.turns }, bm.bits), 2000);
 };
 
 export const doPlacement = (placement, bits) => {

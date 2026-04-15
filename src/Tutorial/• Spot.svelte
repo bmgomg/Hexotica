@@ -83,7 +83,7 @@
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
 		{@const stroke = tile ? 'none' : 'var(--spoke)'}
-		{@const fill = !tile && ts.to?.sector === i ? 'var(--spoke)' : 'none'}
+		{@const fill = !tile && ts.to?.row === row && ts.to?.col === col && ts.to?.sector === i ? 'var(--spoke)' : 'none'}
 		{@const sw = tile ? 0 : 10}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
 			<path class="sector nope" d="M363,314 183,8 543,8 Z" {fill} onpointerdown={() => onClick(i)} />

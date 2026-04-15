@@ -91,19 +91,79 @@ const step3 = () => {
 
         post(() => {
             hand.scale = 0.8;
-
             _sound.play('click');
 
             post(() => {
                 hand.scale = 1;
+
+                post(() => {
+                    const placement = { row: 5, col: 3, sector: 3 };
+                    const bits = validateMove(ts.from, placement, ts.tiles);
+
+                    doPlacement(placement, bits);
+                    post(step4, 3000);
+                });
             }, 200);
-
-            const placement = { row: 5, col: 3, sector: 3 };
-            const bits = validateMove(ts.from, placement, ts.tiles);
-
-            doPlacement(placement, bits);
         }, 3500);
     });
+};
+
+const step4 = () => {
+    ts.step = 4;
+    post(step5, 2000);
+};
+
+const step5 = () => {
+    ts.step = 5;
+
+    const hand = ts.hand2;
+    hand.show = true;
+
+    post(() => {
+        hand.off = { x: -78, y: 45 };
+
+        post(() => {
+            hand.scale = 0.8;
+
+            _sound.play('click');
+            ts.from = { row: -1, col: -1, sector: 4 };
+
+            post(() => {
+                hand.scale = 1;
+
+                post(() => {
+                    hand.off = { x: -27, y: 240 };
+
+                    post(() => {
+                        hand.scale = 0.8;
+                        _sound.play('click');
+
+                        post(() => {
+                            hand.scale = 1;
+
+                            const placement = { row: 4, col: 4, sector: 5 };
+                            const bits = validateMove(ts.from, placement, ts.tiles);
+
+                            doPlacement(placement, bits);
+                            post(step6, 3000);
+                        }, 200);
+                    }, 3500);
+                });
+            }, 200);
+        }, 3500);
+    });
+};
+
+const step6 = () => {
+    ts.step = 6;
+};
+
+const step7 = () => {
+    ts.step = 7;
+};
+
+const step8 = () => {
+    ts.step = 8;
 };
 
 export const makeGame = (restart = false) => {
@@ -161,9 +221,7 @@ export const doPlacement = (placement, bits) => {
         ts.ms = 1500;
     }
 
-    post(() => {
-        completePlacement(bits);
-    }, ts.ms);
+    post(() => completePlacement(bits), ts.ms);
 };
 
 const completePlacement = (bits) => {
@@ -179,7 +237,7 @@ const completePlacement = (bits) => {
         if (tileFrom.place === 'tray') {
             post(() => {
                 ts.actor = 3 - ts.actor;
-                drawTile();
+                post(drawTile, 2000);
             });
         }
 

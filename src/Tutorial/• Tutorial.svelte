@@ -15,7 +15,7 @@
 		/*5*/ ['A tile from Player 2’s deck is drawn.'],
 		/*6*/ ['Player 2 places the tile on the board.'],
 		/*7*/ ['A tile from Player 1’s deck is drawn.'],
-		/*8*/ ['Before placing the drawn tile, the player may rotate or reposition any of their tiles already on the board.'],
+		/*8*/ ['Before placing the drawn tile, the player may rotate and/or reposition any of their tiles already on the board.'],
 		/*9*/ ['Placing the drawn tile ends the player’s turn.']
 	];
 
@@ -44,7 +44,7 @@
 
 <style>
 	.tutorial {
-		grid-area: 2/1;
+		grid-area: 1/1/span 3/1;
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;

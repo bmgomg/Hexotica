@@ -39,7 +39,7 @@
 
 <style>
 	.decks {
-		grid-area: 2/1;
+		grid-area: 1/1/span 3/1;
 		display: grid;
 		place-self: center;
 		box-sizing: border-box;

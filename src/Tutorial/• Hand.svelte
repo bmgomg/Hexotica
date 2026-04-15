@@ -6,14 +6,14 @@
 
 	const { player } = $props();
 	const src = $derived(player === 1 ? HandY : HandB);
-	const hand = $derived(ts.hands[player - 1]);
+	const hand = $derived(player === 1 ? ts.hand1 : ts.hand2);
 	const show = $derived(hand.show);
 	const translate = $derived(`${hand.off?.x || 0}px ${hand.off?.y || 0}px`);
 	const style = $derived(`translate: ${translate}; scale: ${hand.scale}`);
 </script>
 
 {#if show}
-	<img class={player === 1 ? 'p1' : 'p2'} {src} alt="" width={32} in:fade={{ duration: 1000 }} {style} />
+	<img class={player === 1 ? 'p1' : 'p2'} {src} alt="" width={32} transition:fade={{ duration: 1000 }} {style} />
 {/if}
 
 <style>

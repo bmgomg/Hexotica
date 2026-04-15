@@ -1,3 +1,4 @@
+import { validateMove } from '../ai';
 import { DECK } from '../const';
 import { _sound } from '../sound.svelte';
 import { post, rectCenter } from '../utils';
@@ -6,7 +7,8 @@ export const ts = $state({
     tiles: [],
     dims: { rows: 9, cols: 5 },
     step: 1,
-    hands: [{}, {}],
+    hand1: {},
+    hand2: {},
 });
 
 export const spotId = (row, col) => 'tutorial spot ' + (row < 0 ? 'tray' : row + ':' + col);
@@ -62,7 +64,7 @@ export const drawTile = () => {
 
 const step2 = () => {
     ts.step = 2;
-    const hand = ts.hands[0];
+    const hand = ts.hand1;
     hand.show = true;
 
     post(() => {
@@ -76,7 +78,7 @@ const step2 = () => {
 
             post(() => {
                 hand.scale = 1;
-                post (step3, 1000);
+                post(step3, 1000);
             }, 200);
         }, 3500);
     });
@@ -84,7 +86,7 @@ const step2 = () => {
 
 const step3 = () => {
     ts.step = 3;
-    const hand = ts.hands[0];
+    const hand = ts.hand1;
 
     post(() => {
         hand.off = { x: 107, y: 270 };
@@ -93,13 +95,15 @@ const step3 = () => {
             hand.scale = 0.8;
 
             _sound.play('click');
-            ts.to = { row: 5, col: 3, sector: 3 };
-            ts.ms = 1500;
 
             post(() => {
                 hand.scale = 1;
-                // post (step4, 1000);
             }, 200);
+
+            const placement = { row: 5, col: 3, sector: 3 };
+            const bits = validateMove(ts.from, placement, ts.tiles);
+
+            doPlacement(placement, bits);
         }, 3500);
     });
 };
@@ -110,11 +114,13 @@ export const makeGame = (restart = false) => {
 
         delete ts.from;
         delete ts.to;
+        delete ts.ms;
 
         ts.tiles = initDecks();
         ts.actor = 1;
         ts.step = 1;
-        ts.hands = [{}, {}];
+        ts.hand1 = {};
+        ts.hand2 = {};
 
         post(() => {
             drawTile();
@@ -139,6 +145,10 @@ export const makeGame = (restart = false) => {
 
 export const doPlacement = (placement, bits) => {
     ts.to = placement;
+
+    delete ts.hand1.show;
+    delete ts.hand2.show;
+
     const tileFrom = fromTile();
 
     if (tileFrom === findTile(ts.to.row, ts.to.col)) {
@@ -150,7 +160,7 @@ export const doPlacement = (placement, bits) => {
         const { x: x1, y: y1 } = rectCenter(tileFrom.id);
         tileFrom.off = { x: x2 - x1, y: y2 - y1 };
 
-        ts.ms = 750;
+        ts.ms = 1500;
     }
 
     post(() => {

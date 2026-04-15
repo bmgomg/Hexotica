@@ -6,12 +6,12 @@
 	import { _sound } from './sound.svelte';
 	import { post } from './utils';
 
-	const { row, col, tile, scale = ss.zoom, deck } = $props();
+	const { row, col, tile, deck } = $props();
 	const tt = $derived(tile?.place === 'tray');
 	const player = $derived(tile?.player);
 	const id = $derived(spotId(row, col));
 	const ga = $derived(`${tile || row < 0 ? 1 : row}/${tile || col < 0 ? 1 : col}`);
-	const width = $derived(HEX_WIDTH * scale);
+	const width = $derived(HEX_WIDTH * ss.zoom);
 	const height = $derived(width / HEX_RATIO);
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;
 	const xmlns = 'http://www.w3.org/2000/svg';
@@ -55,7 +55,7 @@
 		clickSector = i;
 		post(() => clickSector = 0, 750);
 
-		let bits = validateMove(ss.from, placement, ss.tiles);
+		const bits = validateMove(ss.from, placement, ss.tiles);
 
 		switch (bits) {
 			case ERR_NO_TILE:

@@ -327,7 +327,7 @@ export const doPlacement = (placement, bits) => {
         const { x: x1, y: y1 } = rectCenter(tileFrom.id);
         tileFrom.off = { x: x2 - x1, y: y2 - y1 };
 
-        ss.ms = 750;
+        ss.ms = 1750;
     }
 
     post(() => {

@@ -15,6 +15,7 @@
 <style>
 	.header {
 		grid-area: 1/1;
+		height: 80px;
 		place-self: center;
 		align-items: center;
 		display: grid;

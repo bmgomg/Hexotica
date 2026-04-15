@@ -3,9 +3,9 @@
 	import { HEX_DIMS, HEX_RATIO, HEX_WIDTH } from './const';
 	import { isWinner, ss } from './shared.svelte';
 
-	const { tile, scale = ss.zoom } = $props();
+	const { tile } = $props();
 	const player = $derived(tile?.player);
-	const width = $derived(HEX_WIDTH * scale);
+	const width = $derived(HEX_WIDTH * ss.zoom);
 	const height = $derived(width / HEX_RATIO);
 	const r = $derived(width * 1.3);
 	const viewBox = `0 0 ${HEX_DIMS.X} ${HEX_DIMS.Y}`;

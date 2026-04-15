@@ -9,20 +9,22 @@
 	const i = $derived(DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.idBits)));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
-	const scale = $derived(tile.off || !tt ? ss.zoom : 0.9);
+	const scale = $derived(tile.off || !tt ? 1 : 0.9);
 	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
-	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
-	const style = $derived(`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; z-index: ${tile.off ? 3 : 2}`);
 	const roboSelect = $derived(roboTurn() && fromTile() === tile);
+	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
+	const style = $derived(
+		`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; transition-duration: ${ss.ms}ms; z-index: ${tile.off ? 3 : 2}`
+	);
 </script>
 
 <div id={tile.id} class="tile nope {roboSelect ? 'pulse' : ''} {tt ? 'swirl' : ss.restart ? 'fade-out' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
-		<img src={HexBg} alt="" width={HEX_WIDTH * scale} />
-		<img src={HEXES[i]} alt="" width={HEX_WIDTH * scale} style="rotate: {tile.imgTurns * 60}deg;" />
-		<Spot {row} {col} {tile} {scale} />
+		<img src={HexBg} alt="" width={HEX_WIDTH * ss.zoom} />
+		<img src={HEXES[i]} alt="" width={HEX_WIDTH * ss.zoom} style="rotate: {tile.imgTurns * 60}deg;" />
+		<Spot {row} {col} {tile} />
 	</div>
-	<Knob {tile} {scale} />
+	<Knob {tile} />
 </div>
 
 <style>
@@ -31,8 +33,8 @@
 		place-self: center;
 		box-sizing: border-box;
 		transition:
-			translate 0.75s linear,
-			scale 0.75s linear;
+			translate linear,
+			scale linear;
 		z-index: 2;
 	}
 

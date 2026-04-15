@@ -1,10 +1,10 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { _log, boardParams, neighbors, placedTiles } from '../shared.svelte';
-	import { _range, dashes } from '../utils';
+	import { boardParams, neighbors, placedTiles } from '../shared.svelte';
+	import { _range } from '../utils';
 	import { remesh, trayTile, ts } from './ts.svelte';
-	import Tile from './• Tile.svelte';
 	import Spot from './• Spot.svelte';
+	import Tile from './• Tile.svelte';
 
 	const { rows, cols } = $derived(ts.dims);
 	const { rowHeight, colWidth, gap: g, pad } = boardParams(1);

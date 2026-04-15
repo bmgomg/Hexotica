@@ -109,9 +109,7 @@ const step2 = () => {
             }
 
             hand.scale = 0.8;
-
             _sound.play('click');
-            ts.from = { row: -1, col: -1, sector: 5 };
 
             post(() => {
                 if (!ss.tutorial) {
@@ -119,6 +117,8 @@ const step2 = () => {
                 }
 
                 hand.scale = 1;
+                ts.from = { row: -1, col: -1, sector: 5 };
+
                 post(step3, 1000);
             }, 200);
         }, 3500);
@@ -212,9 +212,7 @@ const step6 = () => {
             }
 
             hand.scale = 0.8;
-
             _sound.play('click');
-            ts.from = { row: -1, col: -1, sector: 4 };
 
             post(() => {
                 if (!ss.tutorial) {
@@ -222,6 +220,7 @@ const step6 = () => {
                 }
 
                 hand.scale = 1;
+                ts.from = { row: -1, col: -1, sector: 4 };
 
                 post(() => {
                     if (!ss.tutorial) {
@@ -296,14 +295,14 @@ const step8 = () => {
             }
 
             hand.scale = 0.8;
-
             _sound.play('click');
-            ts.from = { row: 5, col: 3, sector: 4 };
 
             post(() => {
                 if (!ss.tutorial) {
                     return;
                 }
+
+                ts.from = { row: 5, col: 3, sector: 4 };
 
                 hand.scale = 1;
                 hand.off = { x: 103, y: 257 };
@@ -347,14 +346,14 @@ const step8 = () => {
                                     }
 
                                     hand.scale = 0.8;
-
                                     _sound.play('click');
-                                    ts.from = { row: 5, col: 3, sector: 3 };
 
                                     post(() => {
                                         if (!ss.tutorial) {
                                             return;
                                         }
+
+                                        ts.from = { row: 5, col: 3, sector: 3 };
 
                                         hand.scale = 1;
                                         hand.off = { x: 152, y: 285 };
@@ -421,14 +420,14 @@ const step9 = () => {
             }
 
             hand.scale = 0.8;
-
             _sound.play('click');
-            ts.from = { row: -1, col: -1, sector: 6 };
 
             post(() => {
                 if (!ss.tutorial) {
                     return;
                 }
+
+                ts.from = { row: -1, col: -1, sector: 6 };
 
                 hand.scale = 1;
                 hand.off = { x: 103, y: 257 };

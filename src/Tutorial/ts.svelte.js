@@ -308,7 +308,7 @@ const step8 = () => {
                 }
 
                 hand.scale = 1;
-                hand.off = { x: 104, y: 257 };
+                hand.off = { x: 102, y: 257 };
 
                 post(() => {
                     if (!ss.tutorial) {
@@ -335,8 +335,63 @@ const step8 = () => {
 
                             doPlacement(placement, bits);
 
-                            // step4();
-                            // post(step5, 3000);
+                            post(() => {
+                                if (!ss.tutorial) {
+                                    return;
+                                }
+
+                                hand.show = true;
+                                hand.off = { x: 102, y: 287 };
+
+                                post(() => {
+                                    if (!ss.tutorial) {
+                                        return;
+                                    }
+
+                                    hand.scale = 0.8;
+
+                                    _sound.play('click');
+                                    ts.from = { row: 5, col: 3, sector: 3 };
+
+                                    post(() => {
+                                        if (!ss.tutorial) {
+                                            return;
+                                        }
+
+                                        hand.scale = 1;
+                                        hand.off = { x: 152, y: 287 };
+
+                                        post(() => {
+                                            if (!ss.tutorial) {
+                                                return;
+                                            }
+
+                                            hand.scale = 0.8;
+                                            _sound.play('click');
+
+                                            post(() => {
+                                                if (!ss.tutorial) {
+                                                    return;
+                                                }
+
+                                                hand.scale = 1;
+
+                                                post(() => {
+                                                    if (!ss.tutorial) {
+                                                        return;
+                                                    }
+
+                                                    const placement = { row: 6, col: 4, sector: 1 };
+                                                    const bits = validateMove(ts.from, placement, ts.tiles);
+
+                                                    doPlacement(placement, bits);
+                                                    post(step9, 3000);
+                                                }, 2000);
+                                            }, 200);
+                                        }, 3500);
+                                    }, 200);
+                                }, 1500);
+                            }, 2000);
                         });
                     }, 200);
                 }, 3500);
@@ -351,6 +406,37 @@ const step9 = () => {
     }
 
     onStep(9);
+
+    const hand = ts.hand1;
+    hand.show = true;
+
+    post(() => {
+        if (!ss.tutorial) {
+            return;
+        }
+
+        hand.off = { x: 57, y: 13 };
+
+        post(() => {
+            if (!ss.tutorial) {
+                return;
+            }
+
+            hand.scale = 0.8;
+
+            _sound.play('click');
+            ts.from = { row: -1, col: -1, sector: 6 };
+
+            post(() => {
+                if (!ss.tutorial) {
+                    return;
+                }
+
+                hand.scale = 1;
+                // post(step3, 1000);
+            }, 200);
+        }, 3500);
+    });
 };
 
 export const makeTutorialGame = (restart = false) => {

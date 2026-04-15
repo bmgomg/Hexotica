@@ -328,7 +328,7 @@ export const doPlacement = (placement, bits) => {
     const tileFrom = fromTile();
 
     if (tileFrom === findTile(ts.to.row, ts.to.col)) {
-        ts.ms = 500;
+        ts.ms = 1000;
     } else {
         const id = spotId(ts.to.row, ts.to.col);
         const { x: x2, y: y2 } = rectCenter(id);

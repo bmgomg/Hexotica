@@ -1,11 +1,11 @@
 <script>
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { ss } from '../shared.svelte';
 	import { scrollClass } from '../utils';
 	import { ts } from './ts.svelte';
 	import Board from './• Board.svelte';
 	import Header from './• Header.svelte';
-	import { onMount } from 'svelte';
 
 	const SCRIPT = [
 		/*1*/ ['A tile from Player 1’s deck is drawn.'],
@@ -44,7 +44,7 @@
 
 <style>
 	.tutorial {
-		grid-area: 1/1/span 3/1;
+		grid-area: 1/1 / span 3/1;
 		place-self: center;
 		display: grid;
 		grid-auto-flow: column;

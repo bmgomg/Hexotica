@@ -77,7 +77,7 @@
 		place-self: center;
 		box-sizing: border-box;
 		/* border: 1px solid var(--text); */
-		padding: 40px 30px 30px;
+		padding: 35px 30px 30px;
 		background: var(--menu-bg);
 		z-index: 4;
 		overflow-x: hidden;

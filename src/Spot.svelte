@@ -93,7 +93,7 @@
 	const classes = $derived.by(() => {
 		let cls = 'spot nope ';
 
-		if (!tile) {
+		if (!tile && !deck) {
 			if (ss.restart) {
 				cls += 'fade-out';
 			} else if (placedTiles().length === 0) {

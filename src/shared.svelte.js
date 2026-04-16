@@ -314,7 +314,7 @@ export const doPlacement = (placement, bits) => {
     // _log(tileFrom.idBits);
     // _log(ss.from);
     // _log(ss.to);
-    // dashes();
+    // logdash();
 
     if (tileFrom === findTile(ss.to.row, ss.to.col)) {
         ss.ms = 500;

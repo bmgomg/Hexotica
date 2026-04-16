@@ -162,4 +162,4 @@ export const scrollIntoView = (ob) => {
     b.scrollBy({ top, left, behavior: 'smooth' });
 };
 
-export const dashes = (length = 10) => console.log(DASH.repeat(length));
+export const logdash = (length = 10) => console.log(DASH.repeat(length));

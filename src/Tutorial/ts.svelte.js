@@ -38,7 +38,8 @@ export const remesh = () => {
 const initDecks = () => {
     const tiles = [];
 
-    const deck = ['🔵🔵🔵🟡🔵🟡', '🟡🔵🔵🟡🔵🔵', '🟡🔵🔵🟡🔵🟡', '🟡🔵🔵🔵🟡🟡'];
+    // const deck = ['🔵🔵🔵🟡🔵🟡', '🟡🔵🔵🟡🔵🔵', '🟡🔵🔵🟡🔵🟡', '🟡🔵🔵🔵🟡🟡'];
+    const deck = ['222121', '122122', '122121', '122211'];
 
     deck.forEach((key, i) => {
         const player = (i % 2) + 1;

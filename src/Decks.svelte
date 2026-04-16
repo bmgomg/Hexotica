@@ -4,29 +4,30 @@
 	import Knob from './Knob.svelte';
 	import { ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
+	import { _range } from './utils';
 
 	const getTile = (i, player) => {
-        const key = ss.deck[i];
+		const key = ss.deck[i];
 		const tile = ss.tiles.find((t) => t.player === player && key === t.key);
-        return tile;
+		return tile;
 	};
 </script>
 
 {#if ss.decks}
-	<div id='decks' class="decks" in:fade>
+	<div id="decks" class="decks" in:fade>
 		{#each [1, 2] as player (player)}
 			<div class="deck">
-				{#each HEXES as hex, i (i)}
-					{@const row = i < 7 ? 1 : 2}
-					{@const col = (i % 7) + 1}
+				{#each _range(0, 15) as i (i)}
+					{@const row = i < 8 ? 1 : 2}
+					{@const col = (i % 8) + 1}
 					{@const tile = getTile(i, player)}
 					<div class="hex no-highlight" style="grid-area: {row}/{col}">
 						{#if tile.place}
-							<Spot row={1} col={1} deck/>
+							<Spot row={1} col={1} deck />
 						{:else}
-							<img src={hex} alt="" width={80} />
-                            <div class="knob">
-								<Knob tile={{ player }} deck/>
+							<Spot row={1} col={1} {tile} deck />
+							<div class="knob">
+								<Knob tile={{ player }} deck />
 							</div>
 						{/if}
 					</div>
@@ -41,7 +42,7 @@
 
 <style>
 	.decks {
-		grid-area: 1/1/span 3/1;
+		grid-area: 1/1 / span 3/1;
 		display: grid;
 		place-self: center;
 		box-sizing: border-box;
@@ -63,9 +64,9 @@
 		aspect-ratio: 1.156;
 	}
 
-	img,
 	.knob {
 		grid-area: 1/1;
+		z-index: 1;
 	}
 
 	.divider {

@@ -137,8 +137,12 @@
 		{#each [1, 2, 3, 4, 5, 6] as i (i)}
 			{@render sector(i)}
 		{/each}
-		<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
+		{#snippet outline()}
+			<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
+		{/snippet}
+		{@render outline()}
 		{#if !tile}
+			{@render outline()}
 			{@const fill = deck ? 'var(--menu-bg)' : 'var(--bg)'}
 			<circle class="center" cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} {fill} />
 		{/if}

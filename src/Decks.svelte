@@ -1,6 +1,5 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { HEXES } from './const';
 	import Knob from './Knob.svelte';
 	import { ss } from './shared.svelte';
 	import Spot from './Spot.svelte';

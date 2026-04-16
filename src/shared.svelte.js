@@ -30,7 +30,7 @@ export const persist = (commonOnly = false) => {
         return;
     }
 
-    json = JSON.stringify({ ...stats, tiles: ss.tiles, actor: ss.actor, over: ss.over });
+    json = JSON.stringify({ ...stats, deck: ss.deck, tiles: ss.tiles, actor: ss.actor, over: ss.over });
     localStorage.setItem(ss.appKey, json);
 };
 
@@ -54,8 +54,8 @@ export const loadGame = () => {
         stats.wins2 = job.wins2;
 
         if (ss.seenPage[ss.appSubKey] || !job.over) {
+            ss.deck = job.deck;
             ss.tiles = job.tiles;
-            // ss.actor = job.actor;
             ss.over = job.over;
 
             return true;

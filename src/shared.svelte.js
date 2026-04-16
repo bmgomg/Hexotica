@@ -56,7 +56,12 @@ export const loadGame = () => {
         if (ss.seenPage[ss.appSubKey] || !job.over) {
             ss.deck = job.deck;
             ss.tiles = job.tiles;
+            ss.actor = job.actor;
             ss.over = job.over;
+
+            if (roboTurn()) {
+                post(onRoboTurn, 2000);
+            }
 
             return true;
         }

@@ -10,14 +10,17 @@
 	import ToolButton from './Tool Button.svelte';
 	import { post } from './utils';
 
-	const onOppSelect = (opp) => {
-		ss.opp = opp;
-
+	const playMusic = () => {
 		if (!_sound.musicPlayed) {
 			post(_sound.playMusic, 1000);
 		}
+	};
 
+	const onOppSelect = (opp) => {
+		ss.opp = opp;
 		delete ss.menu;
+
+		playMusic();
 
 		ss.appKey = `${APP_STATE} • ${(ss.appSubKey = opp)}`;
 
@@ -32,10 +35,13 @@
 
 	const onRules = () => {
 		ss.rules = true;
+		playMusic();
 	};
 
 	const onTutorial = () => {
 		ss.tutorial = true;
+		playMusic();
+
 		post(makeTutorialGame);
 	};
 </script>
@@ -57,7 +63,7 @@
 
 <style>
 	.menu {
-		grid-area: 1/1/span 3/1;
+		grid-area: 1/1 / span 3/1;
 		display: grid;
 		place-self: center;
 		box-sizing: border-box;

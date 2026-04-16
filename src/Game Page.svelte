@@ -1,28 +1,22 @@
 <script>
 	import { fade } from 'svelte/transition';
 	import Board from './Board.svelte';
-	import Menu from './Menu.svelte';
-	import Header from './Header.svelte';
-	import Footer from './Footer.svelte';
 	import Decks from './Decks.svelte';
-	import { ss } from './shared.svelte';
-	import { underMouse } from './utils';
+	import Footer from './Footer.svelte';
+	import Header from './Header.svelte';
+	import Menu from './Menu.svelte';
 	import Rules from './Rules.svelte';
+	import { ss } from './shared.svelte';
 	import Tutorial from './Tutorial/• Tutorial.svelte';
-	import { ts } from './Tutorial/ts.svelte';
+	import { underMouse } from './utils';
 
 	const onClick = (e) => {
-		if (underMouse(e, ['#menu', '#rules', '#tutorial', '#decks'])) {
+		if (underMouse(e, ['#menu', '#decks'])) {
 			e.stopPropagation();
 			return;
 		}
 
-		if (ss.rules) {
-			delete ss.rules;
-		} else if (ss.tutorial) {
-			delete ss.tutorial;
-			ts.init();
-		} else if (ss.menu && ss.tiles.some((t) => t.place)) {
+		if (ss.menu && ss.tiles.some((t) => t.place)) {
 			delete ss.menu;
 		} else if (ss.decks) {
 			delete ss.decks;

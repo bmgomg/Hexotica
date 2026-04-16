@@ -5,6 +5,7 @@
 	import { isMoving, makeGame, persist, roboTurn, showMessage, ss, stats } from './shared.svelte';
 	import { _sound } from './sound.svelte';
 	import TextButton from './Text Button.svelte';
+	import { ts } from './Tutorial/ts.svelte';
 
 	const onSfx = () => {
 		_sound.sfx = !_sound.sfx;
@@ -56,6 +57,10 @@
 
 	const onHome = () => {
 		ss.menu = true;
+		ts.init();
+
+		delete ss.rules;
+		delete ss.tutorial;
 	};
 
 	const onShowDecks = () => {
@@ -69,9 +74,11 @@
 {#if !ss.message && !ss.choice}
 	<div class="toolbar" in:fade>
 		<TextButton id="tb-menu" text={['Home']} disabled={mustWait} onClick={onHome} />
-		<TextButton id="tb-deck" text={['Show Decks']} disabled={mustWait} onClick={onShowDecks} />
-		<TextButton id="tb-new-game" text={['New Game']} style={newGameStyle} framed={ss.over} disabled={!canNewGame} onClick={onNewGame} />
-		<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
+		{#if !ss.rules && !ss.tutorial}
+			<TextButton id="tb-deck" text={['Show Decks']} disabled={mustWait} onClick={onShowDecks} />
+			<TextButton id="tb-new-game" text={['New Game']} style={newGameStyle} framed={ss.over} disabled={!canNewGame} onClick={onNewGame} />
+			<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
+		{/if}
 		<MusicVolume />
 		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} sound={false} style={sfxStyle} onClick={onSfx} />
 	</div>
@@ -82,6 +89,6 @@
 		grid-area: 1/1;
 		display: grid;
 		grid-auto-flow: column;
-		gap: 20px;
+		gap: 25px;
 	}
 </style>

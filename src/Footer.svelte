@@ -6,7 +6,7 @@
 	import Choice from './Choice.svelte';
 </script>
 
-{#if !ss.menu && !ss.decks}
+{#if !ss.decks && (!ss.menu || ss.rules || ss.tutorial)}
 	<div class="footer" transition:fade>
 		<Toolbar />
 		<Message />

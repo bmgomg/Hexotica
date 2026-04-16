@@ -42,11 +42,11 @@
 	}
 
 	.hi1 {
-		filter: contrast(1.3) brightness(1.3);
+		filter: contrast(1.2) brightness(1.2);
 	}
 
 	.hi2 {
-		filter: contrast(1.6) brightness(1.6);
+		filter: contrast(1.3) brightness(1.3);
 	}
 
 	svg {

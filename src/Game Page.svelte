@@ -11,7 +11,12 @@
 	import { underMouse } from './utils';
 
 	const onClick = (e) => {
-		if (underMouse(e, ['#menu', '#decks'])) {
+		if (underMouse(e, ['#menu', '#decks', '#rules', '#tutorial'])) {
+			e.stopPropagation();
+			return;
+		}
+
+		if (ss.rules || ss.tutorial) {
 			e.stopPropagation();
 			return;
 		}

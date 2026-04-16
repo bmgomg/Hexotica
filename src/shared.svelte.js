@@ -203,12 +203,12 @@ export const currentTurns = () => {
 
 const initDecks = () => {
     const tiles = [];
-    ss.deck = [POOL[0], POOL[1], ...sampleSize(POOL.slice(2), DECK_SIZE)];
+    ss.deck = [POOL[0], POOL[1], ...sampleSize(POOL.slice(2), DECK_SIZE - 2)];
 
     ss.deck.forEach(key => {
         for (const player of [1, 2]) {
             const id = `tile ${player} ${key.replaceAll(YELL, 1).replaceAll(BLUE, 2)}`;
-            tiles.push({ id, player, bits: key, key, imgTurns: 0 });
+            tiles.push({ id, player, bits: key, key });
         }
     });
 
@@ -248,8 +248,7 @@ export const drawTile = () => {
     }
 
     const first = tiles.length === ss.deck.length;
-
-    const solid = (tile) => tile.bits === YELL.repeat(6) || tile.bits === BLUE.repeat(6);
+    const solid = (tile) => tile.key === YELL.repeat(6) || tile.key === BLUE.repeat(6);
 
     let tile; do { tile = sample(tiles); } while (first && solid(tile));
     tile.place = 'tray';
@@ -349,7 +348,6 @@ const completePlacement = (bits) => {
 
     const tileFrom = fromTile();
     tileFrom.bits = bits;
-    tileFrom.imgTurns = (tileFrom.imgTurns + currentTurns()) % 6;
 
     if (tileFrom.off) {
         delete tileFrom.off;

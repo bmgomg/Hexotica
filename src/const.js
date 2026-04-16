@@ -12,9 +12,10 @@ import Hex6 from '$lib/images/Hex 6.webp';
 import Hex7 from '$lib/images/Hex 7.webp';
 import Hex8 from '$lib/images/Hex 8.webp';
 import Hex9 from '$lib/images/Hex 9.webp';
+import Hex15 from '$lib/images/Hex 15.webp';
+import Hex16 from '$lib/images/Hex 16.webp';
 
 export const DASH = '─';
-export const HEXES = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14];
 export const APP_STATE = 'Hexotica V2';
 export const HEX_DIMS = { X: 726, Y: 628 };
 export const HEX_RATIO = HEX_DIMS.X / HEX_DIMS.Y;
@@ -31,9 +32,11 @@ export const ERR_NO_TILE = 1;
 export const ERR_COLOR = 2;
 export const ERR_NEIGHBORS = 3;
 export const ERR_ISLAND = 4;
+export const DIR_NW = { dr: -1, dc: -1 };
+export const DIR_N = { dr: -2, dc: 0 };
+export const DIR_NE = { dr: -1, dc: +1 };
 
-/////////////////////////////////////////////////
-
+export const HEXES = [Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7, Hex8, Hex9, Hex10, Hex11, Hex12, Hex13, Hex14, Hex15, Hex16];
 export const DECK = [
     ['🔵', '🟡', '🔵', '🟡', '🔵', '🟡'],
     ['🟡', '🔵', '🟡', '🔵', '🟡', '🔵'],
@@ -49,8 +52,6 @@ export const DECK = [
     ['🔵', '🟡', '🔵', '🟡', '🟡', '🔵'],
     ['🔵', '🔵', '🟡', '🟡', '🟡', '🔵'],
     ['🔵', '🟡', '🔵', '🔵', '🟡', '🟡'],
+    ['🟡', '🟡', '🟡', '🟡', '🟡', '🟡'],
+    ['🔵', '🔵', '🔵', '🔵', '🔵', '🔵'],
 ];
-
-export const DIR_NW = { dr: -1, dc: -1 };
-export const DIR_N = { dr: -2, dc: 0 };
-export const DIR_NE = { dr: -1, dc: +1 };

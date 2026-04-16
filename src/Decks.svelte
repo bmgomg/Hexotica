@@ -17,8 +17,8 @@
 		{#each [1, 2] as player (player)}
 			<div class="deck">
 				{#each HEXES as hex, i (i)}
-					{@const row = i < 7 ? 1 : 2}
-					{@const col = (i % 7) + 1}
+					{@const row = i < 8 ? 1 : 2}
+					{@const col = (i % 8) + 1}
 					{@const tile = getTile(i, player)}
 					<div class="hex no-highlight" style="grid-area: {row}/{col}">
 						{#if tile.place}

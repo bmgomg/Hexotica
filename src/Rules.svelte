@@ -16,7 +16,7 @@
 	const CONTENT = `
 		${head}Setup${S}
 		${ul}
-		${li}Each player has a ${hi}deck${S} of 14 hexagonal tiles.
+		${li}Each player has a ${hi}deck${S} of 16 hexagonal tiles.
 		${li}Each tile has ${hi}6 sectors${S}, colored ${ye}yellow${S} or ${bl}blue${S}, and a colored ${hi}knob${S} identifying its ${hi}owner${S}.
 		</ul>
 		${para}${S}

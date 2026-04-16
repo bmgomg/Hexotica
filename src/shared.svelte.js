@@ -1,6 +1,6 @@
-import { sample } from 'lodash-es';
+import { sample, sampleSize } from 'lodash-es';
 import { checkWin, getBestMove } from './ai';
-import { APP_STATE, DECK, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
+import { APP_STATE, BLUE, DECK_SIZE, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT, POOL, YELL } from './const';
 import { _sound } from './sound.svelte';
 import { clientRect, post, rectCenter } from './utils';
 
@@ -203,15 +203,16 @@ export const currentTurns = () => {
 
 const initDecks = () => {
     const tiles = [];
+    const deck = [POOL[0], POOL[1], ...sampleSize(POOL.slice(2), DECK_SIZE)];
 
-    DECK.forEach(bits => {
+    deck.forEach(key => {
         for (const player of [1, 2]) {
-            const id = 'tile ' + player + ` ${bits}`.replaceAll(',', '');
-            tiles.push({ id, player, bits, idBits: bits, imgTurns: 0 });
+            const id = `tile ${player} ${key}`;
+            tiles.push({ id, player, bits: key, key, imgTurns: 0 });
         }
     });
 
-    return tiles;
+    ss.tiles = tiles;
 };
 
 export const playerTiles = (player, filter) => {
@@ -246,9 +247,9 @@ export const drawTile = () => {
         _sound.play('link1', { rate: 0.5 });
     }
 
-    const first = tiles.length === DECK.length;
+    const first = tiles.length === ss.deck.length;
 
-    const solid = (tile) => tile.bits.every(t => t === 1) || tile.bits.every(t => t === 2);
+    const solid = (tile) => tile.bits.every(t => t === YELL) || tile.bits.every(t => t === BLUE);
 
     let tile; do { tile = sample(tiles); } while (first && solid(tile));
     tile.place = 'tray';
@@ -262,7 +263,7 @@ export const makeGame = (restart = false) => {
         delete ss.from;
         delete ss.to;
 
-        ss.tiles = initDecks();
+        initDecks();
         ss.actor = 1;
 
         post(() => {
@@ -311,7 +312,7 @@ export const doPlacement = (placement, bits) => {
     const tileFrom = fromTile();
 
     // _log(ss.actor);
-    // _log(tileFrom.idBits);
+    // _log(tileFrom.key);
     // _log(ss.from);
     // _log(ss.to);
     // logdash();

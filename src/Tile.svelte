@@ -1,12 +1,12 @@
 <script>
 	import HexBg from '$lib/images/Hex Background.webp';
-	import { DECK, HEX_WIDTH, HEXES } from './const';
+	import { HEX_WIDTH, HEXES } from './const';
 	import Knob from './Knob.svelte';
 	import { currentTurns, fromTile, roboTurn, ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const { tile, row, col } = $props();
-	const i = $derived(DECK.findIndex((bits) => JSON.stringify(bits) === JSON.stringify(tile.idBits)));
+	const i = $derived(ss.deck.findIndex((key) => key === tile.key));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tile.off || !tt ? 1 : 0.9);

@@ -1,13 +1,13 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { DECK, HEXES } from './const';
+	import { HEXES } from './const';
 	import Knob from './Knob.svelte';
 	import { ss } from './shared.svelte';
 	import Spot from './Spot.svelte';
 
 	const getTile = (i, player) => {
-        const bits = DECK[i];
-		const tile = ss.tiles.find((t) => t.player === player && JSON.stringify(bits) === JSON.stringify(t.idBits));
+        const key = ss.deck[i];
+		const tile = ss.tiles.find((t) => t.player === player && key === t.key);
         return tile;
 	};
 </script>

@@ -1,5 +1,4 @@
 import { validateMove } from '../ai';
-import { DECK } from '../const';
 import { ss } from '../shared.svelte';
 import { _sound } from '../sound.svelte';
 import { post, rectCenter } from '../utils';
@@ -39,14 +38,12 @@ export const remesh = () => {
 const initDecks = () => {
     const tiles = [];
 
-    DECK.forEach((bits, i) => {
-        if (i < 3 || i > 6) {
-            return;
-        }
+    const deck = ['🔵🔵🔵🟡🔵🟡', '🟡🔵🔵🟡🔵🔵', '🟡🔵🔵🟡🔵🟡', '🟡🔵🔵🔵🟡🟡'];
 
-        const player = 2 - (i % 2);
-        const id = 'tutorial tile ' + player + ` ${bits}`.replaceAll(',', '');
-        tiles.push({ id, player, bits, idBits: bits, imgTurns: 0 });
+    deck.forEach((key, i) => {
+        const player = (i % 2) + 1;
+        const id = `tutorial tile ${player} key}`;
+        tiles.push({ id, player, bits: key, key, imgTurns: 0 });
     });
 
     return tiles;

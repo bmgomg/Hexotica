@@ -32,14 +32,15 @@
 	});
 </script>
 
-<div {id} class={classes} style="grid-area: {ga};" in:fade>
+<div {id} class={classes} style="grid-area: {ga};" in:fade={{ duration: tile ? 0 : 200 }}>
 	{#snippet sector(i)}
 		{@const deg = ((i - 1) * 60) % 360}
-		{@const stroke = tile ? 'none' : 'var(--spoke)'}
-		{@const fill = !tile && ts.to?.row === row && ts.to?.col === col && ts.to?.sector === i ? 'var(--spoke)' : 'none'}
-		{@const sw = tile ? 0 : 10}
+		{@const stroke = tile ? 'var(--bg)' : 'var(--spoke)'}
+		{@const blue = tile?.bits[i - 1] === '2'}
+		{@const hi = ts.to?.row === row && ts.to?.col === col && ts.to?.sector === i}
+		{@const fill = tile ? (blue ? 'var(--slate-fill)' : 'var(--amber-fill)') : hi ? 'var(--spoke)' : ''}
 		<g transform="rotate({deg}, 363, 314)" {stroke} stroke-width={sw} stroke-line-join="round" fill="transparent">
-			<path class="sector nope" d="M363,314 183,8 543,8 Z" {fill} />
+			<path class="sector nope" d="M183,8 363,314 543,8" {fill} />
 			<text class="text nope" x="340" y="314" fill={tile ? 'var(--bg)' : 'var(--slate-deep)'}>{i}</text>
 			{#snippet dot(angle)}
 				{@const r = width * 0.6}
@@ -56,17 +57,24 @@
 			{/if}
 		</g>
 	{/snippet}
-	{#key tile?.place}
-		<svg {width} {height} {viewBox} {xmlns}>
-			{#each [1, 2, 3, 4, 5, 6] as i (i)}
-				{@render sector(i)}
-			{/each}
-			<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" fill="none" />
-			{#if !tile}
-				<circle class="center" cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} fill='var(--menu-bg)' />
-			{/if}
-		</svg>
-	{/key}
+	<svg {width} {height} {viewBox} {xmlns}>
+		{#snippet outline(stroke, fill = 'none')}
+			<path class="nope" d="M183,620 543,620 726,314 543,0 183,0 0,314 Z" {stroke} stroke-width={sw} stroke-line-join="round" {fill} />
+		{/snippet}
+		{#if tile}
+			{@const fill = 'var(--menu-bg)'}
+			{@render outline('none', fill)}
+		{/if}
+		{#each [1, 2, 3, 4, 5, 6] as i (i)}
+			{@render sector(i)}
+		{/each}
+		{@render outline(stroke)}
+		{#if !tile}
+			{@render outline(stroke)}
+			{@const fill = 'var(--menu-bg)'}
+			<circle class="center" cx="363" cy="314" r={width * 1.2} {stroke} stroke-width={sw * 2} {fill} />
+		{/if}
+	</svg>
 </div>
 
 <style>

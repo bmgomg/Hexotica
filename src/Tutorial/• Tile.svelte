@@ -1,13 +1,9 @@
 <script>
-	import HexBg from '$lib/images/Hex Background.webp';
+	import { currentTurns, fromTile, ts } from './ts.svelte';
 	import Knob from './• Knob.svelte';
 	import Spot from './• Spot.svelte';
-	import { currentTurns, fromTile, ts } from './ts.svelte';
-	import { HEX_WIDTH, HEXES } from '../const';
-	import { ss } from '../shared.svelte';
 
 	const { tile, row, col } = $props();
-	const i = $derived(ss.deck.findIndex((key) => key === tile.key));
 	const tt = $derived(tile.place === 'tray');
 	const ga = $derived(tt ? 'auto' : `${row}/${col}`);
 	const scale = $derived(tile.off || !tt ? 1 : 0.9);
@@ -20,8 +16,6 @@
 
 <div id={tile.id} class="tile nope {tt ? 'swirl' : ts.restart ? 'fade-out' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ts.ms}ms;">
-		<img src={HexBg} alt="" width={HEX_WIDTH * ss.zoom} />
-		<img src={HEXES[i]} alt="" width={HEX_WIDTH * ss.zoom} style="rotate: {tile.imgTurns * 60}deg;" />
 		<Spot {row} {col} {tile} />
 	</div>
 	<Knob {tile} />
@@ -74,10 +68,5 @@
 			transform: scale(1);
 			rotate: 0deg;
 		}
-	}
-
-	img {
-		grid-area: 1/1;
-		/* transition: scale 1s linear; */
 	}
 </style>

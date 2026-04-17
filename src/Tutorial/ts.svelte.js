@@ -43,8 +43,8 @@ const initDecks = () => {
 
     deck.forEach((key, i) => {
         const player = (i % 2) + 1;
-        const id = `tutorial tile ${player} key}`;
-        tiles.push({ id, player, bits: key, key, imgTurns: 0 });
+        const id = `tutorial tile ${player} ${key}`;
+        tiles.push({ id, player, bits: key, key });
     });
 
     return tiles;
@@ -562,7 +562,6 @@ const completePlacement = (bits) => {
 
     const tileFrom = fromTile();
     tileFrom.bits = bits;
-    tileFrom.imgTurns = (tileFrom.imgTurns + currentTurns()) % 6;
 
     if (tileFrom.off) {
         delete tileFrom.off;

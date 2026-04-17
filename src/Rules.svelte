@@ -2,6 +2,7 @@
 	import { fade } from 'svelte/transition';
 	import { ss } from './shared.svelte';
 	import { scrollClass } from './utils';
+	import { DECK_SIZE } from './const';
 
 	const ul = '<ul style="margin: -10px 0 0;">';
 	const li = '<li style="margin: 10px 0 0 -20px;">';
@@ -16,7 +17,7 @@
 	const CONTENT = `
 		${head}Setup${S}
 		${ul}
-		${li}Each player has a ${hi}deck${S} of 14 hexagonal tiles.
+		${li}Each player has a ${hi}deck${S} of ${DECK_SIZE} hexagonal tiles.
 		${li}Each tile has ${hi}6 sectors${S}, colored ${ye}yellow${S} or ${bl}blue${S}, and a colored ${hi}knob${S} identifying its ${hi}owner${S}.
 		</ul>
 		${para}${S}

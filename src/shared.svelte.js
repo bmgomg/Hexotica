@@ -1,6 +1,6 @@
 import { sample, sampleSize } from 'lodash-es';
 import { checkWin, getBestMove } from './ai';
-import { APP_STATE, BLUE, DECK_SIZE, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT, POOL, YELL } from './const';
+import { APP_STATE, DECK_SIZE, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
 import { clientRect, post, rectCenter } from './utils';
 
@@ -206,13 +206,35 @@ export const currentTurns = () => {
     return d;
 };
 
+const makePool = () => {
+    const pool = [];
+
+    for (let b1 = 1; b1 < 3; b1++) {
+        for (let b2 = 1; b2 < 3; b2++) {
+            for (let b3 = 1; b3 < 3; b3++) {
+                for (let b4 = 1; b4 < 3; b4++) {
+                    for (let b5 = 1; b5 < 3; b5++) {
+                        for (let b6 = 1; b6 < 3; b6++) {
+                            pool.push('' + b1 + b2 + b3 + b4 + b5 + b6);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return pool;
+};
+
 const initDecks = () => {
+    const pool = makePool();
+    ss.deck = [pool[0], ...sampleSize(pool.slice(1, pool.length - 1), DECK_SIZE - 2), pool[pool.length - 1]];
+
     const tiles = [];
-    ss.deck = [POOL[0], POOL[1], ...sampleSize(POOL.slice(2), DECK_SIZE - 2)];
 
     ss.deck.forEach(key => {
         for (const player of [1, 2]) {
-            const id = `tile ${player} ${key.replaceAll(YELL, 1).replaceAll(BLUE, 2)}`;
+            const id = `tile ${player} ${key}`;
             tiles.push({ id, player, bits: key, key });
         }
     });
@@ -253,7 +275,7 @@ export const drawTile = () => {
     }
 
     const first = tiles.length === ss.deck.length;
-    const solid = (tile) => tile.key === YELL.repeat(6) || tile.key === BLUE.repeat(6);
+    const solid = (tile) => tile.key === '111111' || tile.key === '222222';
 
     let tile; do { tile = sample(tiles); } while (first && solid(tile));
     tile.place = 'tray';

@@ -35,6 +35,7 @@
 				{/each}
 			</div>
 		</div>
+		<div class="divider"></div>
 		<div class="game" transition:fade>
 			<Header />
 			<Board />
@@ -46,12 +47,12 @@
 	.tutorial {
 		grid-area: 1/1 / span 3/1;
 		place-self: center;
+		margin-right: 10px;
 		display: grid;
 		grid-auto-flow: column;
 		background: var(--menu-bg);
 		z-index: 4;
 		box-sizing: border-box;
-		padding: 0 10px 5px 0;
 	}
 
 	.script-container {
@@ -71,7 +72,9 @@
 	.line {
 		margin-bottom: 3px;
 		opacity: 0.35;
-		transition: opacity 1s, background-color 0.1s;
+		transition:
+			opacity 1s,
+			background-color 0.1s;
 		box-sizing: border-box;
 		padding: 5px 10px 9px;
 	}
@@ -84,5 +87,13 @@
 	.game {
 		display: grid;
 		padding: 10px;
+	}
+
+	.divider {
+		place-self: center;
+		margin-left: 10px;
+		width: 1px;
+		height: 90%;
+		background: linear-gradient(0deg, transparent, var(--text), transparent);
 	}
 </style>

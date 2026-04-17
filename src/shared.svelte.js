@@ -206,21 +206,15 @@ export const currentTurns = () => {
     return d;
 };
 
-const makePool = () => {
-    const pool = [];
+const makePool = (current = '') => {
+    if (current.length === 6) {
+        return [current];
+    }
 
-    for (let b1 = 1; b1 < 3; b1++) {
-        for (let b2 = 1; b2 < 3; b2++) {
-            for (let b3 = 1; b3 < 3; b3++) {
-                for (let b4 = 1; b4 < 3; b4++) {
-                    for (let b5 = 1; b5 < 3; b5++) {
-                        for (let b6 = 1; b6 < 3; b6++) {
-                            pool.push('' + b1 + b2 + b3 + b4 + b5 + b6);
-                        }
-                    }
-                }
-            }
-        }
+    let pool = [];
+
+    for (let b = 1; b < 3; b++) {
+        pool = pool.concat(makePool(current + b));
     }
 
     return pool;

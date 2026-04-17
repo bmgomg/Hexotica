@@ -14,7 +14,7 @@
 	);
 </script>
 
-<div id={tile.id} class="tile nope {tt ? 'swirl' : ts.restart ? 'fade-out' : ''}" {style}>
+<div id={tile.id} class="tile nope {ts.restart ? 'fade-out' : tt ? 'swirl' : ''}" {style}>
 	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ts.ms}ms;">
 		<Spot {row} {col} {tile} />
 	</div>

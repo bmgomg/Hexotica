@@ -47,7 +47,6 @@
 	.tutorial {
 		grid-area: 1/1 / span 3/1;
 		place-self: center;
-		margin-right: 10px;
 		display: grid;
 		grid-auto-flow: column;
 		background: var(--menu-bg);

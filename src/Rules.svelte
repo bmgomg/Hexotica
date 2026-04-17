@@ -56,7 +56,7 @@
 
 {#if ss.rules}
 	<div class="rules-container">
-		<div id="rules" class="rules {scrollClass()}" tabindex="-1" transition:fade>
+		<div id="rules no-highlight" class="rules {scrollClass()}" tabindex="-1" transition:fade>
 			<div class="content no-highlight" tabindex="-1">
 				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 				{@html CONTENT}
@@ -70,18 +70,17 @@
 		grid-area: 2/1;
 		overflow: hidden;
 		display: grid;
+		padding: 15px 0 20px;
+		background: var(--menu-bg);
+		z-index: 4;
+		justify-self: center;
 	}
 
 	.rules {
 		height: 100%;
+		padding: 0 30px;
 		display: grid;
-		place-self: center;
 		box-sizing: border-box;
-		/* border: 1px solid var(--text); */
-		padding: 35px 30px 30px;
-		background: var(--menu-bg);
-		z-index: 4;
-		overflow-x: hidden;
 	}
 
 	.content {

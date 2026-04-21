@@ -237,10 +237,13 @@ export const getBestMove = (tiles, aiPlayer, boardDims = null) => {
     const baseMap = buildMap(placed);
 
     if (placed.length === 0) {
+        const centerRow = boardDims ? Math.ceil(boardDims.rows / 2) : 1;
+        const centerCol = boardDims ? Math.ceil(boardDims.cols / 2) : 1;
+
         return {
             tileId: trayTile.id,
-            targetRow: 0,
-            targetCol: 0,
+            targetRow: centerRow,
+            targetCol: centerCol,
             turns: 0,
             bits: trayTile.bits,
             reposition: null,

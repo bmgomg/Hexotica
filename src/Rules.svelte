@@ -37,7 +37,7 @@
 		</ul>
 		${para}${S}
 		${para}${S}
-		${para}You may ${hi}rotate${S} a tile freely while placing it.</ul>${S}
+		<span>You may ${hi}rotate${S} a tile freely while placing it.</ul>${S}
 		${para}${S}
 		${para}${S}
 		${head}Repositioning${S}

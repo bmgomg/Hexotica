@@ -255,6 +255,7 @@ export const getBestMove = (tiles, aiPlayer, boardDims = null) => {
 
     let bestScore = -Infinity;
     let bestMove = null;
+    const deadline = Date.now() + 5000;
 
     const myPlaced = placed.filter(t => t.player === aiPlayer);
 
@@ -288,6 +289,7 @@ export const getBestMove = (tiles, aiPlayer, boardDims = null) => {
                 }
 
                 if (score >= threshold) return true;
+                if (Date.now() >= deadline) return true;
             }
         }
         return false;

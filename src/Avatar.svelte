@@ -25,7 +25,7 @@
 			persist();
 
 			if (roboTurn()) {
-				onRoboTurn();
+				post(onRoboTurn, 1000);
 			}
 		});
 	};

@@ -10,16 +10,17 @@
 	const turns = $derived(tile === fromTile() ? currentTurns() : 0);
 	const roboSelect = $derived(roboTurn() && fromTile() === tile);
 	const translate = $derived(tile.off ? `${tile.off.x}px ${tile.off.y}px` : '0');
+	const ms = $derived(`${ss.ms}ms`);
 	const style = $derived(
-		`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; transition-duration: ${ss.ms}ms; z-index: ${tile.off ? 3 : 2}`
+		`grid-area: ${ga}; translate: ${translate}; scale: ${scale}; transition-duration: ${ms}; z-index: ${tile.off ? 3 : 2}`
 	);
 </script>
 
-<div id={tile.id} class="tile nope {roboSelect ? 'pulse' : ''} {ss.restart ? 'fade-out' : tt ? 'swirl' : ''}" {style}>
-	<div class="tile-inner" style="rotate: {turns * 60}deg; transition-duration: {ss.ms}ms;">
+<div id={tile.id} class="tile nope {ss.restart ? 'fade-out' : tt ? 'swirl' : ''}" {style}>
+	<div class="tile-inner {roboSelect ? (tt ? 'tray-pulse' : 'pulse') : ''}" style="rotate: {turns * 60}deg; transition-duration: {ms};">
 		<Spot {row} {col} {tile} />
+		<Knob {tile} />
 	</div>
-	<Knob {tile} />
 </div>
 
 <style>
@@ -81,6 +82,19 @@
 		}
 		to {
 			scale: 0.85;
+		}
+	}
+
+	.tray-pulse {
+		animation: tray-pulse 0.3s alternate infinite ease-in-out;
+	}
+
+	@keyframes tray-pulse {
+		from {
+			scale: 0.9;
+		}
+		to {
+			scale: 0.75;
 		}
 	}
 </style>

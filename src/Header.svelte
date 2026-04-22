@@ -28,6 +28,6 @@
 		align-items: center;
 		display: grid;
 		grid-auto-flow: column;
-		grid: auto / 100px auto 120px 80px 120px auto 100px;
+		grid: auto / 100px auto 120px 90px 120px auto 100px;
 	}
 </style>

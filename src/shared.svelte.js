@@ -1,4 +1,4 @@
-import { sample, sampleSize } from 'lodash-es';
+import { sample, sampleSize, shuffle } from 'lodash-es';
 import { checkWin, getBestMove } from './ai';
 import { APP_STATE, DECK_SIZE, HEX_WIDTH, MSG_ERROR, MSG_SUCCESS, OPP_ROBOT } from './const';
 import { _sound } from './sound.svelte';
@@ -222,7 +222,7 @@ const makePool = (current = '') => {
 
 const initDecks = () => {
     const pool = makePool();
-    ss.deck = [pool[0], ...sampleSize(pool.slice(1, pool.length - 1), DECK_SIZE - 2), pool[pool.length - 1]];
+    ss.deck = shuffle([pool[0], ...sampleSize(pool, DECK_SIZE - 2), pool[pool.length - 1]]);
 
     const tiles = [];
 

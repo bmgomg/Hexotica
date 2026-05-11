@@ -80,7 +80,7 @@
 			<TextButton id="tb-restats" text={['Reset Stats']} disabled={!stats.plays} onClick={onResetStats} />
 		{/if}
 		<MusicVolume />
-		<TextButton id="tb-sfx" text={['SFX ' + (_sound.sfx ? 'On' : 'Off')]} sound={false} style={sfxStyle} onClick={onSfx} />
+		<TextButton id="tb-sfx" text={['SFX  ' + (_sound.sfx ? 'On' : 'Off')]} sound={false} style={sfxStyle} onClick={onSfx} />
 	</div>
 {/if}
 
